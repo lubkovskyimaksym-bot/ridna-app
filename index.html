@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ridna — CRM для Instagram магазинів</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #9333EA;
+      --purple-light: #F5F3FF;
+      --purple-mid: #C4B5FD;
+      --dark: #0f0a1a;
+      --darker: #080510;
+      --text: #e8e0f5;
+      --muted: #9b8fb5;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--darker);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* === NOISE TEXTURE === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* === GLOW BLOBS === */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(147,51,234,0.15) 0%, transparent 70%);
+      top: -200px; left: -200px;
+    }
+    .blob-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(147,51,234,0.1) 0%, transparent 70%);
+      bottom: 0; right: -100px;
+    }
+
+    /* === NAV === */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: rgba(8,5,16,0.7);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--purple);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(147,51,234,0.15);
+      border: 1px solid rgba(147,51,234,0.3);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--purple-mid);
+      font-weight: 600;
+      margin-bottom: 32px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--purple);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(40px, 8vw, 80px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #9333EA, #C4B5FD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Manrope', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 40px rgba(147,51,234,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(147,51,234,0.5);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 16px 32px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Manrope', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(147,51,234,0.4);
+      background: rgba(147,51,234,0.05);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === MOCKUP === */
+    .mockup-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      padding: 0 24px 80px;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .mockup {
+      width: 280px;
+      background: #1a1028;
+      border-radius: 40px;
+      border: 1px solid rgba(147,51,234,0.2);
+      padding: 24px 16px;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 80px rgba(147,51,234,0.15);
+    }
+
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 0 4px;
+    }
+
+    .mockup-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .mockup-fab {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      font-weight: 300;
+    }
+
+    .mockup-group {
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .mockup-group-header {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mockup-group-header.new { background: rgba(147,51,234,0.15); }
+    .mockup-group-header.processing { background: rgba(217,119,6,0.15); }
+    .mockup-group-header.shipped { background: rgba(37,99,235,0.15); }
+
+    .mockup-group-label {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .mockup-group-label.new { color: #C4B5FD; }
+    .mockup-group-label.processing { color: #FCD34D; }
+    .mockup-group-label.shipped { color: #93C5FD; }
+
+    .mockup-group-count {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+
+    .mockup-card {
+      background: rgba(255,255,255,0.04);
+      padding: 10px 14px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .mockup-card-name { font-size: 12px; font-weight: 600; color: #e8e0f5; }
+    .mockup-card-sub { font-size: 10px; color: #9b8fb5; margin-top: 2px; }
+
+    /* === FEATURES === */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+      max-width: 520px;
+      margin-bottom: 56px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(147,51,234,0.3);
+      background: rgba(147,51,234,0.05);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .feature-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* === HOW IT WORKS === */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: rgba(147,51,234,0.2);
+      line-height: 1;
+      min-width: 60px;
+    }
+
+    .step-content h3 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* === FOR WHO === */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .audience-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .audience-emoji { font-size: 40px; margin-bottom: 12px; }
+    .audience-title { font-weight: 700; color: #fff; font-size: 15px; margin-bottom: 6px; }
+    .audience-desc { font-size: 13px; color: var(--muted); }
+
+    /* === CTA SECTION === */
+    .cta-section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .cta-box {
+      max-width: 640px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(147,51,234,0.1), rgba(147,51,234,0.05));
+      border: 1px solid rgba(147,51,234,0.2);
+      border-radius: 32px;
+      padding: 64px 40px;
+    }
+
+    .cta-box h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .cta-box p {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* === FOOTER === */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 32px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: gap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--purple);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-copy {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* === DIVIDER === */
+    .divider {
+      position: relative;
+      z-index: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      footer { flex-direction: column; text-align: center; }
+      .step { flex-direction: column; gap: 8px; }
+      .step-num { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Ridna</div>
+  <ul class="nav-links">
+    <li><a href="#features">Можливості</a></li>
+    <li><a href="#how">Як працює</a></li>
+    <li><a href="#who">Для кого</a></li>
+    <li><a href="privacy-policy.html">Конфіденційність</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">CRM для Instagram магазинів</div>
+  <h1>Керуй бізнесом<br><span>в одному місці</span></h1>
+  <p>Ridna — мобільний CRM додаток для власників Instagram магазинів. Замовлення, клієнти, товари і доставка — все під рукою.</p>
+  <div class="hero-cta">
+    <a href="#features" class="btn-primary">Дізнатись більше</a>
+    <a href="#who" class="btn-secondary">Для кого це?</a>
+  </div>
+</section>
+
+<!-- PHONE MOCKUP -->
+<div class="mockup-wrap">
+  <div class="mockup">
+    <div class="mockup-header">
+      <div class="mockup-title">Замовлення</div>
+      <div class="mockup-fab">+</div>
+    </div>
+
+    <div class="mockup-group">
+      <div class="mockup-group-header new">
+        <span class="mockup-group-label new">● Нові</span>
+        <span class="mockup-group-count">3 · 2 450 ₴</span>
+      </div>
+      <div class="mockup-card">
+        <div class="mockup-card-name">Анна Коваль</div>
+        <div class="mockup-card-sub">📅 01.04.2026 · №12</div>
+      </div>
+      <div class="mockup-card">
+        <div class="mockup-card-name">Олена Мороз</div>
+        <div class="mockup-card-sub">📅 01.04.2026 · №13</div>
+      </div>
+    </div>
+
+    <div class="mockup-group">
+      <div class="mockup-group-header processing">
+        <span class="mockup-group-label processing">● В роботі</span>
+        <span class="mockup-group-count">2 · 1 800 ₴</span>
+      </div>
+      <div class="mockup-card">
+        <div class="mockup-card-name">Марина Іванова</div>
+        <div class="mockup-card-sub">📅 31.03.2026 · №11</div>
+      </div>
+    </div>
+
+    <div class="mockup-group">
+      <div class="mockup-group-header shipped">
+        <span class="mockup-group-label shipped">● Відправлено</span>
+        <span class="mockup-group-count">1 · 950 ₴</span>
+      </div>
+      <div class="mockup-card">
+        <div class="mockup-card-name">Тетяна Бондар</div>
+        <div class="mockup-card-sub">📅 30.03.2026 · №10</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label">Можливості</div>
+  <h2 class="section-title">Все що потрібно<br>для Instagram бізнесу</h2>
+  <p class="section-sub">Від першого повідомлення клієнта до відправки посилки — Ridna покриває весь процес.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📦</div>
+      <div class="feature-title">Замовлення</div>
+      <div class="feature-desc">Канбан-дошка зі статусами. Додавай товари, коментарі, відстежуй суми. Фільтруй за датою, сумою та товарами.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👥</div>
+      <div class="feature-title">Клієнти</div>
+      <div class="feature-desc">База контактів з Instagram, телефоном та адресами доставки. Вся історія замовлень в одному місці.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛍️</div>
+      <div class="feature-title">Товари</div>
+      <div class="feature-desc">Каталог товарів по категоріях. Ціна, собівартість, маржа, залишок на складі та габарити.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🚚</div>
+      <div class="feature-title">Нова Пошта</div>
+      <div class="feature-desc">Створення ТТН прямо з замовлення. Накладений платіж, відстеження посилок, збережені адреси клієнтів.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <div class="feature-title">Instagram Direct</div>
+      <div class="feature-desc">Переписка з клієнтами прямо в додатку. Не перемикайся між застосунками — відповідай звідси.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Аналітика</div>
+      <div class="feature-desc">Статистика продажів, найпопулярніші товари, дохід за період. Розумій свій бізнес краще.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-label">Як працює</div>
+  <h2 class="section-title">Просто і зрозуміло</h2>
+  <p class="section-sub">Налаштування займе 5 хвилин. Далі — просто працюй.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h3>Завантаж додаток</h3>
+        <p>Встанови Ridna на iPhone або Android. Зареєструйся за email — жодних складних налаштувань.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h3>Додай товари і клієнтів</h3>
+        <p>Створи каталог своїх товарів з цінами і залишками. Імпортуй або додай клієнтів вручну.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>Приймай замовлення</h3>
+        <p>Додавай нові замовлення, прив'язуй товари і клієнтів. Переміщай по статусах одним дотиком.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <h3>Відправляй через Нову Пошту</h3>
+        <p>Створюй ТТН прямо з замовлення. Адреси клієнтів зберігаються автоматично.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FOR WHO -->
+<section class="section" id="who">
+  <div class="section-label">Для кого</div>
+  <h2 class="section-title">Для малого<br>Instagram бізнесу</h2>
+  <p class="section-sub">Ridna створена спеціально для тих, хто продає через Instagram в Україні.</p>
+
+  <div class="audience-grid">
+    <div class="audience-card">
+      <div class="audience-emoji">👗</div>
+      <div class="audience-title">Одяг і аксесуари</div>
+      <div class="audience-desc">Магазини одягу, взуття, прикрас і аксесуарів</div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">🕯️</div>
+      <div class="audience-title">Handmade</div>
+      <div class="audience-desc">Свічки, декор, в'язані вироби, керамік</div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">🌸</div>
+      <div class="audience-title">Квіти і подарунки</div>
+      <div class="audience-desc">Флористика, букети, подарункові набори</div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">🍰</div>
+      <div class="audience-title">Їжа і десерти</div>
+      <div class="audience-desc">Торти, солодощі, кейтеринг на замовлення</div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">💄</div>
+      <div class="audience-title">Краса і догляд</div>
+      <div class="audience-desc">Косметика, засоби догляду, beauty продукти</div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">🏠</div>
+      <div class="audience-title">Дім і декор</div>
+      <div class="audience-desc">Товари для дому, меблі, предмети інтер'єру</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-box">
+    <h2>Почни безкоштовно</h2>
+    <p>Перші 3 місяці Pro плану — безкоштовно. Кредитна картка не потрібна.</p>
+    <a href="mailto:hello@ridna.net" class="btn-primary">Написати нам</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ridna</div>
+  <ul class="footer-links">
+    <li><a href="privacy-policy.html">Політика конфіденційності</a></li>
+    <li><a href="terms-of-service.html">Умови використання</a></li>
+    <li><a href="mailto:hello@ridna.net">Контакти</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Ridna. Всі права захищені.</div>
+</footer>
+
+</body>
+</html>
