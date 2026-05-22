@@ -635,15 +635,16 @@
     .compare-cell.head-ridna::after {
       content: 'Це ми';
       position: absolute;
-      top: -10px; left: 50%;
+      top: 8px; left: 50%;
       transform: translateX(-50%);
       background: var(--purple); color: #fff;
       font-family: 'Manrope', sans-serif;
       font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
       padding: 3px 10px; border-radius: 100px;
       white-space: nowrap;
+      box-shadow: 0 0 16px rgba(147,51,234,0.6);
     }
-    .compare-row.head .compare-cell { padding: 26px 20px 20px; }
+    .compare-row.head .compare-cell { padding: 40px 20px 20px; }
     .compare-cell.label { font-weight: 600; color: var(--text); }
     .compare-cell.val-ridna {
       color: #fff; font-weight: 700;
@@ -988,9 +989,11 @@
       gap: 24px; flex-wrap: wrap;
     }
     .footer-logo {
-      font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 900;
-      color: var(--purple);
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
     }
+    .footer-logo img { height: 28px; width: auto; display: block; filter: drop-shadow(0 0 12px rgba(147,51,234,0.4)); }
+    .footer-logo span { font-family: 'Unbounded', sans-serif; font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.4px; }
     .footer-links { list-style: none; display: flex; gap: 24px; flex-wrap: wrap; }
     .footer-links a {
       color: var(--muted); text-decoration: none;
@@ -1448,8 +1451,8 @@
     <div class="compare-row">
       <div class="compare-cell label">Стартова ціна за місяць</div>
       <div class="compare-cell val-ridna">₴399</div>
-      <div class="compare-cell val hide-mobile">від ₴1 680<br><span style="font-size:11px;color:var(--muted)">(до 5 000 записів)</span></div>
-      <div class="compare-cell val hide-mobile">від ₴991<br><span style="font-size:11px;color:var(--muted)">1-2 користувачі</span></div>
+      <div class="compare-cell val hide-mobile">від ₴2 100<br><span style="font-size:11px;color:var(--muted)">разом з Instagram</span></div>
+      <div class="compare-cell val hide-mobile">від ₴991</div>
     </div>
 
     <div class="compare-row">
@@ -1488,25 +1491,12 @@
     </div>
 
     <div class="compare-row">
-      <div class="compare-cell label">Інтеграції з месенджерами<br><span style="font-size:11px;color:var(--muted)">Telegram, Viber, Facebook</span></div>
-      <div class="compare-cell val-ridna val-bad"><span class="compare-tick partial">Поки лише Instagram</span></div>
-      <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Усі</span></div>
-      <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Усі</span></div>
-    </div>
-
-    <div class="compare-row">
       <div class="compare-cell label">Маркетплейси (Rozetka, Prom, Etsy)</div>
-      <div class="compare-cell val-ridna val-bad"><span class="compare-tick no">Ні</span></div>
+      <div class="compare-cell val-ridna"><span class="compare-tick partial">Плануємо</span></div>
       <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
       <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
     </div>
 
-    <div class="compare-row">
-      <div class="compare-cell label">Платіжний цикл</div>
-      <div class="compare-cell val-ridna">Місяць або рік<br><span style="font-size:11px;color:var(--success)">−20% за рік</span></div>
-      <div class="compare-cell val hide-mobile">Місячна</div>
-      <div class="compare-cell val hide-mobile">Квартал / рік</div>
-    </div>
   </div>
 </section>
 
@@ -1568,7 +1558,7 @@
         <li>Каталог з варіантами</li>
         <li>Повна аналітика</li>
         <li>До 200 замовлень/місяць</li>
-        <li>1 Instagram-акаунт</li>
+        <li>1 Instagram-акаунт · 1 НП-акаунт</li>
       </ul>
       <a href="#download" class="price-cta outline">Почати з тарифу Старт</a>
     </div>
@@ -1586,8 +1576,8 @@
         <li>Усе з тарифу Старт</li>
         <li class="highlight">Безлімітні замовлення</li>
         <li class="highlight">Декілька Instagram-акаунтів</li>
+        <li class="highlight">Декілька акаунтів Нової Пошти</li>
         <li class="highlight">Monobank + LiqPay інтеграції</li>
-        <li>Повна аналітика</li>
         <li>Пріоритетна підтримка</li>
       </ul>
       <a href="#download" class="price-cta solid">Хочу тариф Pro</a>
@@ -1688,7 +1678,10 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">Ridna</div>
+    <a href="/" class="footer-logo">
+      <img src="logo2.svg" alt="Ridna" />
+      <span>Ridna</span>
+    </a>
     <ul class="footer-links">
       <li><a href="#features">Можливості</a></li>
       <li><a href="#pricing">Тарифи</a></li>
