@@ -1003,6 +1003,51 @@
     .footer-links a:hover { color: var(--purple-mid); }
     .footer-copy { color: var(--muted); font-size: 13px; }
 
+    /* TELEGRAM FAB */
+    .tg-fab {
+      position: fixed; bottom: 24px; right: 24px; z-index: 500;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: linear-gradient(135deg, #2AABEE 0%, #229ED9 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 30px rgba(34,158,217,0.45);
+      text-decoration: none;
+      animation: tgPulse 2.6s ease-in-out infinite;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .tg-fab:hover { transform: scale(1.1); animation-play-state: paused; }
+    .tg-fab svg { width: 28px; height: 28px; color: #fff; transform: translateX(-1px); }
+    .tg-fab-label {
+      position: absolute; right: 100%; margin-right: 14px;
+      background: rgba(6,4,15,0.92);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 9px 14px; border-radius: 12px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px; font-weight: 600; white-space: nowrap;
+      opacity: 0; transform: translateX(8px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .tg-fab-label::after {
+      content: ''; position: absolute;
+      right: -5px; top: 50%; transform: translateY(-50%) rotate(45deg);
+      width: 8px; height: 8px;
+      background: rgba(6,4,15,0.92);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+    }
+    .tg-fab:hover .tg-fab-label { opacity: 1; transform: translateX(0); }
+    @keyframes tgPulse {
+      0%, 100% { box-shadow: 0 10px 30px rgba(34,158,217,0.45), 0 0 0 0 rgba(42,171,238,0.5); }
+      70% { box-shadow: 0 10px 30px rgba(34,158,217,0.45), 0 0 0 14px rgba(42,171,238,0); }
+    }
+    @media (max-width: 640px) {
+      .tg-fab { bottom: 16px; right: 16px; width: 54px; height: 54px; }
+      .tg-fab svg { width: 26px; height: 26px; }
+      .tg-fab-label { display: none; }
+    }
+
     .reveal {
       opacity: 0; transform: translateY(28px);
       transition: opacity 0.8s cubic-bezier(0.22,0.61,0.36,1),
@@ -1737,6 +1782,14 @@
     </div>
   </div>
 </section>
+
+<!-- TELEGRAM FAB -->
+<a href="https://t.me/ridna_support" target="_blank" rel="noopener" class="tg-fab" aria-label="Написати в Telegram">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+  </svg>
+  <span class="tg-fab-label">Питання? Пиши в Telegram</span>
+</a>
 
 <!-- VIDEO MODAL -->
 <div class="video-modal" id="videoModal" aria-hidden="true" role="dialog" aria-label="Демо Ridna">
