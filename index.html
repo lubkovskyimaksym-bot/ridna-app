@@ -246,11 +246,12 @@
       will-change: transform;
     }
     .hero-phone-screen {
-      position: relative; background: #f5f5f0;
+      position: relative; background: #fff;
       border-radius: 40px; overflow: hidden; aspect-ratio: 9/19.5;
     }
     .phone-island { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 110px; height: 32px; background: #111018; border-radius: 18px; z-index: 10; }
-    .hero-phone-screen img, .feat-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .hero-phone-screen img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+    .feat-screen img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 
     /* RUNWAY */
     .runway {
@@ -1054,6 +1055,22 @@
     .video-modal-close:hover { background: var(--purple); transform: rotate(90deg); }
     body.modal-open { overflow: hidden; }
 
+    /* MOBILE LIFE — continuous gentle animations on touch (no hover) */
+    @media (hover: none) {
+      .feat-phone { animation: phoneFloat 6s ease-in-out infinite; }
+      .feature-row.rev .feat-phone { animation: phoneFloat 6s ease-in-out infinite reverse; }
+      .hero-phone { animation: phoneFloat 7s ease-in-out infinite; }
+      .btn-main, .price-cta.solid, .store-btn { animation: ctaPulse 3.5s ease-in-out infinite; }
+    }
+    @keyframes phoneFloat {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(147,51,234,0.35), 0 4px 16px rgba(147,51,234,0.25); }
+      50% { box-shadow: 0 0 50px rgba(147,51,234,0.6), 0 8px 24px rgba(147,51,234,0.4); }
+    }
+
     /* RESPONSIVE */
     @media (max-width: 1024px) {
       .hero { grid-template-columns: 1fr; gap: 60px; text-align: center; padding: 130px 32px 60px; }
@@ -1061,12 +1078,64 @@
       .hero-sub { max-width: 100%; }
       .hero-cta, .hero-meta { justify-content: center; }
       .znayomo-grid { grid-template-columns: 1fr 1fr; }
-      .feature-row, .feature-row.rev { grid-template-columns: 1fr; gap: 60px; }
-      .feature-row.rev .feat-phone, .feature-row .feat-phone { transform: none; }
-      .fr-floater { display: none; }
+      .feature-row, .feature-row.rev { grid-template-columns: 1fr; gap: 40px; }
+      /* MOBILE ORDER FIX — phone always first regardless of rev */
+      .feature-row.rev .fr-phone { order: -1; }
+      /* keep floaters visible on mobile but reposition inside column */
+      .fr-floater {
+        display: inline-flex;
+        font-size: 11px; padding: 8px 13px;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+      }
+      .fr-floater.f-top { top: 6%; right: 6%; animation-duration: 3s; }
+      .fr-floater.f-bot { bottom: 10%; left: 6%; animation-duration: 3.6s; }
       .mini-grid { grid-template-columns: 1fr 1fr; }
-      .compare-row { grid-template-columns: 1.4fr 1fr; }
-      .compare-cell.hide-mobile { display: none; }
+      /* STACK COMPARE TABLE AS CARDS ON MOBILE */
+      .compare-table {
+        background: transparent; border: 0; border-radius: 0;
+        overflow: visible;
+        display: flex; flex-direction: column; gap: 12px;
+      }
+      .compare-row {
+        grid-template-columns: 1fr;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .compare-row.head { display: none; }
+      .compare-cell {
+        padding: 8px 0;
+        border-right: 0;
+        font-size: 13px;
+        display: flex; justify-content: space-between; align-items: center;
+        gap: 12px; text-align: right;
+        background: transparent !important;
+      }
+      .compare-cell.label {
+        font-family: 'Unbounded', sans-serif;
+        font-weight: 700; font-size: 15px;
+        color: #fff;
+        padding-bottom: 14px; margin-bottom: 6px;
+        border-bottom: 1px solid var(--border);
+        display: block; text-align: left;
+      }
+      .compare-cell.hide-mobile { display: flex; }
+      .compare-cell.val-ridna {
+        color: var(--purple-mid); font-weight: 700;
+      }
+      .compare-row:not(.head) .compare-cell:nth-child(2)::before,
+      .compare-row:not(.head) .compare-cell:nth-child(3)::before,
+      .compare-row:not(.head) .compare-cell:nth-child(4)::before {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 600; font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.3px;
+      }
+      .compare-row:not(.head) .compare-cell:nth-child(2)::before { content: 'Ridna'; color: var(--purple-mid); }
+      .compare-row:not(.head) .compare-cell:nth-child(3)::before { content: 'SITNIKS'; }
+      .compare-row:not(.head) .compare-cell:nth-child(4)::before { content: 'SalesDrive'; }
       .steps-grid { grid-template-columns: 1fr; gap: 16px; }
       .pricing-grid { grid-template-columns: 1fr; }
     }
@@ -1075,6 +1144,7 @@
       .nav-links a:not(.nav-pill) { display: none; }
       .hero { padding: 120px 20px 40px; }
       .hero-phone { width: 240px; }
+      .h1-lg, .h1-stroke, .h1-grad { font-size: 50px; letter-spacing: -1.5px; }
       .section { padding: 80px 20px; }
       .znayomo-grid { grid-template-columns: 1fr; }
       .mini-grid { grid-template-columns: 1fr; }
@@ -1120,7 +1190,7 @@
       <span class="h1-line h1-sm">Твій Instagram-магазин</span>
       <span class="h1-line h1-lg">БЕЗ</span>
       <span class="h1-line h1-stroke">ХАОСУ</span>
-      <span class="h1-line h1-grad">і блокнота</span>
+      <span class="h1-line h1-grad">і&nbsp;блокнота</span>
     </h1>
     <p class="hero-sub">Мобільний CRM для всіх, хто продає через Instagram. Direct, замовлення, клієнти, оплати і ТТН Нової Пошти — в одному додатку. Без таблиць, без трьох застосунків одночасно.</p>
     <div class="hero-cta">
@@ -1637,7 +1707,7 @@
         <span>Що з підтримкою?</span>
         <span class="faq-toggle"></span>
       </summary>
-      <div class="faq-answer">Відповідаємо особисто, зазвичай за пару годин. Пиши на hello@ridna.net або в Telegram.</div>
+      <div class="faq-answer">Пиши нам у Telegram — відповідаємо особисто, зазвичай за пару годин.</div>
     </details>
   </div>
 </section>
