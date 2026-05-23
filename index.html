@@ -253,6 +253,58 @@
     .hero-phone-screen img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
     .feat-screen img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 
+    /* PAYMENTS CSS MOCKUP — used in Feature row 04 */
+    .pay-screen { background: #f5f5f0; }
+    .pay-mockup {
+      height: 100%; padding: 64px 16px 20px;
+      display: flex; flex-direction: column; gap: 12px;
+      font-family: 'Manrope', sans-serif;
+    }
+    .pay-header {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 800; font-size: 24px;
+      color: #1A1530; padding: 0 4px 4px;
+      letter-spacing: -0.5px;
+    }
+    .pay-header-sub {
+      font-size: 12px; color: #8B7FA5;
+      padding: 0 4px 8px; font-weight: 600;
+    }
+    .pay-list { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .pay-card {
+      background: #fff; border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 0 2px 10px rgba(26,21,48,0.06);
+      border-left: 3px solid #ccc;
+    }
+    .pay-card.ok { border-left-color: #34D399; }
+    .pay-card.pend { border-left-color: #FBBF24; }
+    .pay-card-row {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .pay-card-label {
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.6px; text-transform: uppercase;
+    }
+    .pay-card.ok .pay-card-label { color: #16A34A; }
+    .pay-card.pend .pay-card-label { color: #D97706; }
+    .pay-card-amount {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 900; font-size: 19px;
+      color: #1A1530; letter-spacing: -0.5px;
+    }
+    .pay-card-meta { font-size: 11px; color: #6B5F80; margin-top: 4px; font-weight: 600; }
+    .pay-card-time { font-size: 10px; color: #A89BBE; margin-top: 4px; font-weight: 500; }
+    .pay-card-method {
+      font-size: 11px; color: #6B5F80; font-weight: 600;
+      margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid #F0EBF7;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .pay-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .pay-dot.mono { background: #000; }
+    .pay-dot.liq { background: #2196F3; }
+
     /* RUNWAY */
     .runway {
       position: relative; z-index: 1;
@@ -666,6 +718,7 @@
     .compare-tick.no::before { content: '✕'; color: var(--danger); font-weight: 700; }
     .compare-tick.yes::before { content: '✓'; color: var(--success); font-weight: 700; }
     .compare-tick.partial::before { content: '〜'; color: var(--warning); font-weight: 700; }
+    .compare-scroll-hint { display: none; }
 
     /* STEPS — original 3 cards layout */
     .steps-grid {
@@ -1124,8 +1177,8 @@
       .hero-cta, .hero-meta { justify-content: center; }
       .znayomo-grid { grid-template-columns: 1fr 1fr; }
       .feature-row, .feature-row.rev { grid-template-columns: 1fr; gap: 40px; }
-      /* MOBILE ORDER FIX — phone always first regardless of rev */
-      .feature-row.rev .fr-phone { order: -1; }
+      /* MOBILE ORDER — text first on ALL rows, then phone */
+      .feature-row .fr-phone { order: 2; }
       /* keep floaters visible on mobile but reposition inside column */
       .fr-floater {
         display: inline-flex;
@@ -1135,52 +1188,27 @@
       .fr-floater.f-top { top: 6%; right: 6%; animation-duration: 3s; }
       .fr-floater.f-bot { bottom: 10%; left: 6%; animation-duration: 3.6s; }
       .mini-grid { grid-template-columns: 1fr 1fr; }
-      /* STACK COMPARE TABLE AS CARDS ON MOBILE */
+      /* COMPARE TABLE — SCROLLABLE ON MOBILE, KEEPS TABLE LOOK */
       .compare-table {
-        background: transparent; border: 0; border-radius: 0;
-        overflow: visible;
-        display: flex; flex-direction: column; gap: 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--purple-dim) transparent;
       }
-      .compare-row {
-        grid-template-columns: 1fr;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        padding: 18px 20px;
-        border-bottom: 1px solid var(--border);
-      }
-      .compare-row.head { display: none; }
-      .compare-cell {
-        padding: 8px 0;
-        border-right: 0;
-        font-size: 13px;
-        display: flex; justify-content: space-between; align-items: center;
-        gap: 12px; text-align: right;
-        background: transparent !important;
-      }
-      .compare-cell.label {
-        font-family: 'Unbounded', sans-serif;
-        font-weight: 700; font-size: 15px;
-        color: #fff;
-        padding-bottom: 14px; margin-bottom: 6px;
-        border-bottom: 1px solid var(--border);
-        display: block; text-align: left;
-      }
+      .compare-table::-webkit-scrollbar { height: 6px; }
+      .compare-table::-webkit-scrollbar-thumb { background: var(--purple-dim); border-radius: 3px; }
+      .compare-row { grid-template-columns: 170px 110px 110px 110px; min-width: 500px; }
+      .compare-cell { padding: 18px 12px; font-size: 12px; }
+      .compare-row.head .compare-cell { padding: 32px 12px 14px; font-size: 11px; }
       .compare-cell.hide-mobile { display: flex; }
-      .compare-cell.val-ridna {
-        color: var(--purple-mid); font-weight: 700;
+      .compare-scroll-hint {
+        display: block;
+        text-align: center;
+        font-size: 12px; color: var(--muted);
+        margin-top: 12px;
+        animation: hintSlide 2s ease-in-out infinite;
       }
-      .compare-row:not(.head) .compare-cell:nth-child(2)::before,
-      .compare-row:not(.head) .compare-cell:nth-child(3)::before,
-      .compare-row:not(.head) .compare-cell:nth-child(4)::before {
-        font-family: 'Manrope', sans-serif;
-        font-weight: 600; font-size: 12px;
-        color: var(--muted);
-        letter-spacing: 0.3px;
-      }
-      .compare-row:not(.head) .compare-cell:nth-child(2)::before { content: 'Ridna'; color: var(--purple-mid); }
-      .compare-row:not(.head) .compare-cell:nth-child(3)::before { content: 'SITNIKS'; }
-      .compare-row:not(.head) .compare-cell:nth-child(4)::before { content: 'SalesDrive'; }
+      @keyframes hintSlide { 0%,100%{transform:translateX(0);opacity:0.7} 50%{transform:translateX(6px);opacity:1} }
       .steps-grid { grid-template-columns: 1fr; gap: 16px; }
       .pricing-grid { grid-template-columns: 1fr; }
     }
@@ -1479,9 +1507,47 @@
     </div>
     <div class="fr-phone">
       <div class="feat-phone">
-        <div class="feat-screen">
+        <div class="feat-screen pay-screen">
           <div class="feat-island"></div>
-          <img src="screenshots/order.png" alt="Оплати" />
+          <div class="pay-mockup">
+            <div class="pay-header">Оплати</div>
+            <div class="pay-header-sub">сьогодні · ₴3 350</div>
+            <div class="pay-list">
+              <div class="pay-card ok">
+                <div class="pay-card-row">
+                  <div class="pay-card-label">Оплачено</div>
+                  <div class="pay-card-amount">₴1 250</div>
+                </div>
+                <div class="pay-card-row">
+                  <div class="pay-card-meta">Олена К. · Кардиган</div>
+                  <div class="pay-card-time">14:32</div>
+                </div>
+                <div class="pay-card-method"><span class="pay-dot mono"></span>Monobank</div>
+              </div>
+              <div class="pay-card pend">
+                <div class="pay-card-row">
+                  <div class="pay-card-label">Очікує</div>
+                  <div class="pay-card-amount">₴890</div>
+                </div>
+                <div class="pay-card-row">
+                  <div class="pay-card-meta">Аня М. · Сукня</div>
+                  <div class="pay-card-time">12:18</div>
+                </div>
+                <div class="pay-card-method"><span class="pay-dot liq"></span>LiqPay</div>
+              </div>
+              <div class="pay-card ok">
+                <div class="pay-card-row">
+                  <div class="pay-card-label">Оплачено</div>
+                  <div class="pay-card-amount">₴2 100</div>
+                </div>
+                <div class="pay-card-row">
+                  <div class="pay-card-meta">Юля Б. · 3 шт</div>
+                  <div class="pay-card-time">вчора</div>
+                </div>
+                <div class="pay-card-method"><span class="pay-dot mono"></span>Monobank</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="fr-floater f-top">💰 Оплачено ₴1 250</div>
@@ -1613,6 +1679,7 @@
     </div>
 
   </div>
+  <div class="compare-scroll-hint">← гортай таблицю →</div>
 </section>
 
 <!-- STEPS -->
@@ -1709,7 +1776,7 @@
 <section class="section">
   <div class="section-header reveal">
     <h2 class="section-h2">Питання, які <span class="accent">найчастіше задають</span></h2>
-    <p class="section-lead">Якщо чогось не вистачає — напиши на hello@ridna.net</p>
+    <p class="section-lead">Якщо чогось не вистачає — пиши нам у Telegram</p>
   </div>
   <div class="faq-list">
     <details class="faq-item reveal">
@@ -1738,7 +1805,7 @@
         <span>А якщо у мене вже є інший CRM?</span>
         <span class="faq-toggle"></span>
       </summary>
-      <div class="faq-answer">Перенесемо контакти, замовлення і товари. Напиши на hello@ridna.net — допоможемо з міграцією особисто.</div>
+      <div class="faq-answer">Перенесемо контакти, замовлення і товари. Напиши нам у Telegram — допоможемо з міграцією особисто.</div>
     </details>
     <details class="faq-item reveal">
       <summary class="faq-summary">
@@ -1810,7 +1877,7 @@
       <li><a href="#pricing">Тарифи</a></li>
       <li><a href="privacy-policy.html">Конфіденційність</a></li>
       <li><a href="terms-of-service.html">Умови</a></li>
-      <li><a href="mailto:hello@ridna.net">hello@ridna.net</a></li>
+      <li><a href="https://t.me/ridna_support" target="_blank" rel="noopener">Telegram</a></li>
     </ul>
     <div class="footer-copy">© 2026 Ridna · Зроблено в Україні</div>
   </div>
