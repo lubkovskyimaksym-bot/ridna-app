@@ -885,6 +885,68 @@
     }
     .price-cta.outline:hover { background: rgba(147,51,234,0.1); border-color: var(--purple); }
 
+    .trial-callout {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      margin: 0 auto 28px;
+      max-width: 720px;
+      background: linear-gradient(180deg, rgba(147,51,234,0.10), rgba(147,51,234,0.04));
+      border: 1px solid rgba(147,51,234,0.30);
+      border-radius: 20px;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .trial-callout-glow {
+      position: absolute;
+      top: -50%; left: -10%;
+      width: 60%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(147,51,234,0.35), transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .trial-callout-icon {
+      position: relative; z-index: 1;
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), #6019B5);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px -4px rgba(147,51,234,0.55);
+      flex-shrink: 0;
+    }
+    .trial-sparkle {
+      font-size: 22px;
+      animation: trialSparkle 2.4s ease-in-out infinite;
+    }
+    @keyframes trialSparkle {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(15deg) scale(1.12); }
+    }
+    .trial-callout-text {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .trial-callout-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px; font-weight: 700;
+      color: #fff; letter-spacing: -0.3px;
+    }
+    .trial-callout-sub {
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-soft);
+    }
+    @media (max-width: 600px) {
+      .trial-callout { padding: 16px 20px; gap: 14px; }
+      .trial-callout-icon { width: 42px; height: 42px; border-radius: 12px; }
+      .trial-callout-title { font-size: 16px; }
+      .trial-callout-sub { font-size: 12px; }
+    }
+
     .offer-strip {
       background: linear-gradient(135deg, var(--purple), #6019B5);
       color: #fff;
@@ -1263,7 +1325,7 @@
       <button type="button" class="btn-ghost video-trigger" data-video="31c2eQCqQ4k">▶ Подивитись як працює</button>
     </div>
     <div class="hero-meta">
-      <span class="hero-meta-item">✨ 30 днів тріалу</span>
+      <span class="hero-meta-item">✨ 30 днів безкоштовно</span>
       <span class="hero-meta-dot"></span>
       <span class="hero-meta-item">🎁 −33% на 3 місяці</span>
       <span class="hero-meta-dot"></span>
@@ -1671,6 +1733,17 @@
     </div>
   </div>
 
+  <div class="trial-callout reveal d0" aria-hidden="false">
+    <div class="trial-callout-glow"></div>
+    <div class="trial-callout-icon">
+      <span class="trial-sparkle">✨</span>
+    </div>
+    <div class="trial-callout-text">
+      <div class="trial-callout-title">30 днів безкоштовно</div>
+      <div class="trial-callout-sub">Тестуй усе без обмежень. Картка не потрібна.</div>
+    </div>
+  </div>
+
   <div class="pricing-grid">
     <div class="price-card reveal d1">
       <div class="price-tier">Старт</div>
@@ -1719,7 +1792,7 @@
   </div>
 
   <div class="offer-strip reveal d3">
-    <div class="offer-text">✨ 30 днів тріалу для всіх · 🎁 перші 33 магазини отримують −33% на 3 місяці</div>
+    <div class="offer-text">🎁 Перші 33 магазини отримують −33% знижки на перші 3 місяці</div>
     <div class="offer-counter">21 з 33 місць ще доступні</div>
   </div>
 </section>
