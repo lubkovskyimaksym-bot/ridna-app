@@ -844,6 +844,28 @@
     .price-list li.dim::before {
       content: '–'; color: var(--muted); font-weight: 500;
     }
+    /* Swipe-to-toggle animation на pricing-grid. При зміні білінгу
+       (свайп або клік на toggle) додається клас .switching-left/right
+       щоб картки коротко зсувались убік + fade — як slide carousel.
+       Transition на price-num/yearly-hint щоб самі цифри не миготіли
+       різко. */
+    .pricing-grid {
+      transition: transform 0.18s ease-out, opacity 0.18s ease-out;
+      will-change: transform, opacity;
+    }
+    .pricing-grid.switching-left {
+      transform: translateX(-30px);
+      opacity: 0.55;
+    }
+    .pricing-grid.switching-right {
+      transform: translateX(30px);
+      opacity: 0.55;
+    }
+    /* Дрожжання за пальцем під час swipe — окремий клас від CSS-animation
+       щоб JS міг його контролювати через inline transform. */
+    .pricing-grid.dragging {
+      transition: none;
+    }
     .price-cta {
       display: block; width: 100%; text-align: center;
       padding: 14px 24px; border-radius: 14px;
@@ -1877,9 +1899,20 @@
     toggleBg.style.left = activeBtn.offsetLeft + 'px';
   }
 
-  function switchBilling(period) {
+  const pricingGrid = document.querySelector('.pricing-grid');
+
+  function switchBilling(period, direction) {
     toggleBtns.forEach(b => b.classList.toggle('active', b.dataset.billing === period));
     setToggleBg();
+
+    // Animation: slide grid у напрямку → flip content → slide back to 0
+    if (pricingGrid && direction) {
+      pricingGrid.classList.remove('dragging');
+      pricingGrid.classList.add(direction === 'left' ? 'switching-left' : 'switching-right');
+      setTimeout(() => {
+        pricingGrid.classList.remove('switching-left', 'switching-right');
+      }, 180);
+    }
 
     priceNums.forEach(el => {
       el.style.opacity = '0.3';
@@ -1907,7 +1940,12 @@
   }
 
   toggleBtns.forEach(btn => {
-    btn.addEventListener('click', () => switchBilling(btn.dataset.billing));
+    btn.addEventListener('click', () => {
+      const current = document.querySelector('.billing-toggle-btn.active')?.dataset.billing;
+      const target = btn.dataset.billing;
+      if (current === target) return;
+      switchBilling(target, target === 'year' ? 'left' : 'right');
+    });
   });
   window.addEventListener('load', setToggleBg);
   window.addEventListener('resize', setToggleBg);
@@ -1918,22 +1956,44 @@
   // ignored (let the page scroll normally).
   const pricingSection = document.getElementById('pricing');
   if (pricingSection) {
-    let startX = 0, startY = 0, tracking = false;
+    let startX = 0, startY = 0, tracking = false, dragging = false;
     pricingSection.addEventListener('touchstart', (e) => {
       const t = e.touches[0];
-      startX = t.clientX; startY = t.clientY; tracking = true;
+      startX = t.clientX; startY = t.clientY;
+      tracking = true; dragging = false;
+    }, { passive: true });
+    pricingSection.addEventListener('touchmove', (e) => {
+      if (!tracking || !pricingGrid) return;
+      const t = e.touches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      // Стартуємо drag тільки коли х-домінант + минули поріг 8px
+      if (!dragging && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+        dragging = true;
+        pricingGrid.classList.add('dragging');
+      }
+      if (dragging) {
+        // Картки рухаються разом з пальцем, обмежено ±80px з easing
+        const clamped = Math.max(-80, Math.min(80, dx));
+        pricingGrid.style.transform = `translateX(${clamped}px)`;
+        pricingGrid.style.opacity = String(1 - Math.abs(clamped) / 200);
+      }
     }, { passive: true });
     pricingSection.addEventListener('touchend', (e) => {
       if (!tracking) return;
       tracking = false;
+      if (pricingGrid) {
+        pricingGrid.classList.remove('dragging');
+        pricingGrid.style.transform = '';
+        pricingGrid.style.opacity = '';
+      }
       const t = e.changedTouches[0];
       const dx = t.clientX - startX;
       const dy = t.clientY - startY;
       if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
       const currentPeriod = document.querySelector('.billing-toggle-btn.active')?.dataset.billing;
-      // swipe LEFT (-dx) → year, swipe RIGHT (+dx) → month
-      if (dx < 0 && currentPeriod !== 'year') switchBilling('year');
-      else if (dx > 0 && currentPeriod !== 'month') switchBilling('month');
+      if (dx < 0 && currentPeriod !== 'year') switchBilling('year', 'left');
+      else if (dx > 0 && currentPeriod !== 'month') switchBilling('month', 'right');
     }, { passive: true });
   }
 
