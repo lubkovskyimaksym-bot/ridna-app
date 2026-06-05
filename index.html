@@ -812,6 +812,13 @@
       margin-bottom: 18px;
       min-height: 18px;
     }
+    .price-savings {
+      display: inline-block;
+      margin-top: 4px;
+      color: var(--success);
+      font-weight: 700;
+      font-size: 12px;
+    }
     .price-desc {
       font-size: 14px; color: var(--text-soft); margin-bottom: 24px;
       padding-bottom: 24px; border-bottom: 1px solid var(--border);
@@ -1874,8 +1881,13 @@
       const card = el.closest('.price-card');
       const num = card.querySelector('.price-num');
       if (period === 'year') {
-        const yearTotal = parseInt(num.dataset.year.replace(/\D/g, '')) * 12;
-        el.textContent = `₴${yearTotal.toLocaleString('uk-UA').replace(',', ' ')} разово / рік`;
+        const yearMonthly = parseInt(num.dataset.year.replace(/\D/g, ''));
+        const monthMonthly = parseInt(num.dataset.month.replace(/\D/g, ''));
+        const yearTotal = yearMonthly * 12;
+        const savings = (monthMonthly - yearMonthly) * 12;
+        const fmt = (n) => n.toLocaleString('uk-UA').replace(',', ' ');
+        el.innerHTML = `₴${fmt(yearTotal)} разово / рік` +
+          `<br><span class="price-savings">💰 Економиш ₴${fmt(savings)} на рік</span>`;
       } else {
         el.innerHTML = '&nbsp;';
       }
