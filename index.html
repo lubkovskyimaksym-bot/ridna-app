@@ -837,6 +837,13 @@
       color: #fff; font-weight: 600;
     }
     .price-list li.highlight::before { color: var(--success); }
+    .price-list li.dim {
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    .price-list li.dim::before {
+      content: '–'; color: var(--muted); font-weight: 500;
+    }
     .price-cta {
       display: block; width: 100%; text-align: center;
       padding: 14px 24px; border-radius: 14px;
@@ -1652,13 +1659,15 @@
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
       <div class="price-desc">Для тих, хто щойно стартує або має невеликий магазин з одним акаунтом.</div>
       <ul class="price-list">
-        <li>Instagram Direct + Коментарі</li>
-        <li>Нова Пошта · ТТН одним тапом</li>
-        <li>Картки клієнтів · уся історія</li>
-        <li>Каталог з варіантами</li>
+        <li>100 замовлень на місяць</li>
+        <li>30 товарів у каталозі</li>
+        <li>1 Instagram акаунт</li>
+        <li>1 Нова Пошта акаунт</li>
+        <li>Чати + коментарі</li>
+        <li>Створення ТТН за один тап</li>
         <li>Повна аналітика</li>
-        <li>До 200 замовлень/місяць</li>
-        <li>1 Instagram-акаунт · 1 НП-акаунт</li>
+        <li class="dim">LiqPay автоплатежі</li>
+        <li class="dim">Monobank автоплатежі</li>
       </ul>
       <a href="#download" class="price-cta outline">Почати з тарифу Старт</a>
     </div>
@@ -1673,12 +1682,15 @@
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
       <div class="price-desc">Для магазинів які ростуть, мають декілька акаунтів і потребують повний набір.</div>
       <ul class="price-list">
-        <li>Усе з тарифу Старт</li>
         <li class="highlight">Безлімітні замовлення</li>
-        <li class="highlight">Декілька Instagram-акаунтів</li>
-        <li class="highlight">Декілька акаунтів Нової Пошти</li>
-        <li class="highlight">Monobank + LiqPay інтеграції</li>
-        <li>Пріоритетна підтримка</li>
+        <li class="highlight">Безлімітний каталог товарів</li>
+        <li class="highlight">Кілька Instagram акаунтів</li>
+        <li class="highlight">Кілька Нова Пошта акаунтів</li>
+        <li>Чати + коментарі</li>
+        <li>Створення ТТН за один тап</li>
+        <li>Повна аналітика</li>
+        <li class="highlight">LiqPay автоплатежі</li>
+        <li class="highlight">Monobank автоплатежі</li>
       </ul>
       <a href="#download" class="price-cta solid">Хочу тариф Pro</a>
     </div>
@@ -1899,6 +1911,31 @@
   });
   window.addEventListener('load', setToggleBg);
   window.addEventListener('resize', setToggleBg);
+
+  // Touch swipe to change billing on mobile. Listen on the entire pricing
+  // section so the gesture works whether the user swipes on the toggle,
+  // a card, or empty space between them. Vertical-dominant swipes are
+  // ignored (let the page scroll normally).
+  const pricingSection = document.getElementById('pricing');
+  if (pricingSection) {
+    let startX = 0, startY = 0, tracking = false;
+    pricingSection.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY; tracking = true;
+    }, { passive: true });
+    pricingSection.addEventListener('touchend', (e) => {
+      if (!tracking) return;
+      tracking = false;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
+      const currentPeriod = document.querySelector('.billing-toggle-btn.active')?.dataset.billing;
+      // swipe LEFT (-dx) → year, swipe RIGHT (+dx) → month
+      if (dx < 0 && currentPeriod !== 'year') switchBilling('year');
+      else if (dx > 0 && currentPeriod !== 'month') switchBilling('month');
+    }, { passive: true });
+  }
 
   /* Video modal */
   const videoModal = document.getElementById('videoModal');
