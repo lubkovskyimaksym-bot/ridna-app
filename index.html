@@ -1322,7 +1322,7 @@
         <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
         <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
       </a>
-      <button type="button" class="btn-ghost video-trigger" data-video="31c2eQCqQ4k">▶ Подивитись як працює</button>
+      <button type="button" class="btn-ghost video-trigger">▶ Подивитись як працює</button>
     </div>
     <div class="hero-meta">
       <span class="hero-meta-item">✨ 30 днів безкоштовно</span>
@@ -2075,13 +2075,25 @@
   const videoModalContent = videoModal.querySelector('.video-modal-content');
   const videoModalClose = document.getElementById('videoModalClose');
 
-  function openVideo(id) {
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
-    iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
-    iframe.setAttribute('allowfullscreen', '');
-    iframe.setAttribute('title', 'Ridna demo');
-    videoModalContent.appendChild(iframe);
+  // Demo хоститься у Supabase Storage (public bucket `demos`) — щоб
+  // synчуватись з тим що грає app/demo-video.tsx і не залежати від YouTube
+  // (там модерація блокнула попередню версію через user-data на скріні).
+  const DEMO_VIDEO_URL = 'https://hydpowjmbadpjtcvwfvo.supabase.co/storage/v1/object/public/demos/demo.mp4';
+
+  function openVideo() {
+    const video = document.createElement('video');
+    video.src = DEMO_VIDEO_URL;
+    video.controls = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');         // iOS Safari
+    video.setAttribute('webkit-playsinline', '');  // legacy iOS
+    video.preload = 'metadata';
+    video.style.width = '100%';
+    video.style.height = '100%';
+    video.style.background = '#000';
+    video.title = 'Ridna demo';
+    videoModalContent.appendChild(video);
     videoModal.classList.add('open');
     videoModal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-open');
@@ -2090,11 +2102,12 @@
     videoModal.classList.remove('open');
     videoModal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-open');
-    const iframe = videoModalContent.querySelector('iframe');
-    if (iframe) iframe.remove();
+    // Зупинити + видалити video — інакше Safari тримає audio track відкритим.
+    const v = videoModalContent.querySelector('video');
+    if (v) { v.pause(); v.removeAttribute('src'); v.load(); v.remove(); }
   }
   document.querySelectorAll('.video-trigger').forEach(btn => {
-    btn.addEventListener('click', () => openVideo(btn.dataset.video));
+    btn.addEventListener('click', () => openVideo());
   });
   videoModalClose.addEventListener('click', closeVideo);
   videoModal.addEventListener('click', (e) => { if (e.target === videoModal) closeVideo(); });
