@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Оплата підписки — Ridna</title>
+  <meta name="description" content="Оплата підписки на Ridna — CRM для Instagram магазинів." />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ridna.net/pay" />
+  <meta property="og:title" content="Оплата підписки — Ridna" />
+  <meta property="og:locale" content="uk_UA" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;700;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --purple: #9333EA;
+      --purple-light: #A855F7;
+      --purple-mid: #C4B5FD;
+      --purple-dim: rgba(147,51,234,0.15);
+      --bg: #06040F;
+      --bg-2: #0C0820;
+      --surface: rgba(255,255,255,0.03);
+      --surface-2: rgba(255,255,255,0.06);
+      --text: #EDE8F5;
+      --text-soft: #C8BDD9;
+      --muted: #7A6E90;
+      --border: rgba(255,255,255,0.07);
+      --border-bright: rgba(147,51,234,0.3);
+      --success: #34D399;
+      --warning: #FBBF24;
+      --danger: #F87171;
+      --todo-bg: rgba(248,113,113,0.08);
+      --todo-border: rgba(248,113,113,0.45);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(147,51,234,0.10) 0%, transparent 55%),
+        radial-gradient(circle at 85% 80%, rgba(79,22,180,0.08) 0%, transparent 55%);
+    }
+
+    /* ============== LOCK SCREEN ============== */
+    /* Сторінка стартує під overlay. JS знімає його тільки якщо у URL
+       є валідний токен. Серверна верифікація підпису відбувається на
+       Edge Function під час створення LiqPay invoice. */
+    .lock-screen {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      background: var(--bg);
+    }
+    .lock-screen::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(147,51,234,0.18), transparent 55%),
+        radial-gradient(circle at 70% 80%, rgba(79,22,180,0.14), transparent 55%);
+    }
+    .lock-card {
+      position: relative; z-index: 1;
+      max-width: 420px; text-align: center;
+    }
+    .lock-logo {
+      width: 64px; height: auto; margin: 0 auto 28px;
+      display: block;
+      filter: drop-shadow(0 0 32px rgba(147,51,234,0.6));
+    }
+    .lock-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 28px; font-weight: 900;
+      letter-spacing: -1px;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    .lock-text {
+      color: var(--text-soft);
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+    .lock-cta {
+      display: inline-block;
+      background: var(--purple);
+      color: #fff !important;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 0 24px rgba(147,51,234,0.45);
+      transition: all 0.2s;
+    }
+    .lock-cta:hover {
+      background: var(--purple-light);
+      transform: translateY(-1px);
+      box-shadow: 0 0 36px rgba(147,51,234,0.65);
+    }
+    /* Поки не верифіковано — приховуємо контент і footer */
+    body[data-locked="true"] main,
+    body[data-locked="true"] footer { display: none; }
+    body[data-unlocked="true"] .lock-screen { display: none; }
+
+    /* ============== NAV ============== */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      padding: 14px 24px;
+      backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(6,4,15,0.75);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-img {
+      height: 28px; width: auto;
+      filter: drop-shadow(0 0 12px rgba(147,51,234,0.4));
+    }
+    .nav-logo-text {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px; font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    /* ============== MAIN ============== */
+    main {
+      position: relative; z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-bright);
+      background: var(--purple-dim);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--purple-mid);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .pulse {
+      width: 6px; height: 6px;
+      background: var(--purple);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.5)} }
+
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(34px, 5.5vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    h1 .accent { color: var(--purple-light); }
+    .hero-sub {
+      color: var(--text-soft);
+      font-size: 16px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* USER CONTEXT */
+    .user-context {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 18px;
+      margin: 0 auto 28px;
+      max-width: 540px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px;
+    }
+    .user-context-icon {
+      width: 32px; height: 32px;
+      background: var(--purple-dim);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--purple-light);
+    }
+    .user-context-text { color: var(--text-soft); }
+    .user-context-email { color: var(--text); font-weight: 600; }
+
+    /* ============== BILLING TOGGLE (з головного лендоса) ============== */
+    .billing-toggle {
+      display: inline-flex; align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .billing-toggle-btn {
+      position: relative;
+      padding: 10px 22px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+      color: var(--text-soft);
+      background: transparent; border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 2;
+    }
+    .billing-toggle-btn.active { color: #fff; }
+    .billing-toggle-bg {
+      position: absolute;
+      top: 5px; left: 5px;
+      height: calc(100% - 10px);
+      background: var(--purple);
+      border-radius: 100px;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 0 16px rgba(147,51,234,0.5);
+      z-index: 1;
+    }
+    .save-badge {
+      display: inline-block;
+      margin-left: 6px;
+      background: var(--success);
+      color: #06040F;
+      font-size: 10px; font-weight: 800;
+      padding: 2px 7px; border-radius: 100px;
+      letter-spacing: 0.3px;
+    }
+    .toggle-wrap { text-align: center; margin-bottom: 40px; }
+
+    /* ============== PRICING CARDS (з головного лендоса) ============== */
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      margin-bottom: 28px;
+      transition: transform 0.18s ease-out, opacity 0.18s ease-out;
+      will-change: transform, opacity;
+    }
+    .pricing-grid.switching-left { transform: translateX(-30px); opacity: 0.55; }
+    .pricing-grid.switching-right { transform: translateX(30px); opacity: 0.55; }
+    .pricing-grid.dragging { transition: none; }
+
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 36px;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex; flex-direction: column;
+    }
+    .price-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--purple);
+      box-shadow: 0 30px 60px -15px rgba(147,51,234,0.3);
+    }
+    .price-card.featured {
+      background: linear-gradient(180deg, rgba(147,51,234,0.12), rgba(147,51,234,0.02));
+      border-color: rgba(147,51,234,0.4);
+      box-shadow: 0 0 0 1px rgba(147,51,234,0.2), 0 30px 60px -15px rgba(147,51,234,0.25);
+    }
+    .price-badge {
+      position: absolute; top: -12px; right: 24px;
+      background: var(--purple); color: #fff;
+      font-family: 'Manrope', sans-serif;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      padding: 6px 14px; border-radius: 100px;
+      text-transform: uppercase;
+      box-shadow: 0 0 24px rgba(147,51,234,0.5);
+    }
+    .price-tier {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--purple-mid);
+      margin-bottom: 16px;
+    }
+    .price-amount { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+    .price-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 56px; font-weight: 900; line-height: 1;
+      letter-spacing: -2px; color: #fff;
+      transition: opacity 0.2s;
+    }
+    .price-period { font-size: 16px; color: var(--text-soft); }
+    .price-yearly-hint {
+      font-size: 12px; color: var(--muted);
+      margin-bottom: 18px;
+      min-height: 18px;
+    }
+    .price-savings {
+      display: inline-block;
+      margin-top: 4px;
+      color: var(--success);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .price-desc {
+      font-size: 14px; color: var(--text-soft); margin-bottom: 24px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .price-list { list-style: none; margin-bottom: 28px; }
+    .price-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text);
+      margin-bottom: 12px; line-height: 1.5;
+    }
+    .price-list li::before {
+      content: '✓'; color: var(--purple-mid); font-weight: 700;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .price-list li.highlight { color: #fff; font-weight: 600; }
+    .price-list li.highlight::before { color: var(--success); }
+    .price-list li.dim { color: var(--muted); opacity: 0.7; }
+    .price-list li.dim::before { content: '–'; color: var(--muted); font-weight: 500; }
+    .price-cta {
+      display: block; width: 100%; text-align: center;
+      padding: 14px 24px; border-radius: 14px;
+      font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: auto;
+      border: none;
+    }
+    .price-cta.solid {
+      background: var(--purple); color: #fff;
+      box-shadow: 0 0 30px rgba(147,51,234,0.4);
+    }
+    .price-cta.solid:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(147,51,234,0.6); }
+    .price-cta.outline {
+      background: transparent; color: #fff;
+      border: 1.5px solid var(--border-bright);
+    }
+    .price-cta.outline:hover { background: rgba(147,51,234,0.1); border-color: var(--purple); }
+    .price-cta:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ============== OFFER STRIP (33 users — з головного лендоса) ============== */
+    .offer-strip {
+      background: linear-gradient(135deg, var(--purple), #6019B5);
+      color: #fff;
+      border-radius: 18px;
+      padding: 22px 32px;
+      margin-bottom: 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px; flex-wrap: wrap;
+      box-shadow: 0 20px 40px -10px rgba(147,51,234,0.5);
+    }
+    .offer-text {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 700; font-size: 17px; line-height: 1.3;
+    }
+    .offer-counter {
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px; font-weight: 600;
+      background: rgba(0,0,0,0.3); color: #fff;
+      padding: 10px 16px; border-radius: 100px;
+      white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .offer-counter::before {
+      content: ''; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--success); animation: pulse 2s infinite;
+    }
+
+    /* ============== LEGAL ============== */
+    .legal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .legal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+    }
+    .legal.wide { grid-column: 1 / -1; }
+    .legal h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px; font-weight: 700;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+    .legal p {
+      color: var(--text-soft);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .legal ul { list-style: none; margin: 12px 0; }
+    .legal ul li {
+      color: var(--text-soft);
+      font-size: 14px;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .legal ul li::before {
+      content: '•'; position: absolute; left: 4px; color: var(--purple-light);
+    }
+    .legal-kv {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 8px 20px;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+    .legal-kv dt { color: var(--muted); }
+    .legal-kv dd { color: var(--text); word-break: break-word; }
+    .legal a {
+      color: var(--purple-light);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .legal a:hover { color: #fff; text-decoration: underline; }
+    .legal-todo {
+      background: var(--todo-bg);
+      border: 1px dashed var(--todo-border);
+      border-radius: 8px;
+      padding: 4px 8px;
+      color: var(--danger);
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-2);
+      text-align: center;
+    }
+    footer p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    footer a { color: var(--text-soft); text-decoration: none; }
+    footer a:hover { color: var(--text); text-decoration: underline; }
+    .footer-links {
+      display: flex; justify-content: center; gap: 20px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    /* Mobile */
+    @media (max-width: 760px) {
+      .pricing-grid { grid-template-columns: 1fr; gap: 24px; }
+      .legal-grid { grid-template-columns: 1fr; }
+      .offer-strip { padding: 20px 24px; flex-direction: column; align-items: flex-start; gap: 14px; }
+      .price-card { padding: 32px 26px; }
+      .price-num { font-size: 48px; }
+    }
+  </style>
+</head>
+<!-- LIQPAY-VERIFICATION-MODE: сторінка відкрита публічно щоб LiqPay міг
+     зверифікувати мерчанта. ПІСЛЯ верифікації — повернути data-locked="true"
+     тут + видалити блок `// VERIFICATION MODE` у <script>. -->
+<body data-unlocked="true">
+
+<!-- ============== LOCK SCREEN ============== -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-card">
+    <img src="logo2.svg" alt="Ridna" class="lock-logo" />
+    <h1 class="lock-title">Доступ через додаток</h1>
+    <p class="lock-text">Цю сторінку видно лише коли відкриваєш її з додатку Ridna. Якщо ще не маєш — завантаж, увійди, і повертайся продовжити підписку.</p>
+    <a href="/" class="lock-cta">Завантажити Ridna</a>
+  </div>
+</div>
+
+<!-- ============== NAV ============== -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="logo2.svg" alt="Ridna" class="nav-logo-img" />
+    <span class="nav-logo-text">Ridna</span>
+  </a>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-eyebrow"><span class="pulse"></span> Оплата підписки</div>
+    <h1>Обери <span class="accent">тариф</span></h1>
+    <p class="hero-sub">Платиш місяць або рік — без автосписань, продовжуєш коли захочеш. Безпечна оплата через LiqPay.</p>
+  </header>
+
+  <!-- USER CONTEXT — email юзера з токена -->
+  <div class="user-context" id="userContext" style="display:none;">
+    <div class="user-context-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M4 7l8 6 8-6M4 7v10a2 2 0 002 2h12a2 2 0 002-2V7M4 7l2-2h12l2 2"/>
+      </svg>
+    </div>
+    <div class="user-context-text">
+      Оплата сяде на акаунт <span class="user-context-email" id="userEmail">—</span>
+    </div>
+  </div>
+
+  <!-- BILLING TOGGLE -->
+  <div class="toggle-wrap">
+    <div class="billing-toggle" role="tablist" aria-label="Платіжний цикл">
+      <div class="billing-toggle-bg" id="toggleBg"></div>
+      <button class="billing-toggle-btn active" data-billing="month" type="button">Місяць</button>
+      <button class="billing-toggle-btn" data-billing="year" type="button">
+        Рік <span class="save-badge">−20%</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TARIFF CARDS (1:1 з головного лендоса) -->
+  <div class="pricing-grid">
+
+    <!-- СТАРТ -->
+    <div class="price-card" data-plan="basic">
+      <div class="price-tier">Старт</div>
+      <div class="price-amount">
+        <span class="price-num" data-month="₴499" data-year="₴399">₴499</span>
+        <span class="price-period">/міс</span>
+      </div>
+      <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
+      <div class="price-desc">Для тих, хто щойно стартує або має невеликий магазин з одним акаунтом.</div>
+      <ul class="price-list">
+        <li>100 замовлень на місяць</li>
+        <li>30 товарів у каталозі</li>
+        <li>1 Instagram акаунт</li>
+        <li>1 Нова Пошта акаунт</li>
+        <li>Чати + коментарі</li>
+        <li>Створення ТТН за один тап</li>
+        <li>Повна аналітика</li>
+        <li class="dim">LiqPay автоплатежі</li>
+        <li class="dim">Monobank автоплатежі</li>
+      </ul>
+      <button type="button" class="price-cta outline" data-pay-cta>Оплатити Старт</button>
+    </div>
+
+    <!-- PRO -->
+    <div class="price-card featured" data-plan="pro">
+      <div class="price-badge">Найпопулярніший</div>
+      <div class="price-tier">Pro</div>
+      <div class="price-amount">
+        <span class="price-num" data-month="₴799" data-year="₴639">₴799</span>
+        <span class="price-period">/міс</span>
+      </div>
+      <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
+      <div class="price-desc">Для магазинів які ростуть, мають декілька акаунтів і потребують повний набір.</div>
+      <ul class="price-list">
+        <li class="highlight">Безлімітні замовлення</li>
+        <li class="highlight">Безлімітний каталог товарів</li>
+        <li class="highlight">Кілька Instagram акаунтів</li>
+        <li class="highlight">Кілька Нова Пошта акаунтів</li>
+        <li>Чати + коментарі</li>
+        <li>Створення ТТН за один тап</li>
+        <li>Повна аналітика</li>
+        <li class="highlight">LiqPay автоплатежі</li>
+        <li class="highlight">Monobank автоплатежі</li>
+      </ul>
+      <button type="button" class="price-cta solid" data-pay-cta>Оплатити Pro</button>
+    </div>
+  </div>
+
+  <!-- OFFER STRIP — перші 33 -->
+  <div class="offer-strip">
+    <div class="offer-text">Перші 33 магазини отримують −33% знижки на перші 3 місяці</div>
+    <div class="offer-counter" id="offerCounter">21 з 33 місць ще доступні</div>
+  </div>
+
+  <!-- ============== LEGAL ============== -->
+  <div class="legal-grid">
+
+    <section class="legal wide" id="service">
+      <h2>Що ти отримуєш</h2>
+      <p>Ridna — мобільний CRM-додаток для власників Instagram-магазинів. Підписка дає доступ до функцій додатку відповідно до обраного тарифу.</p>
+      <ul>
+        <li><strong>Старт — 499 ₴/міс</strong> або <strong>4 788 ₴/рік</strong> (економія 1 200 ₴). До 100 замовлень на місяць, 30 товарів у каталозі, 1 Instagram-акаунт.</li>
+        <li><strong>Pro — 799 ₴/міс</strong> або <strong>7 668 ₴/рік</strong> (економія 1 920 ₴). Безлімітні замовлення, безлімітний каталог, кілька Instagram-акаунтів, інтеграції з LiqPay і Monobank.</li>
+      </ul>
+      <p>Деталі функцій — на <a href="/#features">головній сторінці</a>.</p>
+    </section>
+
+    <section class="legal" id="delivery">
+      <h2>Як ти отримуєш доступ</h2>
+      <p>Доступ активується автоматично після підтвердження оплати LiqPay. Підтвердження зазвичай приходить протягом 1–2 хвилин.</p>
+      <p>Після цього статус підписки в додатку оновиться без перезавантаження — банер «Продовжити користування» зникне, обмеження тарифу знімуться.</p>
+      <p>Послуга цифрова, нематеріальна. Окремих фізичних товарів не доставляємо.</p>
+    </section>
+
+    <section class="legal" id="refund">
+      <h2>Повернення коштів</h2>
+      <p>Якщо тариф тобі не підходить — повернемо повну суму протягом <strong>14 днів</strong> з моменту оплати. Напиши на email або в Telegram з номером операції LiqPay, обробимо протягом 3 робочих днів.</p>
+      <p>Повернення не діє якщо:</p>
+      <ul>
+        <li>Минуло понад 14 днів з оплати.</li>
+        <li>Використано понад 50% ліміту замовлень тарифу (більше 50 із 100 для Старт).</li>
+        <li>Акаунт заблоковано за порушення умов користування.</li>
+      </ul>
+      <p>Кошти повертаються на ту ж картку протягом 7 банківських днів.</p>
+    </section>
+
+    <section class="legal" id="owner">
+      <h2>Хто отримує оплату</h2>
+      <p>Підписку приймає фізична особа-підприємець.</p>
+      <dl class="legal-kv">
+        <dt>Найменування:</dt>
+        <dd>ФОП Лубковська Марина Станіславівна</dd>
+        <dt>РНОКПП:</dt>
+        <dd>3733905164</dd>
+        <dt>Адреса:</dt>
+        <dd>м. Вінниця, вул. Богдана Хмельницького, 50, кв. 1</dd>
+        <dt>IBAN:</dt>
+        <dd>UA693052990000026001016114896</dd>
+      </dl>
+    </section>
+
+    <section class="legal" id="contacts">
+      <h2>Контакти</h2>
+      <p>Підтримка, питання щодо оплати, повернення коштів:</p>
+      <dl class="legal-kv">
+        <dt>Email:</dt>
+        <dd><a href="mailto:ridna.crm@gmail.com">ridna.crm@gmail.com</a></dd>
+        <dt>Telegram:</dt>
+        <dd><a href="https://t.me/ridnaapp" target="_blank" rel="noopener">@ridnaapp</a></dd>
+        <dt>Телефон:</dt>
+        <dd><a href="tel:+380634321835">+380 63 432 18 35</a></dd>
+      </dl>
+      <p style="font-size:12px;color:var(--muted);margin-top:14px;">Відповідаємо протягом 24 годин у робочі дні.</p>
+    </section>
+
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 Ridna · CRM для Instagram магазинів</p>
+  <div class="footer-links">
+    <a href="/">Головна</a>
+    <a href="/privacy-policy.html">Конфіденційність</a>
+    <a href="/terms-of-service.html">Умови користування</a>
+  </div>
+</footer>
+
+<script>
+  // ====================================================================
+  // CONFIG — суми МАЮТЬ співпадати з тим що серверна Edge Function
+  // повертає LiqPay; це лише display + sanity.
+  // ====================================================================
+  const PRICES = {
+    basic: { month: 499, year_monthly_equiv: 399, year_total: 4788 },
+    pro:   { month: 799, year_monthly_equiv: 639, year_total: 7668 },
+  };
+
+  let selectedBilling = 'month';
+  let userToken = null;
+  let userEmail = null;
+  let tokenPayload = null;
+
+  // ====================================================================
+  // 1. AUTH GATE — парсимо JWT (без crypto-верифікації, бо це публічна
+  //    сторінка). Серверна верифікація буде у Edge Function `create-payment`
+  //    перед генерацією LiqPay invoice. Тут ми гейтимо тільки UI.
+  // ====================================================================
+  function parseToken() {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (!token) return false;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      // Базова валідація: повинні бути email + user_id, ще не expired.
+      if (!payload.email || !payload.sub) return false;
+      if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return false;
+
+      userToken = token;
+      userEmail = payload.email;
+      tokenPayload = payload;
+      return true;
+    } catch (e) {
+      console.warn('Token parse failed:', e.message);
+      return false;
+    }
+  }
+
+  function unlock() {
+    document.body.setAttribute('data-unlocked', 'true');
+    document.body.removeAttribute('data-locked');
+    if (userEmail) {
+      document.getElementById('userEmail').textContent = userEmail;
+      document.getElementById('userContext').style.display = 'flex';
+    }
+  }
+
+  // ====================================================================
+  // 2. BILLING TOGGLE (копія з головного лендоса, спрощена)
+  // ====================================================================
+  const toggleBtns = document.querySelectorAll('.billing-toggle-btn');
+  const toggleBg = document.getElementById('toggleBg');
+  const priceNums = document.querySelectorAll('.price-num[data-month]');
+  const yearlyHints = document.querySelectorAll('[data-yearly-hint]');
+  const pricingGrid = document.querySelector('.pricing-grid');
+
+  function setToggleBg() {
+    const activeBtn = document.querySelector('.billing-toggle-btn.active');
+    if (!activeBtn || !toggleBg) return;
+    toggleBg.style.width = activeBtn.offsetWidth + 'px';
+    toggleBg.style.left = activeBtn.offsetLeft + 'px';
+  }
+
+  function switchBilling(period, direction) {
+    selectedBilling = period;
+    toggleBtns.forEach(b => b.classList.toggle('active', b.dataset.billing === period));
+    setToggleBg();
+
+    if (pricingGrid && direction) {
+      pricingGrid.classList.add(direction === 'left' ? 'switching-left' : 'switching-right');
+      setTimeout(() => pricingGrid.classList.remove('switching-left', 'switching-right'), 180);
+    }
+
+    priceNums.forEach(el => {
+      el.style.opacity = '0.3';
+      setTimeout(() => {
+        el.textContent = el.dataset[period];
+        el.style.opacity = '1';
+      }, 150);
+    });
+
+    yearlyHints.forEach(el => {
+      const card = el.closest('.price-card');
+      const num = card.querySelector('.price-num');
+      if (period === 'year') {
+        const yearMonthly = parseInt(num.dataset.year.replace(/\D/g, ''));
+        const monthMonthly = parseInt(num.dataset.month.replace(/\D/g, ''));
+        const yearTotal = yearMonthly * 12;
+        const savings = (monthMonthly - yearMonthly) * 12;
+        const fmt = (n) => n.toLocaleString('uk-UA').replace(',', ' ');
+        el.innerHTML = `₴${fmt(yearTotal)} разово / рік`
+          + `<br><span class="price-savings">Економиш ₴${fmt(savings)} на рік</span>`;
+      } else {
+        el.innerHTML = '&nbsp;';
+      }
+    });
+
+    // Update CTA labels
+    document.querySelectorAll('[data-pay-cta]').forEach(btn => {
+      const card = btn.closest('.price-card');
+      const plan = card.dataset.plan;
+      const planLabel = plan === 'basic' ? 'Старт' : 'Pro';
+      btn.textContent = `Оплатити ${planLabel}`;
+    });
+  }
+
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const current = document.querySelector('.billing-toggle-btn.active')?.dataset.billing;
+      const target = btn.dataset.billing;
+      if (current === target) return;
+      switchBilling(target, target === 'year' ? 'left' : 'right');
+    });
+  });
+  window.addEventListener('load', setToggleBg);
+  window.addEventListener('resize', setToggleBg);
+
+  // ====================================================================
+  // 3. PAY CTAs (одна кнопка на картку)
+  // ====================================================================
+  document.querySelectorAll('[data-pay-cta]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const card = btn.closest('.price-card');
+      const plan = card.dataset.plan;
+      const billing = selectedBilling;
+      const totalAmount = billing === 'month'
+        ? PRICES[plan].month
+        : PRICES[plan].year_total;
+
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Готуємо оплату…';
+
+      try {
+        // TODO (наступна фаза): викликати Supabase Edge Function:
+        //   const res = await fetch('https://qwlqybvskgkukclacuon.supabase.co/functions/v1/create-payment', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ token: userToken, plan, billing }),
+        //   });
+        //   const { data, signature } = await res.json();
+        //   const form = document.createElement('form');
+        //   form.method = 'POST';
+        //   form.action = 'https://www.liqpay.ua/api/3/checkout';
+        //   form.innerHTML = `
+        //     <input type="hidden" name="data" value="${data}">
+        //     <input type="hidden" name="signature" value="${signature}">
+        //   `;
+        //   document.body.appendChild(form);
+        //   form.submit();
+
+        alert(`Інтеграція з LiqPay буде підключена в наступному кроці.\n\nТариф: ${plan === 'basic' ? 'Старт' : 'Pro'}\nПеріод: ${billing === 'month' ? 'місяць' : 'рік'}\nСума: ₴${totalAmount.toLocaleString('uk-UA').replace(',', ' ')}`);
+      } catch (e) {
+        console.error(e);
+        alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridnaapp');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    });
+  });
+
+  // ====================================================================
+  // INIT
+  // ====================================================================
+  // VERIFICATION MODE — поки LiqPay перевіряє мерчанта, сторінка відкрита
+  // всім без токена. Прибрати цей блок після того, як LiqPay account active,
+  // щоб повернути token-gate (див. також data-locked у <body>).
+  const VERIFICATION_MODE = true;
+
+  if (VERIFICATION_MODE) {
+    // Все одно намагаємось показати email, якщо токен є — для повного UX.
+    parseToken();
+    unlock();
+    requestAnimationFrame(() => setToggleBg());
+  } else if (parseToken()) {
+    unlock();
+    requestAnimationFrame(() => setToggleBg());
+  } else {
+    // Якщо токен невалідний — lock screen лишається. Спеціально нічого
+    // не редіректимо, бо так зрозуміліше юзеру що сторінка існує, просто
+    // потребує входу з апки.
+  }
+</script>
+
+</body>
+</html>
