@@ -57,8 +57,8 @@
 
     /* ============== LOCK SCREEN ============== */
     /* Сторінка стартує під overlay. JS знімає його тільки якщо у URL
-       є валідний токен. Серверна верифікація підпису відбувається на
-       Edge Function під час створення LiqPay invoice. */
+       є валідний токен. Справжня верифікація токена відбувається на
+       Edge Function sub-create-invoice під час створення Monobank invoice. */
     .lock-screen {
       position: fixed; inset: 0; z-index: 1000;
       display: flex; align-items: center; justify-content: center;
@@ -481,10 +481,9 @@
     }
   </style>
 </head>
-<!-- LIQPAY-VERIFICATION-MODE: сторінка відкрита публічно щоб LiqPay міг
-     зверифікувати мерчанта. ПІСЛЯ верифікації — повернути data-locked="true"
-     тут + видалити блок `// VERIFICATION MODE` у <script>. -->
-<body data-unlocked="true">
+<!-- Сторінка закрита: контент видно лише при відкритті з додатку Ridna
+     (валідний ?token= у URL). Гейт знімає JS у parseToken()/unlock(). -->
+<body data-locked="true">
 
 <!-- ============== LOCK SCREEN ============== -->
 <div class="lock-screen" id="lockScreen">
@@ -510,7 +509,7 @@
   <header class="hero">
     <div class="hero-eyebrow"><span class="pulse"></span> Оплата підписки</div>
     <h1>Обери <span class="accent">тариф</span></h1>
-    <p class="hero-sub">Платиш місяць або рік — без автосписань, продовжуєш коли захочеш. Безпечна оплата через LiqPay.</p>
+    <p class="hero-sub">Платиш місяць або рік — без автосписань, продовжуєш коли захочеш. Безпечна оплата через Monobank.</p>
   </header>
 
   <!-- USER CONTEXT — email юзера з токена -->
@@ -556,8 +555,7 @@
         <li>Чати + коментарі</li>
         <li>Створення ТТН за один тап</li>
         <li>Повна аналітика</li>
-        <li class="dim">LiqPay автоплатежі</li>
-        <li class="dim">Monobank автоплатежі</li>
+        <li class="dim">Автоплатежі Monobank</li>
       </ul>
       <button type="button" class="price-cta outline" data-pay-cta>Оплатити Старт</button>
     </div>
@@ -580,8 +578,7 @@
         <li>Чати + коментарі</li>
         <li>Створення ТТН за один тап</li>
         <li>Повна аналітика</li>
-        <li class="highlight">LiqPay автоплатежі</li>
-        <li class="highlight">Monobank автоплатежі</li>
+        <li class="highlight">Автоплатежі Monobank</li>
       </ul>
       <button type="button" class="price-cta solid" data-pay-cta>Оплатити Pro</button>
     </div>
@@ -601,14 +598,14 @@
       <p>Ridna — мобільний CRM-додаток для власників Instagram-магазинів. Підписка дає доступ до функцій додатку відповідно до обраного тарифу.</p>
       <ul>
         <li><strong>Старт — 499 ₴/міс</strong> або <strong>4 788 ₴/рік</strong> (економія 1 200 ₴). До 100 замовлень на місяць, 30 товарів у каталозі, 1 Instagram-акаунт.</li>
-        <li><strong>Pro — 799 ₴/міс</strong> або <strong>7 668 ₴/рік</strong> (економія 1 920 ₴). Безлімітні замовлення, безлімітний каталог, кілька Instagram-акаунтів, інтеграції з LiqPay і Monobank.</li>
+        <li><strong>Pro — 799 ₴/міс</strong> або <strong>7 668 ₴/рік</strong> (економія 1 920 ₴). Безлімітні замовлення, безлімітний каталог, кілька Instagram-акаунтів, інтеграція з Monobank.</li>
       </ul>
       <p>Деталі функцій — на <a href="/#features">головній сторінці</a>.</p>
     </section>
 
     <section class="legal" id="delivery">
       <h2>Як ти отримуєш доступ</h2>
-      <p>Доступ активується автоматично після підтвердження оплати LiqPay. Підтвердження зазвичай приходить протягом 1–2 хвилин.</p>
+      <p>Доступ активується автоматично після підтвердження оплати Monobank. Підтвердження зазвичай приходить протягом 1–2 хвилин.</p>
       <p>Після цього статус підписки в додатку оновиться без перезавантаження — банер «Продовжити користування» зникне, обмеження тарифу знімуться.</p>
       <p>Послуга цифрова, нематеріальна. Окремих фізичних товарів не доставляємо.</p>
     </section>
@@ -623,7 +620,7 @@
         <li>Доступ до тарифу не активувався через технічний збій.</li>
         <li>Банк підтвердив платіж як шахрайський.</li>
       </ul>
-      <p>Якщо одна з цих ситуацій сталась — напиши на <a href="mailto:info@ridna.net">info@ridna.net</a> або в <a href="https://t.me/ridna_crm" target="_blank" rel="noopener">@ridna_crm</a> з номером операції LiqPay. Розглянемо протягом 3 робочих днів, повернемо на ту ж картку (7 банківських днів).</p>
+      <p>Якщо одна з цих ситуацій сталась — напиши на <a href="mailto:info@ridna.net">info@ridna.net</a> або в <a href="https://t.me/ridna_crm" target="_blank" rel="noopener">@ridna_crm</a> з номером операції Monobank. Розглянемо протягом 3 робочих днів, повернемо на ту ж картку (7 банківських днів).</p>
       <p>Якщо вирішиш більше не продовжувати — просто не оплачуй наступний період. Доступ діятиме до кінця оплаченого терміну, після цього підписка зупиниться без штрафів.</p>
     </section>
 
@@ -633,13 +630,8 @@
       <dl class="legal-kv">
         <dt>Найменування:</dt>
         <dd>ФОП Лубковська Марина Станіславівна</dd>
-        <dt>РНОКПП:</dt>
-        <dd>3733905164</dd>
-        <dt>Адреса:</dt>
-        <dd>м. Вінниця, вул. Богдана Хмельницького, 50, кв. 1</dd>
-        <dt>IBAN:</dt>
-        <dd>UA693052990000026001016114896</dd>
       </dl>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;">Повні реквізити для звітності — у <a href="/terms-of-service.html#requisites">Умовах користування</a>.</p>
     </section>
 
     <section class="legal" id="contacts">
@@ -671,8 +663,9 @@
 
 <script>
   // ====================================================================
-  // CONFIG — суми МАЮТЬ співпадати з тим що серверна Edge Function
-  // повертає LiqPay; це лише display + sanity.
+  // CONFIG — суми лише для display. Авторитетну суму (з early-bird знижкою)
+  // рахує серверна Edge Function sub-create-invoice; цьому тут не довіряємо.
+  const SUPABASE_FN = 'https://hydpowjmbadpjtcvwfvo.supabase.co/functions/v1';
   // ====================================================================
   const PRICES = {
     basic: { month: 499, year_monthly_equiv: 399, year_total: 4788 },
@@ -686,8 +679,8 @@
 
   // ====================================================================
   // 1. AUTH GATE — парсимо JWT (без crypto-верифікації, бо це публічна
-  //    сторінка). Серверна верифікація буде у Edge Function `create-payment`
-  //    перед генерацією LiqPay invoice. Тут ми гейтимо тільки UI.
+  //    сторінка). Справжня верифікація токена — у Edge Function
+  //    sub-create-invoice перед генерацією Monobank invoice. Тут гейтимо лише UI.
   // ====================================================================
   function parseToken() {
     const params = new URLSearchParams(window.location.search);
@@ -806,28 +799,31 @@
       btn.textContent = 'Готуємо оплату…';
 
       try {
-        // TODO (наступна фаза): викликати Supabase Edge Function:
-        //   const res = await fetch('https://qwlqybvskgkukclacuon.supabase.co/functions/v1/create-payment', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ token: userToken, plan, billing }),
-        //   });
-        //   const { data, signature } = await res.json();
-        //   const form = document.createElement('form');
-        //   form.method = 'POST';
-        //   form.action = 'https://www.liqpay.ua/api/3/checkout';
-        //   form.innerHTML = `
-        //     <input type="hidden" name="data" value="${data}">
-        //     <input type="hidden" name="signature" value="${signature}">
-        //   `;
-        //   document.body.appendChild(form);
-        //   form.submit();
+        // Серверна функція сама перевіряє токен, рахує суму (+ early-bird
+        // знижку) і створює Monobank invoice. Сюди приходить лише pageUrl.
+        const res = await fetch(`${SUPABASE_FN}/sub-create-invoice`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: userToken, plan, billing }),
+        });
+        const data = await res.json().catch(() => ({}));
 
-        alert(`Інтеграція з LiqPay буде підключена в наступному кроці.\n\nТариф: ${plan === 'basic' ? 'Старт' : 'Pro'}\nПеріод: ${billing === 'month' ? 'місяць' : 'рік'}\nСума: ₴${totalAmount.toLocaleString('uk-UA').replace(',', ' ')}`);
+        if (!res.ok || !data.pageUrl) {
+          if (res.status === 401) {
+            alert('Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.');
+          } else {
+            alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridnaapp');
+          }
+          btn.disabled = false;
+          btn.textContent = originalText;
+          return;
+        }
+
+        // Редірект на сторінку оплати Monobank
+        window.location.href = data.pageUrl;
       } catch (e) {
         console.error(e);
         alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridnaapp');
-      } finally {
         btn.disabled = false;
         btn.textContent = originalText;
       }
@@ -837,23 +833,14 @@
   // ====================================================================
   // INIT
   // ====================================================================
-  // VERIFICATION MODE — поки LiqPay перевіряє мерчанта, сторінка відкрита
-  // всім без токена. Прибрати цей блок після того, як LiqPay account active,
-  // щоб повернути token-gate (див. також data-locked у <body>).
-  const VERIFICATION_MODE = true;
-
-  if (VERIFICATION_MODE) {
-    // Все одно намагаємось показати email, якщо токен є — для повного UX.
-    parseToken();
-    unlock();
-    requestAnimationFrame(() => setToggleBg());
-  } else if (parseToken()) {
+  // Токен-гейт: контент видно лише з валідним ?token= (відкриття з додатку).
+  if (parseToken()) {
     unlock();
     requestAnimationFrame(() => setToggleBg());
   } else {
-    // Якщо токен невалідний — lock screen лишається. Спеціально нічого
-    // не редіректимо, бо так зрозуміліше юзеру що сторінка існує, просто
-    // потребує входу з апки.
+    // Токен невалідний/відсутній — lock screen лишається. Нічого не
+    // редіректимо: так юзеру зрозуміло, що сторінка є, просто потребує
+    // входу з додатку Ridna.
   }
 </script>
 
