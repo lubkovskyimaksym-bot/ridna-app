@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Оплату отримано — Ridna</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #9333EA;
+      --purple-light: #A855F7;
+      --bg: #06040F;
+      --text: #EDE8F5;
+      --text-soft: #C8BDD9;
+      --success: #34D399;
+      --border: rgba(255,255,255,0.07);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(147,51,234,0.16), transparent 55%),
+        radial-gradient(circle at 70% 80%, rgba(52,211,153,0.10), transparent 55%);
+    }
+    .card { position: relative; z-index: 1; max-width: 440px; text-align: center; }
+    .check {
+      width: 88px; height: 88px; margin: 0 auto 28px;
+      border-radius: 50%;
+      background: rgba(52,211,153,0.12);
+      border: 1px solid rgba(52,211,153,0.4);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 40px rgba(52,211,153,0.25);
+    }
+    .check svg { width: 44px; height: 44px; stroke: var(--success); }
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 28px; font-weight: 900; letter-spacing: -1px;
+      color: #fff; margin-bottom: 14px;
+    }
+    p { color: var(--text-soft); font-size: 15px; margin-bottom: 10px; }
+    .hint { font-size: 13px; color: #7A6E90; margin-top: 18px; }
+    .cta {
+      display: inline-block; margin-top: 28px;
+      background: var(--purple); color: #fff !important; text-decoration: none;
+      padding: 14px 30px; border-radius: 100px; font-weight: 700; font-size: 14px;
+      box-shadow: 0 0 24px rgba(147,51,234,0.45); transition: all 0.2s;
+    }
+    .cta:hover { background: var(--purple-light); transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6L9 17l-5-5" />
+      </svg>
+    </div>
+    <h1>Оплату отримано</h1>
+    <p>Дякуємо! Активуємо підписку — це займає 1–2 хвилини.</p>
+    <p>Повертайся в додаток Ridna: щойно підтвердження пройде, статус оновиться сам, без перезавантаження.</p>
+    <p class="hint">Якщо доступ не оновився протягом кількох хвилин — напиши нам у Telegram <a href="https://t.me/ridna_crm" style="color:var(--purple-light);text-decoration:none;">@ridnaapp</a>.</p>
+    <a href="/" class="cta">На головну</a>
+  </div>
+</body>
+</html>
