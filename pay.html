@@ -479,6 +479,49 @@
       .price-card { padding: 32px 26px; }
       .price-num { font-size: 48px; }
     }
+    /* CURRENT SUB LINE */
+    .current-sub { margin-top: 4px; font-size: 13px; color: var(--muted); }
+
+    /* PAY CONFIRM MODAL */
+    .pay-modal { position: fixed; inset: 0; z-index: 1100; display: none; align-items: center; justify-content: center; padding: 24px; }
+    .pay-modal.open { display: flex; }
+    .pm-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+    .pm-card {
+      position: relative; z-index: 1; width: 100%; max-width: 380px;
+      background: var(--bg-2); border: 1px solid var(--border-bright);
+      border-radius: 20px; padding: 26px 24px;
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7);
+    }
+    .pm-title {
+      font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 700;
+      color: #fff; margin-bottom: 18px;
+    }
+    .pm-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .pm-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-soft); }
+    .pm-row.pm-minus span:last-child { color: var(--success); }
+    .pm-total-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding-top: 14px; border-top: 1px solid var(--border); margin-bottom: 8px;
+    }
+    .pm-total-row > span:first-child { font-size: 14px; color: var(--text-soft); }
+    .pm-total {
+      font-family: 'Unbounded', sans-serif; font-size: 26px; font-weight: 900;
+      color: #fff; letter-spacing: -1px;
+    }
+    .pm-note { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .pm-confirm {
+      display: block; width: 100%; background: var(--purple); color: #fff; border: none;
+      padding: 14px; border-radius: 14px; font-family: 'Manrope', sans-serif;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 0 24px rgba(147,51,234,0.4); transition: all 0.2s;
+    }
+    .pm-confirm:hover { background: var(--purple-light); transform: translateY(-1px); }
+    .pm-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+    .pm-cancel {
+      display: block; width: 100%; background: transparent; color: var(--text-soft);
+      border: none; padding: 12px; margin-top: 6px; font-family: 'Manrope', sans-serif;
+      font-size: 14px; cursor: pointer;
+    }
   </style>
 </head>
 <!-- Сторінка закрита: контент видно лише при відкритті з додатку Ridna
@@ -521,6 +564,7 @@
     </div>
     <div class="user-context-text">
       Активуємо підписку на акаунт <span class="user-context-email" id="userEmail">—</span>
+      <div class="current-sub" id="currentSub"></div>
     </div>
   </div>
 
@@ -661,6 +705,21 @@
   </div>
 </footer>
 
+<!-- PAY CONFIRM MODAL -->
+<div class="pay-modal" id="payModal" aria-hidden="true">
+  <div class="pm-backdrop" id="pmBackdrop"></div>
+  <div class="pm-card" role="dialog" aria-modal="true">
+    <h3 class="pm-title" id="pmTitle">Тариф</h3>
+    <div class="pm-rows" id="pmRows"></div>
+    <div class="pm-total-row">
+      <span>До сплати</span><span class="pm-total" id="pmTotal">—</span>
+    </div>
+    <p class="pm-note" id="pmNote"></p>
+    <button class="pm-confirm" id="pmConfirm">Перейти до оплати</button>
+    <button class="pm-cancel" id="pmCancel">Скасувати</button>
+  </div>
+</div>
+
 <script>
   // ====================================================================
   // CONFIG — суми лише для display. Авторитетну суму (з early-bird знижкою)
@@ -783,52 +842,127 @@
   window.addEventListener('resize', setToggleBg);
 
   // ====================================================================
-  // 3. PAY CTAs (одна кнопка на картку)
+  // 3. PAY CTAs → quote (розрахунок) → модалка → створення інвойсу
   // ====================================================================
+  const PLAN_LABEL = { trial: 'Пробний період', basic: 'Старт', pro: 'Pro' };
+
+  const fmtUah = (n) => Number(n).toLocaleString('uk-UA').replace(/,/g, ' ');
+  function fmtDate(iso) {
+    try {
+      const d = new Date(iso);
+      return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+    } catch (e) { return ''; }
+  }
+
+  // Виклик серверної функції (quote або create — залежно від payload).
+  async function callFn(payload) {
+    const res = await fetch(`${SUPABASE_FN}/sub-create-invoice`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: userToken, ...payload }),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { res, data };
+  }
+
+  // Поточна підписка у user-context (Зараз: Pro · активна до …)
+  async function loadCurrentSub() {
+    const el = document.getElementById('currentSub');
+    if (!el) return;
+    try {
+      const { data } = await callFn({ plan: 'pro', billing: 'month', quote: true });
+      const plan = data.currentPlan; // приходить навіть на 409 (downgrade)
+      if (!plan) { el.textContent = 'Зараз: немає активної підписки'; return; }
+      const label = PLAN_LABEL[plan] || plan;
+      el.textContent = data.currentPeriodEnd
+        ? `Зараз: ${label} · активна до ${fmtDate(data.currentPeriodEnd)}`
+        : `Зараз: ${label}`;
+    } catch (e) { /* тихо — рядок просто не покажеться */ }
+  }
+
+  // ── Модалка підтвердження ──────────────────────────────────────────
+  const modal = document.getElementById('payModal');
+  let pendingPay = null;
+
+  function openPayModal(plan, billing, q) {
+    pendingPay = { plan, billing };
+    const planLabel = plan === 'basic' ? 'Старт' : 'Pro';
+    const periodLabel = billing === 'year' ? 'рік' : 'місяць';
+    document.getElementById('pmTitle').textContent = `Тариф ${planLabel} · ${periodLabel}`;
+
+    const rows = [`<div class="pm-row"><span>Базова ціна</span><span>${fmtUah(q.breakdown.baseUah)} ₴</span></div>`];
+    if (q.breakdown.discountUah > 0) {
+      rows.push(`<div class="pm-row pm-minus"><span>Знижка −33%</span><span>−${fmtUah(q.breakdown.discountUah)} ₴</span></div>`);
+    }
+    if (q.breakdown.creditUah > 0) {
+      const curLabel = PLAN_LABEL[q.currentPlan] || 'поточного тарифу';
+      rows.push(`<div class="pm-row pm-minus"><span>Залишок ${curLabel}</span><span>−${fmtUah(q.breakdown.creditUah)} ₴</span></div>`);
+    }
+    document.getElementById('pmRows').innerHTML = rows.join('');
+    document.getElementById('pmTotal').textContent = `${fmtUah(q.amountUah)} ₴`;
+
+    let note = `Підписка діятиме до ${fmtDate(q.newPeriodEnd)}`;
+    if (q.action === 'upgrade') note = `Pro з сьогодні до ${fmtDate(q.newPeriodEnd)}`;
+    else if (q.action === 'renew') note = `Продовжимо до ${fmtDate(q.newPeriodEnd)}`;
+    document.getElementById('pmNote').textContent = note;
+
+    modal.classList.add('open');
+  }
+  function closePayModal() { modal.classList.remove('open'); pendingPay = null; }
+
   document.querySelectorAll('[data-pay-cta]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const card = btn.closest('.price-card');
       const plan = card.dataset.plan;
       const billing = selectedBilling;
-      const totalAmount = billing === 'month'
-        ? PRICES[plan].month
-        : PRICES[plan].year_total;
 
       btn.disabled = true;
       const originalText = btn.textContent;
-      btn.textContent = 'Готуємо оплату…';
+      btn.textContent = 'Рахуємо…';
 
       try {
-        // Серверна функція сама перевіряє токен, рахує суму (+ early-bird
-        // знижку) і створює Monobank invoice. Сюди приходить лише pageUrl.
-        const res = await fetch(`${SUPABASE_FN}/sub-create-invoice`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: userToken, plan, billing }),
-        });
-        const data = await res.json().catch(() => ({}));
-
-        if (!res.ok || !data.pageUrl) {
-          if (res.status === 401) {
-            alert('Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.');
-          } else {
-            alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
-          }
-          btn.disabled = false;
-          btn.textContent = originalText;
-          return;
+        const { res, data } = await callFn({ plan, billing, quote: true });
+        if (res.status === 401) {
+          alert('Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.');
+        } else if (res.status === 409 && data.error === 'downgrade_not_available') {
+          alert(data.message || 'Зміна на нижчий тариф буде доступна найближчим часом. Напиши нам у Telegram @ridna_crm.');
+        } else if (!res.ok || !data.quote) {
+          alert('Не вдалось порахувати ціну. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+        } else {
+          openPayModal(plan, billing, data);
         }
-
-        // Редірект на сторінку оплати Monobank
-        window.location.href = data.pageUrl;
       } catch (e) {
         console.error(e);
-        alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+        alert('Не вдалось порахувати ціну. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+      } finally {
         btn.disabled = false;
         btn.textContent = originalText;
       }
     });
   });
+
+  document.getElementById('pmConfirm').addEventListener('click', async () => {
+    if (!pendingPay) return;
+    const c = document.getElementById('pmConfirm');
+    c.disabled = true;
+    const t = c.textContent;
+    c.textContent = 'Готуємо оплату…';
+    try {
+      const { res, data } = await callFn({ plan: pendingPay.plan, billing: pendingPay.billing });
+      if (!res.ok || !data.pageUrl) {
+        alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+        c.disabled = false; c.textContent = t;
+        return;
+      }
+      window.location.href = data.pageUrl; // на Monobank
+    } catch (e) {
+      console.error(e);
+      alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+      c.disabled = false; c.textContent = t;
+    }
+  });
+  document.getElementById('pmCancel').addEventListener('click', closePayModal);
+  document.getElementById('pmBackdrop').addEventListener('click', closePayModal);
 
   // ====================================================================
   // INIT
@@ -836,6 +970,7 @@
   // Токен-гейт: контент видно лише з валідним ?token= (відкриття з додатку).
   if (parseToken()) {
     unlock();
+    loadCurrentSub();
     requestAnimationFrame(() => setToggleBg());
   } else {
     // Токен невалідний/відсутній — lock screen лишається. Нічого не
