@@ -641,7 +641,7 @@
         <dt>Email:</dt>
         <dd><a href="mailto:info@ridna.net">info@ridna.net</a></dd>
         <dt>Telegram:</dt>
-        <dd><a href="https://t.me/ridna_crm" target="_blank" rel="noopener">@ridnaapp</a></dd>
+        <dd><a href="https://t.me/ridna_crm" target="_blank" rel="noopener">@ridna_crm</a></dd>
         <dt>Телефон:</dt>
         <dd><a href="tel:+380634321835">+380 63 432 18 35</a></dd>
       </dl>
@@ -812,7 +812,7 @@
           if (res.status === 401) {
             alert('Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.');
           } else {
-            alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridnaapp');
+            alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
           }
           btn.disabled = false;
           btn.textContent = originalText;
@@ -823,7 +823,7 @@
         window.location.href = data.pageUrl;
       } catch (e) {
         console.error(e);
-        alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridnaapp');
+        alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
         btn.disabled = false;
         btn.textContent = originalText;
       }
