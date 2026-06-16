@@ -921,6 +921,7 @@
     let note = `Підписка діятиме до ${fmtDate(q.newPeriodEnd)}`;
     if (q.action === 'upgrade') note = `Pro з сьогодні до ${fmtDate(q.newPeriodEnd)}`;
     else if (q.action === 'renew') note = `Продовжимо до ${fmtDate(q.newPeriodEnd)}`;
+    else if (q.action === 'downgrade') note = `Старт ${fmtDate(q.startsAt)} — після завершення поточного тарифу, до ${fmtDate(q.newPeriodEnd)}`;
     document.getElementById('pmNote').textContent = note;
 
     modal.classList.add('open');
