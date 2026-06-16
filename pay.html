@@ -111,6 +111,15 @@
       transform: translateY(-1px);
       box-shadow: 0 0 36px rgba(147,51,234,0.65);
     }
+    .store-badges {
+      display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap;
+    }
+    .store-badges a { display: inline-flex; transition: transform 0.2s, opacity 0.2s; }
+    .store-badges a:hover { transform: translateY(-1px); opacity: 0.9; }
+    .store-badges img { display: block; width: auto; }
+    .store-badges .badge-appstore { height: 48px; }
+    /* Google-бейдж має вбудовані відступи — трохи вищий, щоб візуально зрівнятись з App Store */
+    .store-badges .badge-gplay { height: 71px; }
     /* Поки не верифіковано — приховуємо контент і footer */
     body[data-locked="true"] main,
     body[data-locked="true"] footer { display: none; }
@@ -534,7 +543,15 @@
     <img src="logo2.svg" alt="Ridna" class="lock-logo" />
     <h1 class="lock-title">Доступ через додаток</h1>
     <p class="lock-text">Цю сторінку видно лише коли відкриваєш її з додатку Ridna. Якщо ще не маєш — завантаж, увійди, і повертайся продовжити підписку.</p>
-    <a href="/" class="lock-cta">Завантажити Ridna</a>
+    <!-- TODO(посилання): встав URL App Store / Google Play замість "#" коли апку опублікують -->
+    <div class="store-badges">
+      <a href="#" aria-label="Завантажити в App Store">
+        <img class="badge-appstore" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Завантажити в App Store" />
+      </a>
+      <a href="#" target="_blank" rel="noopener" aria-label="Завантажити в Google Play">
+        <img class="badge-gplay" src="https://play.google.com/intl/uk_ua/badges/static/images/badges/uk_badge_web_generic.png" alt="Завантажити в Google Play" />
+      </a>
+    </div>
   </div>
 </div>
 
