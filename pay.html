@@ -238,6 +238,12 @@
     }
     .ap-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
     .ap-email { font-size: 15px; font-weight: 700; color: var(--text); word-break: break-all; }
+    .ap-logout {
+      margin-left: auto; align-self: flex-start;
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 13px; padding: 4px 2px; white-space: nowrap;
+    }
+    .ap-logout:hover { color: var(--text-soft); }
     .ap-rows { margin-top: 16px; }
     .ap-row {
       display: flex; justify-content: space-between; align-items: center;
@@ -632,6 +638,7 @@
         <div class="ap-label">Акаунт</div>
         <div class="ap-email" id="apEmail">—</div>
       </div>
+      <button class="ap-logout" id="apLogout" type="button">Вийти</button>
     </div>
     <div class="ap-rows">
       <div class="ap-row">
@@ -1103,6 +1110,67 @@
   document.getElementById('pmBackdrop').addEventListener('click', closePayModal);
 
   // ====================================================================
+  // SESSION PERSISTENCE — памʼятаємо веб-сесію до 30 днів (localStorage).
+  //   Зберігаємо access+refresh токени; на завантаженні відновлюємо, а при
+  //   протермінованому access — оновлюємо через refresh_token. Жорсткий
+  //   ліміт 30 днів від моменту входу (saved_at не оновлюємо при refresh).
+  // ====================================================================
+  const SESSION_KEY = 'ridna_session';
+  const SESSION_MAX_MS = 30 * 24 * 60 * 60 * 1000;
+
+  function saveSession(data, savedAt) {
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: data.expires_at,
+        saved_at: savedAt || Date.now(),
+      }));
+    } catch (e) {}
+  }
+  function clearSession() {
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+  }
+  function applyToken(token) {
+    userToken = token;
+    try {
+      const p = JSON.parse(atob(token.split('.')[1]));
+      userEmail = p.email || userEmail;
+      tokenPayload = p;
+    } catch (e) {}
+  }
+  async function refreshSession(refreshToken, savedAt) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_ANON, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.access_token) { clearSession(); return false; }
+      applyToken(data.access_token);
+      saveSession(data, savedAt); // зберігаємо нові токени, але лишаємо старий saved_at
+      return true;
+    } catch (e) { clearSession(); return false; }
+  }
+  async function restoreSession() {
+    let raw;
+    try { raw = localStorage.getItem(SESSION_KEY); } catch (e) { return false; }
+    if (!raw) return false;
+    let s;
+    try { s = JSON.parse(raw); } catch (e) { clearSession(); return false; }
+    if (!s || !s.refresh_token) { clearSession(); return false; }
+    // Жорсткий 30-денний ліміт від першого входу.
+    if (s.saved_at && Date.now() - s.saved_at > SESSION_MAX_MS) { clearSession(); return false; }
+    const now = Math.floor(Date.now() / 1000);
+    if (s.access_token && s.expires_at && s.expires_at > now + 60) {
+      applyToken(s.access_token); // ще валідний
+      return true;
+    }
+    return refreshSession(s.refresh_token, s.saved_at); // протермінований → оновлюємо
+  }
+
+  // ====================================================================
   // 4. WEB LOGIN — для тих, хто заходить із сайту (не з додатку).
   //    Отримуємо access_token через email/пароль (Supabase auth REST) —
   //    далі вся механіка (callFn/loadCurrentSub) працює як із токеном з URL.
@@ -1117,9 +1185,9 @@
     if (!res.ok || !data.access_token) {
       return { ok: false, error: 'Невірний email або пароль' };
     }
-    userToken = data.access_token;
-    userEmail = (data.user && data.user.email) || email;
-    try { tokenPayload = JSON.parse(atob(userToken.split('.')[1])); } catch (e) {}
+    applyToken(data.access_token);
+    userEmail = userEmail || (data.user && data.user.email) || email;
+    saveSession(data); // памʼятаємо сесію (до 30 днів)
     return { ok: true };
   }
 
@@ -1147,15 +1215,33 @@
     });
   }
 
+  const apLogout = document.getElementById('apLogout');
+  if (apLogout) {
+    apLogout.addEventListener('click', () => {
+      clearSession();
+      window.location.href = '/pay'; // чистий стан → форма входу
+    });
+  }
+
   // ====================================================================
   // INIT
   // ====================================================================
   // Якщо є валідний ?token= (відкриття з додатку) — одразу розблоковуємо.
   // Інакше показуємо форму входу на lock-screen (веб-користувач залогіниться).
   if (parseToken()) {
+    // Токен із додатку (?token=) — короткоживучий, без refresh. Не зберігаємо.
     unlock();
     loadCurrentSub();
     requestAnimationFrame(() => setToggleBg());
+  } else {
+    // Веб: пробуємо відновити збережену сесію (до 30 днів). Інакше — форма входу.
+    restoreSession().then((ok) => {
+      if (ok) {
+        unlock();
+        loadCurrentSub();
+        requestAnimationFrame(() => setToggleBg());
+      }
+    });
   }
 </script>
 
