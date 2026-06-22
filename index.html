@@ -105,7 +105,8 @@
     .nav-links a:hover { color: var(--text); }
     .nav-pill {
       background: var(--purple) !important; color: #fff !important;
-      padding: 10px 22px !important; border-radius: 100px;
+      box-sizing: border-box; border: 1px solid transparent; line-height: 1;
+      padding: 11px 22px !important; border-radius: 100px;
       font-size: 13px !important; font-weight: 700 !important;
       box-shadow: 0 0 24px rgba(147,51,234,0.4);
       transition: all 0.2s !important;
@@ -113,7 +114,7 @@
     .nav-pill:hover { transform: translateY(-1px); box-shadow: 0 0 36px rgba(147,51,234,0.6) !important; color: #fff !important; }
     .nav-pill-ghost {
       background: transparent !important; color: var(--text) !important;
-      border: 1px solid rgba(255,255,255,0.18); box-shadow: none !important;
+      border-color: rgba(255,255,255,0.22); box-shadow: none !important;
     }
     .nav-pill-ghost:hover { border-color: rgba(255,255,255,0.45); box-shadow: none !important; transform: translateY(-1px); }
 
@@ -1265,8 +1266,10 @@
       .pricing-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
-      nav { padding: 14px 20px; }
+      nav { padding: 14px 16px; }
       .nav-links a:not(.nav-pill) { display: none; }
+      .nav-links { gap: 10px; }
+      .nav-pill { padding: 10px 16px !important; font-size: 12px !important; }
       .hero { padding: 120px 20px 40px; }
       .hero-phone { width: 240px; }
       .h1-lg, .h1-stroke, .h1-grad { font-size: 50px; letter-spacing: -1.5px; }
