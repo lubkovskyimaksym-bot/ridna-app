@@ -93,6 +93,27 @@
       font-size: 15px;
       margin-bottom: 28px;
     }
+    /* ── Web login form ── */
+    .login-form { display: flex; flex-direction: column; gap: 10px; text-align: left; margin-bottom: 24px; }
+    .login-form input {
+      width: 100%; box-sizing: border-box;
+      padding: 13px 14px; border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 15px;
+    }
+    .login-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .login-form input:focus { outline: none; border-color: var(--purple); background: rgba(255,255,255,0.09); }
+    .login-error { color: #F87171; font-size: 13px; min-height: 14px; text-align: center; }
+    .login-btn {
+      margin-top: 2px; padding: 14px; border: none; border-radius: 100px;
+      background: var(--purple); color: #fff; font-size: 14px; font-weight: 700;
+      letter-spacing: 0.3px; cursor: pointer; box-shadow: 0 0 24px rgba(147,51,234,0.45);
+      transition: all 0.2s;
+    }
+    .login-btn:hover { background: var(--purple-light); }
+    .login-btn:disabled { opacity: 0.6; cursor: default; }
+    .login-hint { color: var(--text-soft); font-size: 13px; margin-bottom: 14px; }
     .lock-cta {
       display: inline-block;
       background: var(--purple);
@@ -541,8 +562,15 @@
 <div class="lock-screen" id="lockScreen">
   <div class="lock-card">
     <img src="logo2.svg" alt="Ridna" class="lock-logo" />
-    <h1 class="lock-title">Доступ через додаток</h1>
-    <p class="lock-text">Цю сторінку видно лише коли відкриваєш її з додатку Ridna. Якщо ще не маєш — завантаж, увійди, і повертайся продовжити підписку.</p>
+    <h1 class="lock-title">Вхід</h1>
+    <p class="lock-text">Увійди тими ж даними, що й у застосунку — і керуй підпискою.</p>
+    <form id="loginForm" class="login-form" novalidate>
+      <input id="loginEmail" type="email" placeholder="Email" autocomplete="email" inputmode="email" />
+      <input id="loginPassword" type="password" placeholder="Пароль" autocomplete="current-password" />
+      <div id="loginError" class="login-error"></div>
+      <button type="submit" id="loginBtn" class="login-btn">Увійти</button>
+    </form>
+    <p class="login-hint">Ще не маєш акаунта? Завантаж застосунок:</p>
     <!-- TODO(посилання): встав URL App Store / Google Play замість "#" коли апку опублікують -->
     <div class="store-badges">
       <a href="#" aria-label="Завантажити в App Store">
@@ -742,6 +770,8 @@
   // ====================================================================
   // CONFIG — суми лише для display. Авторитетну суму (з early-bird знижкою)
   // рахує серверна Edge Function sub-create-invoice; цьому тут не довіряємо.
+  const SUPABASE_URL = 'https://hydpowjmbadpjtcvwfvo.supabase.co';
+  const SUPABASE_ANON = 'sb_publishable_JXU5huAVVUusygDl0ZSCXA_qq5HfxM1'; // публічний (anon) ключ — безпечно у фронті
   const SUPABASE_FN = 'https://hydpowjmbadpjtcvwfvo.supabase.co/functions/v1';
   // ====================================================================
   const PRICES = {
@@ -984,17 +1014,59 @@
   document.getElementById('pmBackdrop').addEventListener('click', closePayModal);
 
   // ====================================================================
+  // 4. WEB LOGIN — для тих, хто заходить із сайту (не з додатку).
+  //    Отримуємо access_token через email/пароль (Supabase auth REST) —
+  //    далі вся механіка (callFn/loadCurrentSub) працює як із токеном з URL.
+  // ====================================================================
+  async function loginWeb(email, password) {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_ANON, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.access_token) {
+      return { ok: false, error: 'Невірний email або пароль' };
+    }
+    userToken = data.access_token;
+    userEmail = (data.user && data.user.email) || email;
+    try { tokenPayload = JSON.parse(atob(userToken.split('.')[1])); } catch (e) {}
+    return { ok: true };
+  }
+
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const errEl = document.getElementById('loginError');
+      errEl.textContent = '';
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) { errEl.textContent = 'Введи email і пароль'; return; }
+      const t = btn.textContent; btn.disabled = true; btn.textContent = 'Входимо…';
+      try {
+        const r = await loginWeb(email, password);
+        if (!r.ok) { errEl.textContent = r.error; btn.disabled = false; btn.textContent = t; return; }
+        unlock();
+        loadCurrentSub();
+        requestAnimationFrame(() => setToggleBg());
+      } catch (err) {
+        errEl.textContent = 'Не вдалось увійти. Спробуй ще раз';
+        btn.disabled = false; btn.textContent = t;
+      }
+    });
+  }
+
+  // ====================================================================
   // INIT
   // ====================================================================
-  // Токен-гейт: контент видно лише з валідним ?token= (відкриття з додатку).
+  // Якщо є валідний ?token= (відкриття з додатку) — одразу розблоковуємо.
+  // Інакше показуємо форму входу на lock-screen (веб-користувач залогіниться).
   if (parseToken()) {
     unlock();
     loadCurrentSub();
     requestAnimationFrame(() => setToggleBg());
-  } else {
-    // Токен невалідний/відсутній — lock screen лишається. Нічого не
-    // редіректимо: так юзеру зрозуміло, що сторінка є, просто потребує
-    // входу з додатку Ridna.
   }
 </script>
 
