@@ -956,6 +956,21 @@
     return { res, data };
   }
 
+  // Джерело активної підписки. Якщо iOS IAP — гард проти подвійної оплати на вебі.
+  let iapActive = false;
+  async function loadIapFlag() {
+    if (!userToken) return;
+    try {
+      const res = await fetch(
+        `${SUPABASE_REST}/subscriptions?select=source&status=eq.active&limit=1`,
+        { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${userToken}` } },
+      );
+      if (!res.ok) return;
+      const rows = await res.json();
+      iapActive = Array.isArray(rows) && rows[0] && rows[0].source === 'ios_iap';
+    } catch (e) { /* тихо */ }
+  }
+
   // Поточна підписка у user-context (Зараз: Pro · активна до …)
   async function loadCurrentSub() {
     const planEl = document.getElementById('apPlan');
@@ -978,6 +993,7 @@
         }
       }
     } catch (e) { /* тихо */ }
+    loadIapFlag();
     loadHistory();
   }
 
@@ -1057,6 +1073,12 @@
 
   document.querySelectorAll('[data-pay-cta]').forEach(btn => {
     btn.addEventListener('click', async () => {
+      // Гард «одне джерело»: активна iOS-підписка → не даємо платити на вебі
+      // (інакше подвійна оплата — Apple далі авто-списує).
+      if (iapActive) {
+        alert('Ти підписаний через App Store. Керуй підпискою там: Налаштування → акаунт → Підписки. Щоб платити на сайті — спершу скасуй підписку в App Store і повертайся.');
+        return;
+      }
       const card = btn.closest('.price-card');
       const plan = card.dataset.plan;
       const billing = selectedBilling;
