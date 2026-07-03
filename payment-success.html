@@ -71,9 +71,21 @@
       margin-top: 20px; font-size: 13px; line-height: 1.5; color: var(--muted);
     }
     .hint a { color: var(--purple-light); text-decoration: none; font-weight: 600; }
+    .site-header {
+      position: absolute; top: 24px; left: 24px; z-index: 2;
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .site-header img { height: 26px; width: auto; display: block; }
+    .site-header span { font-family: 'Unbounded', sans-serif; font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.4px; }
+    .site-header:hover { opacity: 0.85; }
   </style>
 </head>
 <body>
+  <a href="/" class="site-header" aria-label="На головну Ridna">
+    <img src="/logo2.svg" alt="Ridna" />
+    <span>Ridna</span>
+  </a>
   <div class="card">
     <div class="check">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
