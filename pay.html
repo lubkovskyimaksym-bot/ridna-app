@@ -10,7 +10,7 @@
   <meta property="og:url" content="https://ridna.net/pay" />
   <meta property="og:title" content="Оплата підписки — Ridna" />
   <meta property="og:locale" content="uk_UA" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href="/logo2.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;700;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1006,7 +1006,7 @@
     if (!wrap || !list || !userToken) return;
     try {
       const res = await fetch(
-        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,amount,currency,status,created_at&order=created_at.desc&limit=12`,
+        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,amount,currency,status,created_at&status=in.(success,reversed)&order=created_at.desc&limit=12`,
         { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${userToken}` } },
       );
       if (!res.ok) return;
