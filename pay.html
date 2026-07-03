@@ -1006,7 +1006,7 @@
     if (!wrap || !list || !userToken) return;
     try {
       const res = await fetch(
-        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,amount,status,created_at&order=created_at.desc&limit=12`,
+        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,amount,currency,status,created_at&order=created_at.desc&limit=12`,
         { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${userToken}` } },
       );
       if (!res.ok) return;
@@ -1023,7 +1023,9 @@
       list.innerHTML = rows.map((r) => {
         const planL = PLAN_LABEL[r.plan] || r.plan;
         const periodL = r.billing === 'year' ? 'рік' : 'місяць';
-        const amt = fmtUah((r.amount || 0) / 100);
+        const amt = r.currency === 'USD'
+          ? `$${((r.amount || 0) / 100).toFixed(2)}`
+          : `${fmtUah((r.amount || 0) / 100)} ₴`;
         const st = STATUS[r.status] || { t: r.status, c: 'pend' };
         return `<div class="ap-hist-item">
           <div>
@@ -1031,7 +1033,7 @@
             <div class="ap-hist-date">${fmtDate(r.created_at)}</div>
           </div>
           <div class="ap-hist-right">
-            <span class="ap-hist-amt">${amt} ₴</span>
+            <span class="ap-hist-amt">${amt}</span>
             <span class="ap-hist-status ${st.c}">${st.t}</span>
           </div>
         </div>`;
