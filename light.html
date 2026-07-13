@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ridna — CRM для Instagram магазинів</title>
+<meta name="description" content="Ridna — мобільний CRM для Instagram магазинів. Замовлення, клієнти, чати, оплати і Нова Пошта в одному додатку.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Manrope:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#7E21D5;
+    --purple-hot:#A855F7;
+    --ink:#231433;
+    --ink-soft:#4A3A60;
+    --muted:#6B5B85;
+    --bg:#F6F2FC;
+    --card:#FFFFFF;
+    --shadow:0 14px 34px -16px rgba(35,20,51,.22);
+    --radius:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Manrope',sans-serif;color:var(--ink);
+    background:linear-gradient(180deg,#FBF8FF 0%,#F3EDFB 100%);
+    overflow-x:hidden;
+  }
+  body::before{ /* grain */
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:99;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity:.04;mix-blend-mode:multiply;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:'Unbounded';letter-spacing:-.03em}
+
+  .mark{
+    background:linear-gradient(100deg, rgba(168,85,247,0) 0%, rgba(168,85,247,.30) 6%, rgba(147,51,234,.30) 94%, rgba(147,51,234,0) 100%);
+    border-radius:6px;padding:0 .12em;
+    box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  }
+  .hand{font-family:'Caveat',cursive;font-weight:700;color:var(--purple);display:inline-block;transform:rotate(-2deg)}
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(251,248,255,.8);
+    border-bottom:1px solid rgba(126,33,213,.08);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{height:32px;width:auto}
+  .nav-links{display:flex;gap:28px;align-items:center;font-size:15px;font-weight:700;color:var(--muted)}
+  .nav-links a:hover{color:var(--purple)}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-weight:800;font-size:15px;
+    padding:13px 22px;border-radius:100px;cursor:pointer;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{
+    background:linear-gradient(120deg,var(--purple-hot),var(--purple));color:#fff;
+    box-shadow:0 12px 26px -10px rgba(126,33,213,.55);
+  }
+  .btn-ghost{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+  .btn-dark{background:var(--ink);color:#fff;box-shadow:0 12px 26px -10px rgba(35,20,51,.5)}
+  @media(max-width:820px){.nav-links a:not(.btn){display:none}}
+
+  /* ===== HERO ===== */
+  .hero{padding:88px 0 60px;position:relative}
+  .hero::before{
+    content:'';position:absolute;inset:-20% -10% auto;height:120%;z-index:-1;
+    background:
+      radial-gradient(44% 40% at 85% 8%, rgba(168,85,247,.16), transparent 70%),
+      radial-gradient(40% 36% at 4% 70%, rgba(126,33,213,.12), transparent 70%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+  @media(max-width:920px){.hero-grid{grid-template-columns:1fr}}
+  .pill-note{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:800;color:var(--purple);
+    background:#fff;border-radius:100px;padding:9px 16px;
+    box-shadow:var(--shadow);margin-bottom:26px;
+  }
+  .hero h1{font-size:clamp(36px,5vw,58px);font-weight:800;line-height:1.1}
+  .hero .lead{margin-top:24px;font-size:19px;line-height:1.55;color:var(--muted);max-width:52ch}
+  .hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .hero-badges{display:flex;gap:22px;margin-top:26px;font-size:14.5px;font-weight:700;color:var(--muted);flex-wrap:wrap}
+  .hero-badges span b{color:var(--purple)}
+  /* композиція: скрін + бабли */
+  .hero-visual{position:relative}
+  .phone{
+    border-radius:34px;overflow:hidden;
+    box-shadow:0 40px 80px -30px rgba(35,20,51,.4), 0 0 0 1px rgba(126,33,213,.08);
+    transform:rotate(1.5deg);
+  }
+  .float-bubble{
+    position:absolute;background:#fff;border-radius:18px 18px 18px 6px;
+    padding:12px 16px;font-size:14.5px;font-weight:600;box-shadow:var(--shadow);
+    max-width:240px;
+  }
+  .float-bubble small{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:2px}
+  .float-bubble.ok{border-radius:16px;background:#F2FBF4;color:#14532D}
+  .float-bubble.pay{border-radius:16px;background:#FFFBEB;color:#713F12}
+
+  /* ===== MARQUEE ===== */
+  .marquee{
+    margin:56px 0 0;padding:16px 0;overflow:hidden;white-space:nowrap;
+    border-top:1px solid rgba(126,33,213,.1);border-bottom:1px solid rgba(126,33,213,.1);
+    font-family:'Unbounded';font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  }
+  .marquee .track{display:inline-block;animation:mq 30s linear infinite}
+  @keyframes mq{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.marquee .track{animation:none}}
+
+  /* ===== SECTIONS ===== */
+  section{padding:96px 0}
+  .sec-head{max-width:640px;margin-bottom:52px}
+  .sec-head h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;line-height:1.15}
+  .sec-head p{margin-top:16px;font-size:17.5px;line-height:1.55;color:var(--muted)}
+
+  /* «Знайомо?» — картки болю */
+  .pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:920px){.pain-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.pain-grid{grid-template-columns:1fr}}
+  .pain{
+    background:var(--card);border-radius:var(--radius);padding:26px;
+    box-shadow:var(--shadow);
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .pain h3{font-size:17px;font-weight:700;letter-spacing:-.01em}
+  .pain p{font-size:14.5px;line-height:1.5;color:var(--muted)}
+  .prop-note{
+    background:#FFFDF5;border-radius:6px;padding:12px 14px;
+    font-family:'Caveat',cursive;font-weight:600;font-size:20px;line-height:1.3;color:var(--ink-soft);
+    transform:rotate(-1.5deg);box-shadow:0 8px 18px -10px rgba(35,20,51,.25);align-self:flex-start;
+  }
+  .prop-note s{text-decoration-color:#E11D48;text-decoration-thickness:2px}
+  .prop-bubble{
+    background:var(--bg);border-radius:14px 14px 14px 4px;padding:10px 14px;
+    font-size:13.5px;font-weight:600;align-self:flex-start;
+  }
+  .prop-bubble small{display:block;font-size:10.5px;font-weight:800;color:var(--muted)}
+  .prop-badge{
+    align-self:flex-start;font-size:12.5px;font-weight:800;color:#9F1239;
+    background:#FFF1F2;border-radius:100px;padding:7px 13px;
+  }
+
+  /* фічі 01–06 */
+  .feature{
+    display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
+    padding:44px 0;
+  }
+  .feature:nth-child(even) .f-visual{order:-1}
+  @media(max-width:920px){.feature{grid-template-columns:1fr}.feature:nth-child(even) .f-visual{order:0}}
+  .f-num{font-family:'Unbounded';font-size:13px;font-weight:700;color:var(--purple);letter-spacing:.14em;margin-bottom:14px}
+  .feature h3{font-size:clamp(22px,2.6vw,30px);font-weight:800;line-height:1.2}
+  .feature p{margin-top:14px;font-size:16.5px;line-height:1.55;color:var(--muted);max-width:46ch}
+  .f-tag{
+    display:inline-flex;margin-top:20px;font-size:13.5px;font-weight:800;color:var(--purple);
+    background:#fff;border-radius:100px;padding:9px 15px;box-shadow:var(--shadow);
+  }
+  .f-visual img{
+    border-radius:26px;
+    box-shadow:0 30px 60px -26px rgba(35,20,51,.35), 0 0 0 1px rgba(126,33,213,.07);
+  }
+
+  /* mini perks */
+  .perks{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:64px}
+  @media(max-width:820px){.perks{grid-template-columns:1fr}}
+  .perk{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .perk b{display:block;font-size:16px;margin-bottom:8px}
+  .perk p{font-size:14.5px;color:var(--muted);line-height:1.5}
+
+  /* порівняння */
+  .compare{overflow-x:auto;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px}
+  table{width:100%;border-collapse:collapse;min-width:640px;font-size:15px}
+  th,td{padding:16px 18px;text-align:left;border-bottom:1px solid rgba(126,33,213,.08)}
+  tr:last-child td{border-bottom:none}
+  th{font-family:'Unbounded';font-size:13px;font-weight:700}
+  th.ridna{color:var(--purple)}
+  td b.yes{color:var(--purple)} td .no{color:#9F1239}
+  td:first-child{color:var(--muted);font-weight:600}
+
+  /* кроки */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);position:relative}
+  .step .n{font-family:'Unbounded';font-weight:800;font-size:15px;color:var(--purple)}
+  .step h3{font-size:19px;margin:14px 0 10px}
+  .step p{font-size:15px;color:var(--muted);line-height:1.55}
+  .step .t{margin-top:16px;display:inline-block}
+
+  /* тарифи */
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:860px;margin:0 auto}
+  @media(max-width:760px){.plans{grid-template-columns:1fr}}
+  .plan{background:var(--card);border-radius:26px;padding:34px;box-shadow:var(--shadow);position:relative}
+  .plan.pro{outline:2px solid var(--purple)}
+  .plan .flag{
+    position:absolute;top:-14px;right:24px;
+    background:linear-gradient(120deg,var(--purple-hot),var(--purple));color:#fff;
+    font-size:12.5px;font-weight:800;border-radius:100px;padding:7px 14px;
+  }
+  .plan h3{font-size:22px}
+  .price{font-family:'Unbounded';font-size:40px;font-weight:800;margin:16px 0 4px}
+  .price small{font-size:15px;font-weight:600;color:var(--muted);font-family:'Manrope'}
+  .plan .for{font-size:14.5px;color:var(--muted);line-height:1.5;margin:10px 0 20px}
+  .plan ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:26px}
+  .plan li{display:flex;gap:11px;align-items:center;font-size:15px;font-weight:600}
+  .plan li b{
+    width:22px;height:22px;border-radius:7px;flex:none;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--purple-hot),var(--purple));color:#fff;font-size:12px;
+  }
+  .trial-note{
+    max-width:860px;margin:0 auto 30px;
+    background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:20px 26px;display:flex;gap:14px;align-items:center;font-weight:700;
+  }
+  .trial-note .hand{font-size:24px}
+  .promo{max-width:860px;margin:26px auto 0;text-align:center;font-size:15px;font-weight:700;color:var(--muted)}
+  .promo b{color:var(--purple)}
+
+  /* FAQ */
+  .faq{max-width:760px;margin:0 auto}
+  details{
+    background:var(--card);border-radius:16px;box-shadow:var(--shadow);
+    padding:20px 24px;margin-bottom:14px;
+  }
+  summary{cursor:pointer;font-weight:800;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  summary::after{content:'+';font-family:'Unbounded';color:var(--purple);font-size:18px;flex:none}
+  details[open] summary::after{content:'–'}
+  details p{margin-top:14px;font-size:15px;line-height:1.6;color:var(--muted)}
+
+  /* фінал */
+  .final{
+    background:var(--card);border-radius:32px;box-shadow:var(--shadow);
+    padding:64px 40px;text-align:center;position:relative;overflow:hidden;
+  }
+  .final::before{
+    content:'';position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(50% 60% at 50% 120%, rgba(168,85,247,.18), transparent 70%);
+  }
+  .final>*{position:relative;z-index:1}
+  .final h2{font-size:clamp(26px,3.4vw,40px);font-weight:800}
+  .final p{margin:18px auto 30px;color:var(--muted);font-size:17px;max-width:46ch}
+  .final .hero-cta{justify-content:center}
+  .final .hero-badges{justify-content:center}
+
+  footer{padding:44px 0 60px;color:var(--muted);font-size:14px}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot-links{display:flex;gap:22px;font-weight:700;flex-wrap:wrap}
+  .foot-links a:hover{color:var(--purple)}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="#"><img class="logo" src="https://ridna.net/logo2.svg" alt="Ridna"></a>
+    <div class="nav-links">
+      <a href="#features">Можливості</a>
+      <a href="#how">Як працює</a>
+      <a href="#pricing">Тарифи</a>
+      <a href="https://ridna.net/pay">Вхід</a>
+      <a class="btn btn-primary" href="#download">Завантажити</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="pill-note">📱 Вже в App Store та Google Play</div>
+      <h1>Твій Instagram-магазин <span class="mark">без хаосу</span> і блокнота</h1>
+      <p class="lead">Мобільний CRM для всіх, хто продає через Instagram. Direct, замовлення, клієнти, оплати і ТТН Нової Пошти — в одному додатку. Без таблиць, без трьох застосунків одночасно.</p>
+      <div class="hero-cta">
+        <a class="btn btn-dark" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk"> App Store</a>
+        <a class="btn btn-ghost" href="https://play.google.com/store/apps/details?id=net.ridna.app">▶ Google Play</a>
+      </div>
+      <div class="hero-badges">
+        <span><b>✨ 30 днів</b> безкоштовно</span>
+        <span><b>🎁 −33%</b> на 3 місяці</span>
+        <span><b>🇺🇦</b> Українською</span>
+      </div>
+    </div>
+    <div class="hero-visual rv">
+      <div class="phone"><img src="https://ridna.net/screenshots/chats.png" alt="Instagram Direct в Ridna"></div>
+      <div class="float-bubble" style="top:-6%;left:-8%"><small>klientka_2000 · 23:47</small>Привіт! А є ще біла блуза в S? 🥺</div>
+      <div class="float-bubble ok" style="bottom:14%;left:-14%">✅ ТТН створено · 59000127…</div>
+      <div class="float-bubble pay" style="bottom:-4%;right:-6%">💰 Оплачено ₴1 250</div>
+    </div>
+  </div>
+  <div class="marquee"><span class="track">Direct ✦ Коментарі ✦ Замовлення ✦ Нова Пошта ✦ Клієнти ✦ Каталог ✦ Аналітика ✦ Monobank ✦ LiqPay ✦ Мультиакаунти ✦ Direct ✦ Коментарі ✦ Замовлення ✦ Нова Пошта ✦ Клієнти ✦ Каталог ✦ Аналітика ✦ Monobank ✦ LiqPay ✦ Мультиакаунти ✦&nbsp;</span></div>
+</header>
+
+<!-- ================= БІЛЬ ================= -->
+<section id="pain">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Знайомо? <span class="hand" style="font-size:.9em">а тепер уяви, що цього не буде</span></h2>
+      <p>Усі ці моменти знайомі тим, хто веде бізнес через Instagram. Ridna робить так, щоб про них можна було забути.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain rv">
+        <div class="prop-note"><s>Оля — біла блуза S</s><br><s>Не оплачено!!</s></div>
+        <h3>Замовлення в нотатках</h3>
+        <p>Записуємо в Нотатки чи блокнот, потім переносимо в таблиці, забуваємо що куди записали.</p>
+      </div>
+      <div class="pain rv">
+        <div class="prop-note"><s>59000123… Оля — чернетка</s><br><s>59000124… Катя — чернетка</s></div>
+        <h3>Кожна ТТН — вручну</h3>
+        <p>Адресу, телефон, відділення, ціну — переписуємо в застосунок НП кожен раз.</p>
+      </div>
+      <div class="pain rv">
+        <div class="prop-badge">📷 → 📝 → 📦 → 📷 → 📝…</div>
+        <h3>Три застосунки одночасно</h3>
+        <p>Instagram, нотатки, Нова Пошта. Постійне перемикання — постійне забування.</p>
+      </div>
+      <div class="pain rv">
+        <div class="prop-bubble"><small>клієнтка</small>Та сама адреса що й завжди)</div>
+        <h3>«А куди надсилаю?»</h3>
+        <p>Клієнт вже писав адресу, але вона десь у переписці. Шукаєш — і втрачаєш час.</p>
+      </div>
+      <div class="pain rv">
+        <div class="prop-note"><s>450 + 320 + 180 = ???</s></div>
+        <h3>Скільки заробили?</h3>
+        <p>Дохід рахуєш у телефоні-калькуляторі. Прибуток? Без поняття.</p>
+      </div>
+      <div class="pain rv">
+        <div class="prop-badge">🔔 23:47 · 14 непрочитаних у Direct</div>
+        <h3>Direct о 23:00</h3>
+        <p>Клієнт пише пізно — відповідаєш, а замовлення фіксувати вже немає сил.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ФІЧІ ================= -->
+<section id="features" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Все, що треба, — <span class="mark">вже всередині</span></h2>
+      <p>Direct, замовлення, оплати, доставка, аналітика — повний цикл продажу в одному додатку.</p>
+    </div>
+
+    <div class="feature rv">
+      <div>
+        <div class="f-num">01 · INSTAGRAM DIRECT + КОМЕНТАРІ</div>
+        <h3>Direct і коментарі — в одному вікні</h3>
+        <p>Усі повідомлення з Direct та коментарі під постами — в одному списку. Активне замовлення видно прямо в шапці чату. Не треба перемикатись між Instagram і чимось ще.</p>
+        <span class="f-tag">⚡ Працює через офіційний Meta API</span>
+      </div>
+      <div class="f-visual"><img src="https://ridna.net/screenshots/chat-detail.png" alt="Instagram Direct" loading="lazy"></div>
+    </div>
+
+    <div class="feature rv">
+      <div>
+        <div class="f-num">02 · ЗАМОВЛЕННЯ + НОВА ПОШТА</div>
+        <h3>ТТН прямо із замовлення</h3>
+        <p>Створюєш замовлення з чату — адреса клієнта вже є. Один тап — і накладна Нової Пошти готова. Клієнт отримує трекінг автоматично.</p>
+        <span class="f-tag">🚚 ТТН за 15 секунд</span>
+      </div>
+      <div class="f-visual"><img src="https://ridna.net/screenshots/ttn.jpg" alt="Замовлення з ТТН" loading="lazy"></div>
+    </div>
+
+    <div class="feature rv">
+      <div>
+        <div class="f-num">03 · КАТАЛОГ ТОВАРІВ</div>
+        <h3>Знай, що в тебе в наявності</h3>
+        <p>Каталог з варіантами — розміри, кольори, ціна, собівартість, залишки. Клієнт питає «А ще є?» — відкриваєш каталог і відповідаєш одразу, без перевірки в Excel.</p>
+        <span class="f-tag">🛍️ Списується автоматично після продажу</span>
+      </div>
+      <div class="f-visual"><img src="https://ridna.net/screenshots/products.png" alt="Каталог товарів" loading="lazy"></div>
+    </div>
+
+    <div class="feature rv">
+      <div>
+        <div class="f-num">04 · ОПЛАТИ — MONOBANK + LIQPAY</div>
+        <h3>Прийом та трекінг оплат</h3>
+        <p>Генеруй посилання на оплату прямо в чаті — Monobank або LiqPay. Як тільки клієнт оплатить, статус оновлюється автоматично. Гроші — на твою ФОП, без посередників.</p>
+        <span class="f-tag">💳 Авто-оновлення статусу платежу</span>
+      </div>
+      <div class="f-visual"><img src="https://ridna.net/screenshots/oplata.jpg" alt="Оплати" loading="lazy"></div>
+    </div>
+
+    <div class="feature rv">
+      <div>
+        <div class="f-num">05 · КАРТКИ КЛІЄНТІВ</div>
+        <h3>Уся історія — в одній картці</h3>
+        <p>Контакт, Instagram-нік, телефон, адреса, замовлення. Бачиш одразу історію клієнта — скільки покупок, які товари, як часто повертається. Постійних — впізнаєш, нових — не загубиш.</p>
+        <span class="f-tag">📒 Контакт-бук без Excel</span>
+      </div>
+      <div class="f-visual"><img src="https://ridna.net/screenshots/contact.png" alt="Картка клієнта" loading="lazy"></div>
+    </div>
+
+    <div class="feature rv">
+      <div>
+        <div class="f-num">06 · АНАЛІТИКА</div>
+        <h3>Нарешті видно, скільки заробили</h3>
+        <p>Виручка, оплати, середній чек, топ-клієнти, топ-товари — за день, тиждень або місяць. Без Excel, без бухгалтерів, без формул.</p>
+        <span class="f-tag">📊 Все в одному екрані</span>
+      </div>
+      <div class="f-visual"><img src="https://ridna.net/screenshots/analytics.png" alt="Аналітика" loading="lazy"></div>
+    </div>
+
+    <div class="perks">
+      <div class="perk rv"><b>📱 Мультиакаунти</b><p>Декілька Instagram-магазинів? Підключай усі — і керуй з одного додатку.</p></div>
+      <div class="perk rv"><b>🔔 Push-сповіщення</b><p>Нові повідомлення, оплати, статуси ТТН — все приходить на телефон.</p></div>
+      <div class="perk rv"><b>🇺🇦 Українською</b><p>Інтерфейс, підтримка, документація — усе рідною. Без англійських термінів і кальок.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ПОРІВНЯННЯ ================= -->
+<section id="compare" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Чому саме <span class="mark">Ridna</span></h2>
+      <p>Чесне порівняння: де Ridna виграє, а де нам ще треба покращитись.</p>
+    </div>
+    <div class="compare rv">
+      <table>
+        <tr><th></th><th class="ridna">Ridna</th><th>SITNIKS</th><th>SalesDrive</th></tr>
+        <tr><td>Стартова ціна за місяць</td><td><b class="yes">₴499</b></td><td>від ₴2 100</td><td>від ₴991</td></tr>
+        <tr><td>Зроблено для мобільного</td><td><b class="yes">Так</b></td><td>Так</td><td>Так</td></tr>
+        <tr><td>Заточено саме під Instagram</td><td><b class="yes">Так</b></td><td>Так</td><td>Універсальна</td></tr>
+        <tr><td>ТТН Нової Пошти в один тап</td><td><b class="yes">Так</b></td><td>Так</td><td>Так</td></tr>
+        <tr><td>Інтеграція Monobank + LiqPay</td><td><b class="yes">Обидва</b></td><td>Часткова</td><td>Часткова</td></tr>
+        <tr><td>Час налаштування</td><td><b class="yes">5 хвилин</b></td><td>Кілька годин</td><td>Кілька годин</td></tr>
+        <tr><td>Маркетплейси (Rozetka, Prom, Etsy)</td><td><span class="no">Плануємо</span></td><td>Так</td><td>Так</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= КРОКИ ================= -->
+<section id="how" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Три кроки — <span class="mark">і ти в системі</span></h2>
+      <p>Без курсів, без інструкцій на 20 сторінок. Просто завантажуй і працюй.</p>
+    </div>
+    <div class="steps">
+      <div class="step rv">
+        <div class="n">01</div>
+        <h3>Завантаж Ridna</h3>
+        <p>Встанови додаток на iPhone або Android. Зареєструйся за хвилину — пошта, пароль, готово.</p>
+        <span class="t hand">≈ 1 хвилина</span>
+      </div>
+      <div class="step rv">
+        <div class="n">02</div>
+        <h3>Підключи Instagram і НП</h3>
+        <p>Один тап для Direct, ще один — для Нової Пошти. Усі повідомлення прилітають в Ridna, ТТН створюються в один дотик.</p>
+        <span class="t hand">≈ 3 хвилини</span>
+      </div>
+      <div class="step rv">
+        <div class="n">03</div>
+        <h3>Працюй без хаосу</h3>
+        <p>Клієнт пише — створюєш замовлення з чату. Один тап — ТТН готова. Клієнт отримує трекінг.</p>
+        <span class="t hand">назавжди 💜</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ТАРИФИ ================= -->
+<section id="pricing" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head rv" style="max-width:none;text-align:center">
+      <h2>Прості тарифи. <span class="mark">Без сюрпризів</span></h2>
+      <p style="margin-left:auto;margin-right:auto;max-width:520px">Обираєш тариф, платиш місяць або рік. Відмовляєшся будь-коли.</p>
+    </div>
+
+    <div class="trial-note rv">
+      <span class="hand">✨ 30 днів безкоштовно</span>
+      <span style="font-weight:600;color:var(--muted)">Тестуй усе без обмежень. Картка не потрібна.</span>
+    </div>
+
+    <div class="plans">
+      <div class="plan rv">
+        <h3>Старт</h3>
+        <div class="price">₴499 <small>/міс</small></div>
+        <p class="for">Для тих, хто щойно стартує або має невеликий магазин з одним акаунтом.</p>
+        <ul>
+          <li><b>✓</b> 100 замовлень на місяць</li>
+          <li><b>✓</b> 30 товарів у каталозі</li>
+          <li><b>✓</b> 1 Instagram акаунт</li>
+          <li><b>✓</b> 1 Нова Пошта акаунт</li>
+          <li><b>✓</b> Чати + коментарі</li>
+          <li><b>✓</b> ТТН за один тап</li>
+          <li><b>✓</b> Повна аналітика</li>
+          <li><b>✓</b> LiqPay + Monobank автоплатежі</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://ridna.net/pay" style="width:100%;justify-content:center">Почати з тарифу Старт</a>
+      </div>
+      <div class="plan pro rv">
+        <div class="flag">Найпопулярніший</div>
+        <h3>Pro</h3>
+        <div class="price">₴799 <small>/міс</small></div>
+        <p class="for">Для магазинів, які ростуть, мають декілька акаунтів і потребують повний набір.</p>
+        <ul>
+          <li><b>✓</b> Безлімітні замовлення</li>
+          <li><b>✓</b> Безлімітний каталог товарів</li>
+          <li><b>✓</b> Кілька Instagram акаунтів</li>
+          <li><b>✓</b> Кілька Нова Пошта акаунтів</li>
+          <li><b>✓</b> Чати + коментарі</li>
+          <li><b>✓</b> ТТН за один тап</li>
+          <li><b>✓</b> Повна аналітика</li>
+          <li><b>✓</b> LiqPay + Monobank автоплатежі</li>
+        </ul>
+        <a class="btn btn-primary" href="https://ridna.net/pay" style="width:100%;justify-content:center">Хочу тариф Pro</a>
+      </div>
+    </div>
+
+    <p class="promo rv">🎁 Перші 33 магазини отримують <b>−33% знижки</b> на перші 3 місяці · <span class="hand" style="font-size:22px">21 з 33 місць ще доступні</span></p>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Питання, які найчастіше задають</h2>
+      <p>Якщо чогось не вистачає — пиши нам у <a href="https://t.me/ridna_crm" style="color:var(--purple);font-weight:800">Telegram</a>.</p>
+    </div>
+    <div class="faq">
+      <details class="rv"><summary>Для кого Ridna підходить найкраще?</summary><p>Для власників Instagram-магазинів, які ведуть продажі самостійно або у невеликій команді. Якщо ти приймаєш замовлення через Direct, відправляєш через Нову Пошту і хочеш нарешті мати все в одному місці — Ridna для тебе.</p></details>
+      <details class="rv"><summary>Мої повідомлення з Direct — це безпечно?</summary><p>Так. Ridna використовує офіційний Instagram Graph API від Meta. Дані шифруються і не передаються третім сторонам. Відключити інтеграцію можна в будь-який момент.</p></details>
+      <details class="rv"><summary>Чи можна відмовитись після знижкових 3 місяців?</summary><p>Так, без жодних зобов'язань. Через 3 місяці зі знижкою ціна стане звичайною — ти сама вирішиш, чи продовжувати.</p></details>
+      <details class="rv"><summary>А якщо у мене вже є інший CRM?</summary><p>Перенесемо контакти, замовлення і товари. Напиши нам у Telegram — допоможемо з міграцією особисто.</p></details>
+      <details class="rv"><summary>Працює на Android чи тільки на iPhone?</summary><p>І на iOS, і на Android. В Google Play і App Store одночасно.</p></details>
+      <details class="rv"><summary>Що з підтримкою?</summary><p>Пиши нам у Telegram — відповідаємо особисто, зазвичай за пару годин.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ФІНАЛ ================= -->
+<section id="download" style="padding-top:20px">
+  <div class="wrap">
+    <div class="final rv">
+      <div class="pill-note">Вже в App Store та Google Play</div>
+      <h2>Готова спростити <span class="mark">свій бізнес?</span></h2>
+      <p>Завантаж Ridna і отримай −33% на перші 3 місяці — для перших 33 магазинів.</p>
+      <div class="hero-cta">
+        <a class="btn btn-dark" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk"> App Store</a>
+        <a class="btn btn-ghost" href="https://play.google.com/store/apps/details?id=net.ridna.app">▶ Google Play</a>
+      </div>
+      <div class="hero-badges">
+        <span><b>−33%</b> перші 3 місяці</span>
+        <span><b>Без картки</b></span>
+        <span><b>5 хв</b> на налаштування</span>
+      </div>
+      <p style="margin-top:26px"><a class="hand" href="https://t.me/ridna_crm" style="font-size:24px">Питання? Пиши в Telegram →</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <img class="logo" src="https://ridna.net/logo2.svg" alt="Ridna" style="height:26px">
+    <div class="foot-links">
+      <a href="#features">Можливості</a>
+      <a href="#pricing">Тарифи</a>
+      <a href="https://ridna.net/privacy-policy.html">Конфіденційність</a>
+      <a href="https://ridna.net/terms-of-service.html">Умови</a>
+      <a href="https://ridna.net/refund-policy.html">Обмін і повернення</a>
+      <a href="https://t.me/ridna_crm">Telegram</a>
+    </div>
+    <span>© 2026 Ridna · Зроблено в Україні 🇺🇦</span>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
