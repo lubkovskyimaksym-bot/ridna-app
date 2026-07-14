@@ -103,6 +103,8 @@
     .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; transition: color 0.2s; }
     .nav-links a:hover { color: var(--text); }
+    /* Дві кнопки (Вхід + Звʼязатись) поруч, з окремим відступом від табів. */
+    .nav-actions { display: flex; align-items: center; gap: 10px; margin-left: 16px; }
     .nav-pill {
       background: var(--purple) !important; color: #fff !important;
       box-sizing: border-box; border: 1px solid transparent; line-height: 1;
@@ -132,11 +134,14 @@
       display: inline-flex; align-items: center; gap: 8px;
       border: 1px solid rgba(147,51,234,0.35);
       background: rgba(147,51,234,0.1);
-      border-radius: 100px; padding: 8px 18px;
+      border-radius: 12px; padding: 8px 18px;
       font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
       color: var(--purple-mid); margin-bottom: 36px;
       animation: fadeUp 0.6s ease both;
     }
+    /* #2: два клікабельні бейджі iOS/Android поруч. */
+    .hero-badges { display: inline-flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; animation: fadeUp 0.6s ease both; }
+    .hero-badges .hero-badge { margin-bottom: 0; }
     .pulse {
       width: 7px; height: 7px; background: var(--purple); border-radius: 50%;
       animation: pulse 2s infinite;
@@ -153,7 +158,15 @@
     }
     .h1-line { display: block; }
     .h1-sm { font-size: clamp(22px, 2.6vw, 32px); font-weight: 600; color: var(--text-soft); letter-spacing: -0.5px; margin-bottom: 6px; }
-    .h1-lg { font-size: clamp(56px, 8.5vw, 110px); color: #fff; }
+    /* БЕЗ + хвіст в одному блоці → рівні відступи між усіма великими рядками. */
+    .h1-big { font-size: clamp(56px, 8.5vw, 110px); }
+    .h1-w { display: block; color: #fff; line-height: 0.74; }
+    .h1-g {
+      display: block;
+      background: linear-gradient(135deg, #9333EA 0%, #C4B5FD 60%, #fff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .h1-lg { font-size: clamp(56px, 8.5vw, 110px); color: #fff; margin-bottom: -0.1em; }
     .h1-stroke {
       font-size: clamp(56px, 8.5vw, 110px);
       color: transparent;
@@ -197,6 +210,13 @@
     }
     .btn-ghost:hover { border-color: var(--border-bright); background: rgba(147,51,234,0.05); }
     button.btn-ghost { cursor: pointer; font: inherit; }
+    /* #3: акцент на «Подивитись як працює» — фіолетова рамка + підсвітка. */
+    .video-trigger {
+      border-color: var(--purple); background: rgba(147,51,234,0.08);
+      color: var(--text); font-weight: 700;
+      box-shadow: 0 0 24px rgba(147,51,234,0.25);
+    }
+    .video-trigger:hover { background: rgba(147,51,234,0.14); box-shadow: 0 0 34px rgba(147,51,234,0.42); }
 
     /* STORE BUTTONS */
     .store-btn {
@@ -268,16 +288,16 @@
       background: rgba(255,255,255,0.02);
     }
     .runway-track {
-      display: flex; gap: 36px; width: max-content;
+      display: flex; gap: 24px; width: max-content;
       animation: scroll 38s linear infinite; align-items: center;
     }
     @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     .runway-item {
       font-family: 'Unbounded', sans-serif;
       font-size: 18px; font-weight: 700; color: var(--text-soft);
-      white-space: nowrap; display: inline-flex; align-items: center; gap: 16px;
+      white-space: nowrap; display: inline-flex; align-items: center; gap: 24px;
     }
-    .runway-star { color: var(--purple); font-size: 14px; }
+    .runway-star { color: var(--purple); font-size: 11px; line-height: 1; position: relative; top: -1px; }
 
     /* SECTION */
     .section {
@@ -533,7 +553,7 @@
       background: rgba(255,255,255,0.06);
       backdrop-filter: blur(14px);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 12px 16px;
       font-size: 13px; font-weight: 600;
       color: #fff;
@@ -554,7 +574,7 @@
       letter-spacing: -3px; margin-bottom: 10px;
     }
     .fr-tag {
-      display: inline-block; padding: 5px 12px; border-radius: 100px;
+      display: inline-block; padding: 5px 12px; border-radius: 10px;
       background: rgba(147,51,234,0.15); border: 1px solid rgba(147,51,234,0.3);
       font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--purple-mid);
       text-transform: uppercase; margin-bottom: 18px;
@@ -570,8 +590,8 @@
     }
     .fr-pill {
       display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface-2); border: 1px solid var(--border);
-      border-radius: 100px; padding: 9px 16px;
+      background: rgba(147,51,234,0.1); border: 1px solid rgba(147,51,234,0.28);
+      border-radius: 12px; padding: 9px 16px;
       font-size: 13px; font-weight: 600; color: var(--text);
     }
 
@@ -720,7 +740,11 @@
       font-size: 12px; color: var(--muted); font-weight: 600;
       display: inline-flex; align-items: center; gap: 6px;
     }
-    .step-mini-meta::before { content: '⏱'; }
+    .step-mini-meta::before {
+      content: ''; width: 1em; height: 1em; flex-shrink: 0; background: currentColor;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center / contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
 
     /* PRICING + BILLING TOGGLE */
     .billing-toggle {
@@ -804,8 +828,15 @@
       margin-bottom: 16px;
     }
     .price-amount {
-      display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px;
+      display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;
     }
+    .price-save {
+      margin-left: auto; align-self: center;
+      font-size: 12px; font-weight: 700; color: var(--purple-light);
+      background: rgba(147,51,234,0.12); border: 1px solid rgba(147,51,234,0.3);
+      border-radius: 8px; padding: 4px 9px; white-space: nowrap;
+    }
+    .price-save:empty { display: none; }
     .price-num {
       font-family: 'Unbounded', sans-serif;
       font-size: 56px; font-weight: 900; line-height: 1;
@@ -821,10 +852,11 @@
     .price-savings {
       display: inline-block;
       margin-top: 4px;
-      color: var(--success);
+      color: var(--purple-light);
       font-weight: 700;
       font-size: 12px;
     }
+    .price-yearly-total { font-weight: 700; font-size: 15px; color: var(--text); }
     .price-desc {
       font-size: 14px; color: var(--text-soft); margin-bottom: 24px;
       padding-bottom: 24px; border-bottom: 1px solid var(--border);
@@ -842,7 +874,7 @@
     .price-list li.highlight {
       color: #fff; font-weight: 600;
     }
-    .price-list li.highlight::before { color: var(--success); }
+    .price-list li.highlight::before { color: var(--purple-light); }
     .price-list li.dim {
       color: var(--muted);
       opacity: 0.7;
@@ -1272,7 +1304,7 @@
       .nav-pill { padding: 10px 16px !important; font-size: 12px !important; }
       .hero { padding: 120px 20px 40px; }
       .hero-phone { width: 240px; }
-      .h1-lg, .h1-stroke, .h1-grad { font-size: 50px; letter-spacing: -1.5px; }
+      .h1-lg, .h1-stroke, .h1-grad, .h1-big { font-size: 50px; letter-spacing: -1.5px; }
       .section { padding: 80px 20px; }
       .znayomo-grid { grid-template-columns: 1fr; }
       .mini-grid { grid-template-columns: 1fr; }
@@ -1284,9 +1316,83 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
+    /* ===== CONTACT MODAL (#12) ===== */
+    .contact-modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .contact-modal.open { display: flex; }
+    .contact-modal-backdrop { position: absolute; inset: 0; background: rgba(6,4,15,0.72); backdrop-filter: blur(4px); }
+    .contact-modal-card {
+      position: relative; z-index: 1; width: 100%; max-width: 460px;
+      background: var(--bg-2); border: 1px solid var(--border); border-radius: 24px;
+      padding: 34px 32px; box-shadow: 0 40px 90px -20px rgba(0,0,0,0.65);
+      animation: fadeUp 0.35s ease both;
+    }
+    .contact-modal-close {
+      position: absolute; top: 16px; right: 16px; width: 34px; height: 34px;
+      border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--text); cursor: pointer; font-size: 18px; line-height: 1;
+      display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+    }
+    .contact-modal-close:hover { background: rgba(147,51,234,0.15); }
+    .contact-modal-card h3 { font-family: 'Unbounded', sans-serif; font-size: 22px; margin-bottom: 6px; letter-spacing: -0.5px; }
+    .contact-modal-card .c-sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+    .contact-field {
+      display: block; width: 100%; margin-bottom: 12px; padding: 13px 15px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px;
+    }
+    .contact-field::placeholder { color: var(--muted); }
+    .contact-field:focus { outline: none; border-color: var(--purple); }
+    textarea.contact-field { resize: vertical; min-height: 96px; }
+    .contact-hp { position: absolute; left: -9999px; width: 0; height: 0; opacity: 0; }
+    .contact-submit {
+      width: 100%; margin-top: 4px; padding: 14px; border: none; border-radius: 100px;
+      background: var(--purple); color: #fff; font-weight: 700; font-size: 15px; cursor: pointer;
+      box-shadow: 0 0 30px rgba(147,51,234,0.4); transition: transform 0.15s;
+    }
+    .contact-submit:hover { transform: translateY(-1px); }
+    .contact-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+    .contact-status { font-size: 14px; margin-top: 12px; text-align: center; min-height: 18px; }
+    .contact-details { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 14px; color: var(--text-soft); }
+    .contact-details a { color: var(--purple-mid); font-weight: 700; text-decoration: none; }
+    .contact-details a:hover { text-decoration: underline; }
+
+    /* ===== ЛАЙН-ІКОНКИ (замість емодзі) ===== */
+    .ic {
+      width: 1.2em; height: 1.2em; display: inline-block; vertical-align: -0.2em;
+      stroke: currentColor; fill: none; stroke-width: 2;
+      stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
+    }
+    .app-icon .ic { width: 34px; height: 34px; }
+    .mini-icon-wrap .ic { width: 28px; height: 28px; }
   </style>
 </head>
 <body>
+<!-- Спрайт лайн-іконок (Lucide-стиль). Використання: <svg class="ic"><use href="#ic-name"/></svg> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="ic-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17l-1.9-5.1L4.5 10l5.6-1.4z"/></symbol>
+  <symbol id="ic-gift" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="1"/><rect x="3" y="7" width="18" height="3"/><line x1="12" y1="7" x2="12" y2="20"/><circle cx="9" cy="5.5" r="2"/><circle cx="15" cy="5.5" r="2"/></symbol>
+  <symbol id="ic-smartphone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></symbol>
+  <symbol id="ic-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="ic-note" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></symbol>
+  <symbol id="ic-package" viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5"/><line x1="12" y1="12" x2="12" y2="22"/></symbol>
+  <symbol id="ic-message" viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></symbol>
+  <symbol id="ic-zap" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></symbol>
+  <symbol id="ic-truck" viewBox="0 0 24 24"><rect x="1" y="6" width="14" height="10" rx="1"/><path d="M15 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+  <symbol id="ic-bag" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+  <symbol id="ic-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></symbol>
+  <symbol id="ic-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h12v4"/><rect x="3" y="7" width="18" height="12" rx="2"/><circle cx="17" cy="13" r="1.4"/></symbol>
+  <symbol id="ic-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 21S4 14 4 8.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 8 2.5C20 14 12 21 12 21z"/></symbol>
+  <symbol id="ic-book" viewBox="0 0 24 24"><path d="M5 4a2 2 0 0 1 2-2h12v18H7a2 2 0 0 0-2 2z"/><line x1="9" y1="7" x2="16" y2="7"/></symbol>
+  <symbol id="ic-chart" viewBox="0 0 24 24"><line x1="6" y1="20" x2="6" y2="12"/><line x1="12" y1="20" x2="12" y2="7"/><line x1="18" y1="20" x2="18" y2="14"/></symbol>
+  <symbol id="ic-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-7"/><path d="M17 8h4v4"/></symbol>
+  <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 7 2 7H4s2-2 2-7z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="ic-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 5h11l-2 3 2 3H5"/></symbol>
+  <symbol id="ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="ic-arrow-ur" viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></symbol>
+</defs></svg>
 
 <div class="aurora">
   <div class="aurora-orb a1"></div>
@@ -1306,19 +1412,25 @@
     <li><a href="#features">Можливості</a></li>
     <li><a href="#how">Як працює</a></li>
     <li><a href="#pricing">Тарифи</a></li>
-    <li><a href="/pay" class="nav-pill nav-pill-ghost">Вхід</a></li>
-    <li><a href="#download" class="nav-pill">Завантажити</a></li>
+    <li class="nav-actions">
+      <a href="/pay" class="nav-pill nav-pill-ghost">Вхід</a>
+      <a href="#" data-contact-open class="nav-pill">Звʼязатись</a>
+    </li>
   </ul>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-badge"><span class="pulse"></span> В App Store та Google Play</div>
+    <div class="hero-badges">
+      <span class="hero-badge"><svg class="ic"><use href="#ic-sparkle"/></svg> 30 днів безкоштовно</span>
+      <span class="hero-badge"><svg class="ic"><use href="#ic-gift"/></svg> −33% на 3 місяці</span>
+      <span class="hero-badge"><svg class="ic"><use href="#ic-smartphone"/></svg> iOS та Android</span>
+    </div>
     <h1 class="hero-h1">
       <span class="h1-line h1-sm">Твій Instagram-магазин</span>
       <span class="h1-line h1-lg">БЕЗ</span>
-      <span class="h1-line h1-stroke">ХАОСУ</span>
+      <span class="h1-line h1-grad">хаосу</span>
       <span class="h1-line h1-grad">і&nbsp;блокнота</span>
     </h1>
     <p class="hero-sub">Мобільний CRM для всіх, хто продає через Instagram. Direct, замовлення, клієнти, оплати і ТТН Нової Пошти — в одному додатку. Без таблиць, без трьох застосунків одночасно.</p>
@@ -1331,14 +1443,7 @@
         <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
         <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
       </a>
-      <button type="button" class="btn-ghost video-trigger">▶ Подивитись як працює</button>
-    </div>
-    <div class="hero-meta">
-      <span class="hero-meta-item">✨ 30 днів безкоштовно</span>
-      <span class="hero-meta-dot"></span>
-      <span class="hero-meta-item">🎁 −33% на 3 місяці</span>
-      <span class="hero-meta-dot"></span>
-      <span class="hero-meta-item">📱 iOS та Android</span>
+      <button type="button" class="btn-ghost video-trigger"><svg class="ic"><use href="#ic-play"/></svg> Подивитись як працює</button>
     </div>
   </div>
   <div class="hero-phone-wrap">
@@ -1380,7 +1485,7 @@
 <!-- ЗНАЙОМО? -->
 <section class="section">
   <div class="section-header reveal">
-    <h2 class="section-h2">Знайомо?<br>А тепер уяви <span class="accent">що цього не буде</span>.</h2>
+    <h2 class="section-h2">Знайомо? А тепер уяви<br><span class="accent">що цього не буде.</span></h2>
     <p class="section-lead">Усі ці моменти знайомі тим, хто веде бізнес через Instagram. Ridna робить так, щоб про них можна було забути.</p>
   </div>
 
@@ -1420,9 +1525,9 @@
     <div class="pain-card reveal d2">
       <div class="pain-visual">
         <div class="v-apps">
-          <div class="app-icon">📷</div>
-          <div class="app-icon">📝</div>
-          <div class="app-icon">📦</div>
+          <div class="app-icon"><svg class="ic"><use href="#ic-camera"/></svg></div>
+          <div class="app-icon"><svg class="ic"><use href="#ic-note"/></svg></div>
+          <div class="app-icon"><svg class="ic"><use href="#ic-package"/></svg></div>
         </div>
       </div>
       <div class="pain-text">
@@ -1436,7 +1541,7 @@
         <div class="v-question">
           <div class="bubble me">Доброго дня! Підкажіть адресу доставки</div>
           <div class="bubble them">Та сама що й завжди)</div>
-          <div class="bubble me">Перепрошую… шукаю 5 хвилин 😅</div>
+          <div class="bubble me">Перепрошую… шукаю 5 хвилин</div>
         </div>
       </div>
       <div class="pain-text">
@@ -1489,7 +1594,7 @@
 <!-- FEATURES -->
 <section class="section" id="features">
   <div class="section-header reveal">
-    <h2 class="section-h2">Все що треба —<br><span class="accent">вже всередині</span>.</h2>
+    <h2 class="section-h2">Все що треба —<br><span class="accent">вже всередині.</span></h2>
     <p class="section-lead">Direct, замовлення, оплати, доставка, аналітика — повний цикл продажу в одному додатку.</p>
   </div>
 
@@ -1502,14 +1607,14 @@
         </div>
       </div>
       <div class="fr-floater f-top"><span class="dot"></span> Нове повідомлення</div>
-      <div class="fr-floater f-bot">💬 Direct + Коментарі</div>
+      <div class="fr-floater f-bot"><svg class="ic"><use href="#ic-message"/></svg> Direct + Коментарі</div>
     </div>
     <div>
       <div class="fr-num">01</div>
       <div class="fr-tag">Instagram Direct + Коментарі</div>
       <h3 class="fr-title">Direct і коментарі — в одному вікні</h3>
       <p class="fr-desc">Усі повідомлення з Direct та коментарі під постами — в одному списку. Активне замовлення видно прямо в шапці чату. Не треба перемикатись між Instagram і чимось ще.</p>
-      <div class="fr-pill">⚡ Працює через офіційний Meta API</div>
+      <div class="fr-pill"><svg class="ic"><use href="#ic-zap"/></svg> Працює через офіційний Meta API</div>
     </div>
   </div>
 
@@ -1519,7 +1624,7 @@
       <div class="fr-tag">Замовлення + Нова Пошта</div>
       <h3 class="fr-title">ТТН прямо із замовлення</h3>
       <p class="fr-desc">Створюєш замовлення з чату — адреса клієнта вже є. Один тап — і накладна Нової Пошти готова. Клієнт отримує трекінг автоматично.</p>
-      <div class="fr-pill">🚚 ТТН за 15 секунд</div>
+      <div class="fr-pill"><svg class="ic"><use href="#ic-truck"/></svg> ТТН за 15 секунд</div>
     </div>
     <div class="fr-phone">
       <div class="feat-phone">
@@ -1528,7 +1633,7 @@
           <img src="screenshots/ttn.jpg" alt="Замовлення з ТТН" />
         </div>
       </div>
-      <div class="fr-floater f-top">✅ ТТН створено</div>
+      <div class="fr-floater f-top"><svg class="ic"><use href="#ic-check"/></svg> ТТН створено</div>
       <div class="fr-floater f-bot"><span class="dot"></span> Доставлено</div>
     </div>
   </div>
@@ -1541,7 +1646,7 @@
           <img src="screenshots/products.png" alt="Каталог товарів" />
         </div>
       </div>
-      <div class="fr-floater f-top">📦 24 позиції</div>
+      <div class="fr-floater f-top"><svg class="ic"><use href="#ic-package"/></svg> 24 позиції</div>
       <div class="fr-floater f-bot"><span class="dot"></span> В наявності</div>
     </div>
     <div>
@@ -1549,7 +1654,7 @@
       <div class="fr-tag">Каталог товарів</div>
       <h3 class="fr-title">Знай що в тебе в наявності</h3>
       <p class="fr-desc">Каталог з варіантами — розміри, кольори, ціна, собівартість, залишки. Клієнт питає «А ще є?» — відкриваєш каталог і відповідаєш одразу, без перевірки в Excel.</p>
-      <div class="fr-pill">🛍️ Списується автоматично після продажу</div>
+      <div class="fr-pill"><svg class="ic"><use href="#ic-bag"/></svg> Списується автоматично після продажу</div>
     </div>
   </div>
 
@@ -1559,7 +1664,7 @@
       <div class="fr-tag">Оплати — Monobank + LiqPay</div>
       <h3 class="fr-title">Прийом та трекінг оплат</h3>
       <p class="fr-desc">Генеруй посилання на оплату прямо в чаті — Monobank або LiqPay. Як тільки клієнт оплатить, статус оновлюється автоматично. Гроші — на твою FOP, без посередників.</p>
-      <div class="fr-pill">💳 Авто-оновлення статусу платежу</div>
+      <div class="fr-pill"><svg class="ic"><use href="#ic-card"/></svg> Авто-оновлення статусу платежу</div>
     </div>
     <div class="fr-phone">
       <div class="feat-phone">
@@ -1568,8 +1673,8 @@
           <img src="screenshots/oplata.jpg" alt="Оплати" />
         </div>
       </div>
-      <div class="fr-floater f-top">💰 Оплачено ₴1 250</div>
-      <div class="fr-floater f-bot">↗ Monobank</div>
+      <div class="fr-floater f-top"><svg class="ic"><use href="#ic-wallet"/></svg> Оплачено ₴1 250</div>
+      <div class="fr-floater f-bot"><svg class="ic"><use href="#ic-arrow-ur"/></svg> Monobank</div>
     </div>
   </div>
 
@@ -1581,15 +1686,15 @@
           <img src="screenshots/contact.png" alt="Картка клієнта" />
         </div>
       </div>
-      <div class="fr-floater f-top">👤 12 замовлень</div>
-      <div class="fr-floater f-bot">💜 Постійний</div>
+      <div class="fr-floater f-top"><svg class="ic"><use href="#ic-user"/></svg> 12 замовлень</div>
+      <div class="fr-floater f-bot"><svg class="ic"><use href="#ic-heart"/></svg> Постійний</div>
     </div>
     <div>
       <div class="fr-num">05</div>
       <div class="fr-tag">Картки клієнтів</div>
       <h3 class="fr-title">Уся історія — в одній картці</h3>
       <p class="fr-desc">Контакт, Instagram-нік, телефон, адреса, замовлення. Бачиш одразу історію клієнта — скільки покупок, які товари, як часто повертається. Постійних — впізнаєш, нових — не загубиш.</p>
-      <div class="fr-pill">📒 Контакт-бук без Excel</div>
+      <div class="fr-pill"><svg class="ic"><use href="#ic-book"/></svg> Контакт-бук без Excel</div>
     </div>
   </div>
 
@@ -1599,7 +1704,7 @@
       <div class="fr-tag">Аналітика</div>
       <h3 class="fr-title">Нарешті видно скільки заробили</h3>
       <p class="fr-desc">Виручка, оплати, середній чек, топ-клієнти, топ-товари — за день, тиждень або місяць. Без Excel, без бухгалтерів, без формул.</p>
-      <div class="fr-pill">📊 Все в одному екрані</div>
+      <div class="fr-pill"><svg class="ic"><use href="#ic-chart"/></svg> Все в одному екрані</div>
     </div>
     <div class="fr-phone">
       <div class="feat-phone">
@@ -1608,24 +1713,24 @@
           <img src="screenshots/analytics.png" alt="Аналітика" />
         </div>
       </div>
-      <div class="fr-floater f-top">📈 +24% до місяця</div>
-      <div class="fr-floater f-bot">💰 ₴48 200</div>
+      <div class="fr-floater f-top"><svg class="ic"><use href="#ic-trend"/></svg> +24% до місяця</div>
+      <div class="fr-floater f-bot"><svg class="ic"><use href="#ic-wallet"/></svg> ₴48 200</div>
     </div>
   </div>
 
   <div class="mini-grid">
     <div class="mini-card reveal">
-      <div class="mini-icon-wrap">📱</div>
+      <div class="mini-icon-wrap"><svg class="ic"><use href="#ic-smartphone"/></svg></div>
       <div class="mini-title">Мультиакаунти</div>
       <div class="mini-desc">Декілька Instagram-магазинів? Підключай усі — і керуй з одного додатку.</div>
     </div>
     <div class="mini-card reveal d1">
-      <div class="mini-icon-wrap">🔔</div>
+      <div class="mini-icon-wrap"><svg class="ic"><use href="#ic-bell"/></svg></div>
       <div class="mini-title">Push-сповіщення</div>
       <div class="mini-desc">Нові повідомлення, оплати, статуси ТТН — все приходить на телефон.</div>
     </div>
     <div class="mini-card reveal d2">
-      <div class="mini-icon-wrap">🇺🇦</div>
+      <div class="mini-icon-wrap"><svg class="ic"><use href="#ic-flag"/></svg></div>
       <div class="mini-title">Українською</div>
       <div class="mini-desc">Інтерфейс, підтримка, документація — усе рідною. Без англійських термінів і кальок.</div>
     </div>
@@ -1643,28 +1748,28 @@
     <div class="compare-row head">
       <div class="compare-cell head" style="justify-content:flex-start">&nbsp;</div>
       <div class="compare-cell head head-ridna">Ridna</div>
+      <div class="compare-cell head hide-mobile">KeyCRM</div>
       <div class="compare-cell head hide-mobile">SITNIKS</div>
-      <div class="compare-cell head hide-mobile">SalesDrive</div>
     </div>
 
     <div class="compare-row">
       <div class="compare-cell label">Стартова ціна за місяць</div>
       <div class="compare-cell val-ridna">₴499</div>
+      <div class="compare-cell val hide-mobile">від ₴1 690</div>
       <div class="compare-cell val hide-mobile">від ₴2 100</div>
-      <div class="compare-cell val hide-mobile">від ₴991</div>
     </div>
 
     <div class="compare-row">
       <div class="compare-cell label">Зроблено для мобільного</div>
       <div class="compare-cell val-ridna"><span class="compare-tick yes">Так</span></div>
-      <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
+      <div class="compare-cell val hide-mobile"><span class="compare-tick partial">Частково</span></div>
       <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
     </div>
 
     <div class="compare-row">
       <div class="compare-cell label">Заточено саме під Instagram</div>
       <div class="compare-cell val-ridna"><span class="compare-tick yes">Так</span></div>
-      <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
+      <div class="compare-cell val hide-mobile"><span class="compare-tick partial">Універсальна</span></div>
       <div class="compare-cell val hide-mobile"><span class="compare-tick partial">Універсальна</span></div>
     </div>
 
@@ -1703,8 +1808,9 @@
 <!-- STEPS -->
 <section class="section" id="how">
   <div class="section-header reveal">
-    <h2 class="section-h2">Три кроки —<br>і ти <span class="accent">в системі</span>.</h2>
+    <h2 class="section-h2">Три кроки —<br>і ти <span class="accent">в системі.</span></h2>
     <p class="section-lead">Без курсів, без інструкцій на 20 сторінок. Просто завантажуй і працюй.</p>
+    <div style="margin-top: 22px;"><button type="button" class="btn-ghost video-trigger"><svg class="ic"><use href="#ic-play"/></svg> Подивитись як працює</button></div>
   </div>
 
   <div class="steps-grid">
@@ -1745,7 +1851,7 @@
   <div class="trial-callout reveal d0" aria-hidden="false">
     <div class="trial-callout-glow"></div>
     <div class="trial-callout-icon">
-      <span class="trial-sparkle">✨</span>
+      <span class="trial-sparkle"><svg class="ic"><use href="#ic-sparkle"/></svg></span>
     </div>
     <div class="trial-callout-text">
       <div class="trial-callout-title">30 днів безкоштовно</div>
@@ -1759,6 +1865,7 @@
       <div class="price-amount">
         <span class="price-num" data-month="₴499" data-year="₴399">₴499</span>
         <span class="price-period">/міс</span>
+        <span class="price-save" data-save></span>
       </div>
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
       <div class="price-desc">Для тих, хто щойно стартує або має невеликий магазин з одним акаунтом.</div>
@@ -1782,6 +1889,7 @@
       <div class="price-amount">
         <span class="price-num" data-month="₴799" data-year="₴639">₴799</span>
         <span class="price-period">/міс</span>
+        <span class="price-save" data-save></span>
       </div>
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
       <div class="price-desc">Для магазинів які ростуть, мають декілька акаунтів і потребують повний набір.</div>
@@ -1790,18 +1898,18 @@
         <li class="highlight">Безлімітний каталог товарів</li>
         <li class="highlight">Кілька Instagram акаунтів</li>
         <li class="highlight">Кілька Нова Пошта акаунтів</li>
+        <li class="highlight">LiqPay автоплатежі</li>
+        <li class="highlight">Monobank автоплатежі</li>
         <li>Чати + коментарі</li>
         <li>Створення ТТН за один тап</li>
         <li>Повна аналітика</li>
-        <li class="highlight">LiqPay автоплатежі</li>
-        <li class="highlight">Monobank автоплатежі</li>
       </ul>
       <a href="/pay" class="price-cta solid">Хочу тариф Pro</a>
     </div>
   </div>
 
   <div class="offer-strip reveal d3">
-    <div class="offer-text">🎁 Перші 33 магазини отримують −33% знижки на перші 3 місяці</div>
+    <div class="offer-text"><svg class="ic"><use href="#ic-gift"/></svg> Перші 33 магазини отримують −33% знижки на перші 3 місяці</div>
     <div class="offer-counter">21 з 33 місць ще доступні</div>
   </div>
 </section>
@@ -1861,8 +1969,12 @@
 <!-- FINAL -->
 <section class="section" id="download">
   <div class="final-banner reveal">
-    <div class="final-eyebrow">Вже в App Store та Google Play</div>
-    <h2 class="final-h2">Готові спростити<br>свій <span class="accent">бізнес</span>?</h2>
+    <div class="hero-badges" style="display:flex; justify-content:center; margin-bottom:22px;">
+      <span class="hero-badge"><svg class="ic"><use href="#ic-gift"/></svg> −33% перші 3 місяці</span>
+      <span class="hero-badge"><svg class="ic"><use href="#ic-card"/></svg> Без картки</span>
+      <span class="hero-badge"><svg class="ic"><use href="#ic-clock"/></svg> 5 хв на налаштування</span>
+    </div>
+    <h2 class="final-h2">Готові спростити<br>свій <span class="accent">бізнес?</span></h2>
     <p class="final-p">Завантаж Ridna і отримай −33% на перші 3 місяці — для перших 33 магазинів.</p>
     <div class="final-cta-stack">
       <div class="hero-cta" style="justify-content:center;">
@@ -1874,11 +1986,6 @@
           <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
           <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
         </a>
-      </div>
-      <div class="final-note">
-        <span>−33% перші 3 місяці</span>
-        <span>Без картки</span>
-        <span>5 хв на налаштування</span>
       </div>
     </div>
   </div>
@@ -2008,15 +2115,17 @@
     yearlyHints.forEach((el, i) => {
       const card = el.closest('.price-card');
       const num = card.querySelector('.price-num');
+      const saveBadge = card.querySelector('[data-save]');
       if (period === 'year') {
         const yearMonthly = parseInt(num.dataset.year.replace(/\D/g, ''));
         const monthMonthly = parseInt(num.dataset.month.replace(/\D/g, ''));
         const yearTotal = yearMonthly * 12;
         const savings = (monthMonthly - yearMonthly) * 12;
         const fmt = (n) => n.toLocaleString('uk-UA').replace(',', ' ');
-        el.innerHTML = `₴${fmt(yearTotal)} разово / рік` +
-          `<br><span class="price-savings">💰 Економиш ₴${fmt(savings)} на рік</span>`;
+        if (saveBadge) saveBadge.textContent = `Економія ₴${fmt(savings)}/рік`;
+        el.innerHTML = `<span class="price-yearly-total">₴${fmt(yearTotal)} разово / рік</span>`;
       } else {
+        if (saveBadge) saveBadge.textContent = '';
         el.innerHTML = '&nbsp;';
       }
     });
@@ -2124,5 +2233,84 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && videoModal.classList.contains('open')) closeVideo(); });
 </script>
 
+<!-- CONTACT MODAL (#12) -->
+<div class="contact-modal" id="contactModal" aria-hidden="true">
+  <div class="contact-modal-backdrop" data-contact-close></div>
+  <div class="contact-modal-card" role="dialog" aria-modal="true" aria-label="Звʼязатись з нами">
+    <button class="contact-modal-close" data-contact-close aria-label="Закрити">×</button>
+    <h3>Звʼязатись з нами</h3>
+    <p class="c-sub">Напиши — відповімо зазвичай за пару годин.</p>
+    <form id="contactForm" novalidate>
+      <input class="contact-field" name="name" type="text" placeholder="Твоє імʼя" maxlength="100" autocomplete="name" required />
+      <input class="contact-field" name="social" type="text" placeholder="Telegram або Instagram (@нік)" maxlength="200" required />
+      <input class="contact-field" name="phone" type="tel" placeholder="Номер телефону" maxlength="30" autocomplete="tel" required />
+      <textarea class="contact-field" name="message" placeholder="Повідомлення" maxlength="2000" required></textarea>
+      <input class="contact-hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="contact-submit" type="submit">Надіслати</button>
+      <div class="contact-status" id="contactStatus" aria-live="polite"></div>
+    </form>
+    <div class="contact-details">
+      Або напряму в <a href="https://t.me/ridna_crm" target="_blank" rel="noopener">Telegram @ridna_crm</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const modal = document.getElementById('contactModal');
+    const form = document.getElementById('contactForm');
+    const statusEl = document.getElementById('contactStatus');
+    if (!modal || !form) return;
+    const ENDPOINT = 'https://hydpowjmbadpjtcvwfvo.supabase.co/functions/v1/contact-form';
+
+    const open = () => { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); };
+    const close = () => { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); };
+
+    document.querySelectorAll('[data-contact-open]').forEach((b) =>
+      b.addEventListener('click', (e) => { e.preventDefault(); statusEl.textContent = ''; open(); }));
+    modal.querySelectorAll('[data-contact-close]').forEach((b) => b.addEventListener('click', close));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('.contact-submit');
+      const social = form.social.value.trim();
+      const phone = form.phone.value.trim();
+      const payload = {
+        name: form.name.value,
+        contact: [social && `TG/IG: ${social}`, phone && `Тел: ${phone}`].filter(Boolean).join(' · '),
+        message: form.message.value, hp: form.hp.value,
+      };
+      if (!form.name.value.trim() || !social || !phone || !form.message.value.trim()) {
+        statusEl.style.color = 'var(--danger)';
+        statusEl.textContent = 'Заповни всі поля';
+        return;
+      }
+      btn.disabled = true;
+      statusEl.style.color = 'var(--muted)';
+      statusEl.textContent = 'Надсилаємо…';
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+        });
+        const j = await res.json().catch(() => ({}));
+        if (res.ok && j.ok) {
+          statusEl.style.color = 'var(--success)';
+          statusEl.textContent = 'Готово! Ми на звʼязку';
+          form.reset();
+          setTimeout(close, 1800);
+        } else {
+          statusEl.style.color = 'var(--danger)';
+          statusEl.textContent = 'Не вдалось надіслати. Спробуй ще або пиши в Telegram';
+        }
+      } catch (_) {
+        statusEl.style.color = 'var(--danger)';
+        statusEl.textContent = 'Немає звʼязку. Спробуй ще або пиши в Telegram';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  })();
+</script>
 </body>
 </html>
