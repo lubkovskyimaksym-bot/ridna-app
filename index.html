@@ -2394,6 +2394,10 @@
       root.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
+    // Живо слідкуємо за темою пристрою, якщо юзер не вибирав вручну.
+    try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!localStorage.getItem('theme')) document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }); } catch (e) {}
   })();
 </script>
 </body>
