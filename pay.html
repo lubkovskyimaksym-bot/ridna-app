@@ -17,10 +17,10 @@
 
   <style>
     :root {
-      --purple: #9333EA;
+      --purple: #7E21D5;
       --purple-light: #A855F7;
       --purple-mid: #C4B5FD;
-      --purple-dim: rgba(147,51,234,0.15);
+      --purple-dim: rgba(126,33,213,0.15);
       --bg: #06040F;
       --bg-2: #0C0820;
       --surface: rgba(255,255,255,0.03);
@@ -29,7 +29,7 @@
       --text-soft: #C8BDD9;
       --muted: #7A6E90;
       --border: rgba(255,255,255,0.07);
-      --border-bright: rgba(147,51,234,0.3);
+      --border-bright: rgba(126,33,213,0.3);
       --success: #34D399;
       --warning: #FBBF24;
       --danger: #F87171;
@@ -51,7 +51,7 @@
       content: '';
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(circle at 15% 10%, rgba(147,51,234,0.10) 0%, transparent 55%),
+        radial-gradient(circle at 15% 10%, rgba(126,33,213,0.10) 0%, transparent 55%),
         radial-gradient(circle at 85% 80%, rgba(79,22,180,0.08) 0%, transparent 55%);
     }
 
@@ -69,7 +69,7 @@
       content: '';
       position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(circle at 30% 30%, rgba(147,51,234,0.18), transparent 55%),
+        radial-gradient(circle at 30% 30%, rgba(126,33,213,0.18), transparent 55%),
         radial-gradient(circle at 70% 80%, rgba(79,22,180,0.14), transparent 55%);
     }
     .lock-card {
@@ -79,7 +79,7 @@
     .lock-logo {
       width: 64px; height: auto; margin: 0 auto 28px;
       display: block;
-      filter: drop-shadow(0 0 32px rgba(147,51,234,0.6));
+      filter: drop-shadow(0 0 32px rgba(126,33,213,0.6));
     }
     .lock-title {
       font-family: 'Unbounded', sans-serif;
@@ -108,7 +108,7 @@
     .login-btn {
       margin-top: 2px; padding: 14px; border: none; border-radius: 100px;
       background: var(--purple); color: #fff; font-size: 14px; font-weight: 700;
-      letter-spacing: 0.3px; cursor: pointer; box-shadow: 0 0 24px rgba(147,51,234,0.45);
+      letter-spacing: 0.3px; cursor: pointer; box-shadow: 0 0 24px rgba(126,33,213,0.45);
       transition: all 0.2s;
     }
     .login-btn:hover { background: var(--purple-light); }
@@ -124,13 +124,13 @@
       font-weight: 700;
       font-size: 14px;
       letter-spacing: 0.3px;
-      box-shadow: 0 0 24px rgba(147,51,234,0.45);
+      box-shadow: 0 0 24px rgba(126,33,213,0.45);
       transition: all 0.2s;
     }
     .lock-cta:hover {
       background: var(--purple-light);
       transform: translateY(-1px);
-      box-shadow: 0 0 36px rgba(147,51,234,0.65);
+      box-shadow: 0 0 36px rgba(126,33,213,0.65);
     }
     .store-badges {
       display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap;
@@ -160,7 +160,7 @@
     }
     .nav-logo-img {
       height: 28px; width: auto;
-      filter: drop-shadow(0 0 12px rgba(147,51,234,0.4));
+      filter: drop-shadow(0 0 12px rgba(126,33,213,0.4));
     }
     .nav-logo-text {
       font-family: 'Unbounded', sans-serif;
@@ -297,7 +297,7 @@
       background: var(--purple);
       border-radius: 100px;
       transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-      box-shadow: 0 0 16px rgba(147,51,234,0.5);
+      box-shadow: 0 0 16px rgba(126,33,213,0.5);
       z-index: 1;
     }
     .save-badge {
@@ -334,12 +334,12 @@
     .price-card:hover {
       transform: translateY(-6px);
       border-color: var(--purple);
-      box-shadow: 0 30px 60px -15px rgba(147,51,234,0.3);
+      box-shadow: 0 30px 60px -15px rgba(126,33,213,0.3);
     }
     .price-card.featured {
-      background: linear-gradient(180deg, rgba(147,51,234,0.12), rgba(147,51,234,0.02));
-      border-color: rgba(147,51,234,0.4);
-      box-shadow: 0 0 0 1px rgba(147,51,234,0.2), 0 30px 60px -15px rgba(147,51,234,0.25);
+      background: linear-gradient(180deg, rgba(126,33,213,0.12), rgba(126,33,213,0.02));
+      border-color: rgba(126,33,213,0.4);
+      box-shadow: 0 0 0 1px rgba(126,33,213,0.2), 0 30px 60px -15px rgba(126,33,213,0.25);
     }
     .price-badge {
       position: absolute; top: -12px; right: 24px;
@@ -348,7 +348,7 @@
       font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
       padding: 6px 14px; border-radius: 100px;
       text-transform: uppercase;
-      box-shadow: 0 0 24px rgba(147,51,234,0.5);
+      box-shadow: 0 0 24px rgba(126,33,213,0.5);
     }
     .price-tier {
       font-family: 'Unbounded', sans-serif;
@@ -405,14 +405,14 @@
     }
     .price-cta.solid {
       background: var(--purple); color: #fff;
-      box-shadow: 0 0 30px rgba(147,51,234,0.4);
+      box-shadow: 0 0 30px rgba(126,33,213,0.4);
     }
-    .price-cta.solid:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(147,51,234,0.6); }
+    .price-cta.solid:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(126,33,213,0.6); }
     .price-cta.outline {
       background: transparent; color: #fff;
       border: 1.5px solid var(--border-bright);
     }
-    .price-cta.outline:hover { background: rgba(147,51,234,0.1); border-color: var(--purple); }
+    .price-cta.outline:hover { background: rgba(126,33,213,0.1); border-color: var(--purple); }
     .price-cta:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* ============== OFFER STRIP (33 users — з головного лендоса) ============== */
@@ -424,7 +424,7 @@
       margin-bottom: 48px;
       display: flex; justify-content: space-between; align-items: center;
       gap: 24px; flex-wrap: wrap;
-      box-shadow: 0 20px 40px -10px rgba(147,51,234,0.5);
+      box-shadow: 0 20px 40px -10px rgba(126,33,213,0.5);
     }
     .offer-text {
       font-family: 'Unbounded', sans-serif;
@@ -569,7 +569,7 @@
       display: block; width: 100%; background: var(--purple); color: #fff; border: none;
       padding: 14px; border-radius: 14px; font-family: 'Manrope', sans-serif;
       font-size: 15px; font-weight: 700; cursor: pointer;
-      box-shadow: 0 0 24px rgba(147,51,234,0.4); transition: all 0.2s;
+      box-shadow: 0 0 24px rgba(126,33,213,0.4); transition: all 0.2s;
     }
     .pm-confirm:hover { background: var(--purple-light); transform: translateY(-1px); }
     .pm-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
