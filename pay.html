@@ -289,6 +289,8 @@
     .ap-hist-status.ok { background: rgba(52,211,153,0.12); color: var(--success); }
     .ap-hist-status.bad { background: rgba(248,113,113,0.12); color: var(--danger); }
     .ap-hist-status.pend { background: rgba(251,191,36,0.12); color: var(--warning); }
+    .ap-hist-toggle { margin-top: 10px; background: none; border: none; color: var(--purple); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px 0; }
+    .ap-hist-toggle:hover { text-decoration: underline; }
 
     /* ============== BILLING TOGGLE (з головного лендоса) ============== */
     .billing-toggle {
@@ -1073,7 +1075,7 @@
         processing: { t: 'в обробці',     c: 'pend' },
         pending:    { t: 'в обробці',     c: 'pend' },
       };
-      list.innerHTML = rows.map((r) => {
+      const items = rows.map((r) => {
         const planL = PLAN_LABEL[r.plan] || r.plan;
         const periodL = r.billing === 'year' ? 'рік' : 'місяць';
         const amt = r.currency === 'USD'
@@ -1090,7 +1092,24 @@
             <span class="ap-hist-status ${st.c}">${st.t}</span>
           </div>
         </div>`;
-      }).join('');
+      });
+      // Показуємо лише останні 3, решту — під кнопкою «Показати всі».
+      const firstHtml = items.slice(0, 3).join('');
+      const restHtml = items.slice(3).join('');
+      if (restHtml) {
+        list.innerHTML = firstHtml
+          + `<div class="ap-hist-more" id="apHistMore" style="display:none;">${restHtml}</div>`
+          + `<button type="button" class="ap-hist-toggle" id="apHistToggle">Показати всі (${rows.length})</button>`;
+        const moreEl = document.getElementById('apHistMore');
+        const tbtn = document.getElementById('apHistToggle');
+        tbtn.addEventListener('click', function () {
+          const open = moreEl.style.display === 'block';
+          moreEl.style.display = open ? 'none' : 'block';
+          tbtn.textContent = open ? `Показати всі (${rows.length})` : 'Згорнути';
+        });
+      } else {
+        list.innerHTML = firstHtml;
+      }
       wrap.style.display = 'block';
     } catch (e) { /* тихо — історія просто не покажеться */ }
   }
