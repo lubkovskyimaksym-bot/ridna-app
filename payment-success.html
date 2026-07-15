@@ -19,6 +19,12 @@
       --muted: #7A6E90;
       --success: #34D399;
     }
+    [data-theme="light"] {
+      --bg: #F6F2FC;
+      --text: #231433;
+      --text-soft: #4A3A60;
+      --muted: #6B5B85;
+    }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Manrope', sans-serif;
@@ -54,7 +60,7 @@
     h1 {
       font-family: 'Unbounded', sans-serif;
       font-size: 24px; font-weight: 900; letter-spacing: -0.8px;
-      color: #fff; margin-bottom: 10px;
+      color: var(--text); margin-bottom: 10px;
     }
     .lead {
       color: var(--text-soft); font-size: 15px; line-height: 1.6;
@@ -77,9 +83,10 @@
       transition: opacity 0.2s;
     }
     .site-header img { height: 26px; width: auto; display: block; }
-    .site-header span { font-family: 'Unbounded', sans-serif; font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.4px; }
+    .site-header span { font-family: 'Unbounded', sans-serif; font-size: 17px; font-weight: 900; color: var(--text); letter-spacing: -0.4px; }
     .site-header:hover { opacity: 0.85; }
   </style>
+  <script>(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
 </head>
 <body>
   <a href="/" class="site-header" aria-label="На головну Ridna">
