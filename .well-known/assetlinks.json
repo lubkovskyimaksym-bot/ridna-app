@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "net.ridna.app",
+      "sha256_cert_fingerprints": [
+        "6F:08:D0:96:81:D0:3A:CE:45:74:92:98:22:52:44:84:32:A7:F3:65:3D:03:61:A7:DB:88:A8:87:1A:A2:72:FD"
+      ]
+    }
+  }
+]
