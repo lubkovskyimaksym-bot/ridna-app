@@ -23,6 +23,7 @@
   <meta name="twitter:description" content="Замовлення, Direct, ТТН і оплати — в одному застосунку. 30 днів безкоштовно." />
   <meta name="twitter:image" content="https://ridna.net/og-image.png" />
   <link rel="canonical" href="https://ridna.net/" />
+  <link rel="alternate" type="application/rss+xml" title="Блог Ridna" href="/blog/feed.xml" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/svg+xml" href="/logo2.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -48,6 +49,18 @@
       "priceCurrency": "UAH",
       "description": "30 днів безкоштовно"
     }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Ridna",
+    "url": "https://ridna.net",
+    "logo": { "@type": "ImageObject", "url": "https://ridna.net/logo2.svg" },
+    "email": "info@ridna.net",
+    "sameAs": ["https://t.me/ridna_crm"]
   }
   </script>
 
@@ -1381,6 +1394,22 @@
       .steps-grid { grid-template-columns: 1fr; gap: 16px; }
       .pricing-grid { grid-template-columns: 1fr; }
     }
+    /* планшети: 6 пунктів меню з «Блогом» не вміщаються при gap 32px */
+    @media (max-width: 1024px) and (min-width: 641px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 18px; }
+      .nav-links a:not(.nav-pill) { font-size: 12.5px; }
+      .nav-actions { margin-left: 10px; }
+    }
+    /* вузькі планшети: якірні пункти ховаємо (доступні скролом),
+       лишаємо тільки посилання на окремі сторінки — блог і базу знань */
+    @media (max-width: 860px) and (min-width: 641px) {
+      nav { padding: 14px 16px; }
+      .nav-logo-text { display: none; }
+      .nav-links { gap: 16px; }
+      .nav-links a[href^="#"]:not(.nav-pill) { display: none; }
+      .nav-links a:not(.nav-pill) { font-size: 12.5px; }
+    }
     @media (max-width: 640px) {
       nav { padding: 12px 12px; }
       .nav-links a:not(.nav-pill) { display: none; }
@@ -1521,6 +1550,7 @@
     <li><a href="#features">Можливості</a></li>
     <li><a href="#how">Як працює</a></li>
     <li><a href="#pricing">Тарифи</a></li>
+    <li><a href="/blog/">Блог</a></li>
     <li><a href="https://help.ridna.net">База знань</a></li>
     <li class="nav-actions">
       <a href="/pay" class="nav-pill nav-pill-ghost">Вхід</a>
@@ -2164,6 +2194,7 @@
     <ul class="footer-links">
       <li><a href="#features">Можливості</a></li>
       <li><a href="#pricing">Тарифи</a></li>
+      <li><a href="/blog/">Блог</a></li>
       <li><a href="https://help.ridna.net">База знань</a></li>
       <li><a href="privacy-policy.html">Конфіденційність</a></li>
       <li><a href="terms-of-service.html">Умови</a></li>

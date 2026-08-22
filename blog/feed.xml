@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Блог Ridna</title>
+    <link>https://ridna.net/blog/</link>
+    <description>Практичні розбори для власників Instagram-магазинів: замовлення, Direct, доставка, оплати.</description>
+    <language>uk</language>
+    <atom:link href="https://ridna.net/blog/feed.xml" rel="self" type="application/rss+xml" />
+
+  </channel>
+</rss>
