@@ -9,6 +9,7 @@
   --display:'Unbounded','Manrope',-apple-system,sans-serif;
 }
 [data-theme="dark"]{
+  --purple:#A855F7;
   --bg:#06040F; --surface:rgba(255,255,255,.04); --surface-2:rgba(255,255,255,.02);
   --text:#EDE8F5; --text-soft:#C8BDD9; --muted:#7A6E90;
   --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.16);
