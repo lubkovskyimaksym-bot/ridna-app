@@ -95,9 +95,12 @@
 <!-- ШАПКА:END -->
 
 <div class="wrap">
-  <nav class="crumbs" aria-label="Хлібні крихти">
-    <a href="/">Головна</a> <span>/</span> <a href="/blog/">Блог</a> <span>/</span> <span aria-current="page">{{TITLE}}</span>
-  </nav>
+  <div class="crumb-row">
+    <nav class="crumbs" aria-label="Хлібні крихти">
+      <a href="/">Головна</a> <span>/</span> <a href="/blog/">Блог</a> <span>/</span> <span aria-current="page">{{TITLE}}</span>
+    </nav>
+    <a href="/blog/" class="all-posts">Усі статті <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
 
   <div class="art-layout">
     <aside class="side-nav">
@@ -188,6 +191,25 @@
   window.addEventListener('scroll',spy,{passive:true});
   window.addEventListener('resize',spy,{passive:true});
   spy();
+})();
+
+/* карусель схожих статей: стрілки зʼявляються лише за наявності переповнення */
+(function(){
+  var box=document.querySelector('.rel-carousel'); if(!box)return;
+  var prev=document.querySelector('.rel-nav.prev'), next=document.querySelector('.rel-nav.next');
+  function step(){ var c=box.querySelector('.rel'); return c ? c.offsetWidth+12 : 280; }
+  function sync(){
+    var over=box.scrollWidth-box.clientWidth>4;
+    if(!over){ prev.hidden=true; next.hidden=true; return; }
+    prev.hidden=box.scrollLeft<=2;
+    next.hidden=box.scrollLeft>=box.scrollWidth-box.clientWidth-2;
+  }
+  function go(dx){ box.scrollBy({left:dx,behavior:'smooth'}); setTimeout(sync,400); }
+  prev.addEventListener('click',function(){ go(-step()); });
+  next.addEventListener('click',function(){ go(step()); });
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  sync();
 })();
 
 /* поп-ап: по центру, після 10% прокрутки, один раз на відвідувача */

@@ -91,16 +91,21 @@ function renderListing(posts) {
 }
 
 function renderRelated(post, all) {
-  const others = all.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const others = all.filter((p) => p.slug !== post.slug).slice(0, 8);
   if (!others.length) return '';
-  const cards = others.map((p) => `        <a class="rel" href="/blog/${p.slug}/">
-          <span class="rel-t">${esc(p.title)}</span>
-          <span class="rel-d">${human(p.date)}</span>
-        </a>`).join('\n');
+  const cards = others.map((p) => `          <a class="rel" href="/blog/${p.slug}/">
+            <span class="rel-t">${esc(p.title)}</span>
+            <span class="rel-d">${human(p.date)}</span>
+          </a>`).join('\n');
+  const arrow = (dir, d) => `<button class="rel-nav ${dir}" type="button" aria-label="${dir === 'prev' ? 'Попередні' : 'Наступні'}" hidden><svg viewBox="0 0 24 24"><path d="${d}"/></svg></button>`;
   return `      <section class="related">
         <h3>Схожі статті</h3>
-        <div class="rel-grid">
+        <div class="rel-wrap">
+          ${arrow('prev', 'M15 5l-7 7 7 7')}
+          <div class="rel-carousel">
 ${cards}
+          </div>
+          ${arrow('next', 'M9 5l7 7-7 7')}
         </div>
       </section>`;
 }

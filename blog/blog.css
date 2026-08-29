@@ -49,6 +49,11 @@ a:hover{text-decoration:underline}
 
 /* ---------- каркас ---------- */
 .wrap{max-width:1120px;margin:0 auto;padding:calc(var(--nav-h) + 32px) 24px 0}
+.crumb-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+.crumb-row .crumbs{margin-bottom:0}
+.all-posts{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--text);background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:100px;transition:border-color .2s,transform .15s}
+.all-posts:hover{border-color:var(--purple);transform:translateY(-1px);text-decoration:none;color:var(--text)}
+.all-posts svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .crumbs{font-size:13px;color:var(--muted);margin-bottom:22px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
 .crumbs a{color:var(--muted)}
 .crumbs a:hover{color:var(--purple)}
@@ -114,14 +119,22 @@ article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
 .store-btn-text small{font-size:10px;opacity:.85;margin-bottom:4px;letter-spacing:.4px;font-weight:500}
 .store-btn-text strong{font-size:16px;font-weight:700;letter-spacing:-.3px}
 
-/* ---------- схожі статті ---------- */
+/* ---------- схожі статті: горизонтальна карусель ---------- */
 .related{margin-top:48px;border-top:1px solid var(--border);padding-top:26px}
-.related h3{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.4px;margin-bottom:14px;color:var(--text)}
-.rel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.rel{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px;transition:border-color .16s,transform .15s}
-.rel:hover{text-decoration:none;border-color:var(--border-strong);transform:translateY(-1px)}
+.related h3{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.4px;margin-bottom:16px;color:var(--text)}
+.rel-wrap{position:relative}
+.rel-carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:2px;margin:-2px;scrollbar-width:none;-ms-overflow-style:none}
+.rel-carousel::-webkit-scrollbar{display:none}
+.rel{flex:0 0 262px;scroll-snap-align:start;display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;transition:border-color .16s,transform .15s}
+.rel:hover{text-decoration:none;border-color:var(--border-strong);transform:translateY(-2px)}
 .rel-t{font-size:14.5px;font-weight:700;color:var(--text);line-height:1.35}
-.rel-d{font-size:12.5px;color:var(--muted)}
+.rel-d{font-size:12.5px;color:var(--muted);margin-top:auto}
+.rel-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:border-color .2s,opacity .2s}
+.rel-nav:hover{border-color:var(--purple)}
+.rel-nav.prev{left:-14px}
+.rel-nav.next{right:-14px}
+.rel-nav[hidden]{display:none}
+.rel-nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- телеграм: плаваюча кнопка ---------- */
 .tg-fab{position:fixed;right:18px;bottom:18px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#2aabee,#229ed9);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(34,158,217,.45);z-index:300}
@@ -163,7 +176,6 @@ article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
   .art-layout{display:block}
   .side-nav{display:none}
   .art-main{max-width:none}
-  .rel-grid{grid-template-columns:1fr}
 }
 @media (max-width:640px){
   :root{--nav-h:62px}
@@ -178,6 +190,10 @@ article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
   article h2{font-size:20px;margin:34px 0 12px}
   article p,article ul,article ol{font-size:16px}
   .post-card{padding:20px}
+  .rel-nav{display:none}
+  .rel{flex-basis:230px}
+  .crumb-row{gap:10px}
+  .all-posts{padding:7px 13px;font-size:12.5px}
   .crumbs span[aria-current],.crumbs span:nth-last-child(2){display:none}
   .promo{padding:36px 20px;border-radius:26px}
   .dl-pop{width:auto;left:16px;right:16px;transform:translate(0,-46%) scale(.97);padding:28px 22px 24px}
