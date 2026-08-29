@@ -70,6 +70,10 @@ function check(posts) {
     if (canonical !== `${SITE}/blog/${p.slug}/`) warn(p.slug, `canonical не збігається зі слагом: "${canonical}"`);
 
     if (/\{\{[A-Z_]+\}\}/.test(p.html)) warn(p.slug, 'у файлі лишились незаповнені плейсхолдери {{...}}');
+    if (('blog-' + p.slug).length > 40)
+      warn(p.slug, `мітка кампанії "blog-${p.slug}" довша за 40 символів — Apple її обріже`);
+    if (!/<!-- RELATED:START -->/.test(p.html))
+      warn(p.slug, 'немає маркерів RELATED — блок схожих статей не згенерується');
   }
   return warnings;
 }
@@ -84,6 +88,32 @@ function renderListing(posts) {
         <span class="post-meta"><time datetime="${p.date}">${human(p.date)}</time></span>
       </a>
     </li>`).join('\n');
+}
+
+function renderRelated(post, all) {
+  const others = all.filter((p) => p.slug !== post.slug).slice(0, 3);
+  if (!others.length) return '';
+  const cards = others.map((p) => `        <a class="rel" href="/blog/${p.slug}/">
+          <span class="rel-t">${esc(p.title)}</span>
+          <span class="rel-d">${human(p.date)}</span>
+        </a>`).join('\n');
+  return `      <section class="related">
+        <h3>Схожі статті</h3>
+        <div class="rel-grid">
+${cards}
+        </div>
+      </section>`;
+}
+
+function writeRelated(posts) {
+  for (const p of posts) {
+    const block = renderRelated(p, posts);
+    const out = p.html.replace(
+      /(<!-- RELATED:START -->)[\s\S]*?(<!-- RELATED:END -->)/,
+      block ? `$1\n${block}\n$2` : '$1\n$2'
+    );
+    if (out !== p.html) { writeFileSync(p.file, out); p.html = out; }
+  }
 }
 
 function writeListing(posts) {
@@ -177,6 +207,7 @@ function cmdBuild() {
   const all = readPosts();
   const warnings = check(all);
   const live = all.filter((p) => !p.draft);
+  writeRelated(live);
   writeListing(live);
   writeFeed(live);
   writeSitemap(live);

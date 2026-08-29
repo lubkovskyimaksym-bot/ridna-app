@@ -1,33 +1,45 @@
-/* ===== Ridna Blog — спільні стилі для /blog ===== */
+/* ===== Ridna Blog ===== */
 :root{
   --purple:#7E21D5; --purple-2:#A855F7;
   --bg:#F6F2FC; --surface:#FFFFFF; --surface-2:#FBF8FF;
   --text:#231433; --text-soft:#4A3A60; --muted:#6B5B85;
-  --border:rgba(35,20,51,.12); --border-strong:rgba(35,20,51,.18);
-  --badge-bg:#F3E8FF; --nav-bg:rgba(255,255,255,.75); --code-bg:#F4EEFD;
+  --border:rgba(35,20,51,.12); --border-strong:rgba(126,33,213,.28);
+  --badge-bg:#F3E8FF; --nav-bg:rgba(255,255,255,.72); --code-bg:#F4EEFD;
+  --promo-grad:linear-gradient(135deg,rgba(126,33,213,.10) 0%,#fff 55%,rgba(126,33,213,.10) 100%);
   --sans:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   --display:'Unbounded','Manrope',-apple-system,sans-serif;
+  --nav-h:73px;
 }
 [data-theme="dark"]{
   --purple:#A855F7;
   --bg:#06040F; --surface:rgba(255,255,255,.04); --surface-2:rgba(255,255,255,.02);
   --text:#EDE8F5; --text-soft:#C8BDD9; --muted:#7A6E90;
-  --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.16);
-  --badge-bg:rgba(126,33,213,.18); --nav-bg:rgba(6,4,15,.7); --code-bg:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.08); --border-strong:rgba(168,85,247,.35);
+  --badge-bg:rgba(126,33,213,.18); --nav-bg:rgba(6,4,15,.65); --code-bg:rgba(255,255,255,.05);
+  --promo-grad:linear-gradient(135deg,rgba(126,33,213,.22) 0%,rgba(255,255,255,.03) 55%,rgba(126,33,213,.22) 100%);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
 
-/* ---- шапка (той самий патерн, що на юридичних сторінках) ---- */
-.site-nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--nav-bg);backdrop-filter:blur(18px) saturate(180%);border-bottom:1px solid var(--border)}
-.site-nav .logo-link{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
-.site-nav img{height:26px;width:auto;display:block}
-.site-nav .logo-link span{font-family:var(--display);font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.4px}
-.nav-right{display:flex;align-items:center;gap:14px}
-.nav-right a{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;transition:color .2s}
-.nav-right a:hover{color:var(--text)}
+/* ---------- шапка: той самий вигляд, що на лендінгу ---------- */
+.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 48px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(24px) saturate(180%);background:var(--nav-bg);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo:hover{text-decoration:none}
+.nav-logo-img{height:32px;width:auto;display:block;flex-shrink:0;filter:drop-shadow(0 0 16px rgba(126,33,213,.45))}
+.nav-logo-text{font-family:var(--display);font-size:19px;font-weight:900;color:var(--text);letter-spacing:-.5px}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;transition:color .2s}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.nav-links a.is-current{color:var(--text)}
+.nav-actions{display:flex;align-items:center;gap:10px;margin-left:16px}
+.nav-pill{background:var(--purple);color:#fff;border:1px solid transparent;line-height:1;padding:11px 22px;border-radius:100px;font-size:13px;font-weight:700;box-shadow:0 0 24px rgba(126,33,213,.4);transition:transform .2s,box-shadow .2s}
+.nav-pill:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(126,33,213,.6);text-decoration:none;color:#fff}
+.nav-pill-ghost{background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none}
+.nav-pill-ghost:hover{border-color:var(--purple);box-shadow:none;color:var(--text)}
 .theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;cursor:pointer;background:var(--surface);border:1px solid var(--border);color:var(--text);transition:border-color .2s,transform .15s}
 .theme-toggle:hover{border-color:var(--purple);transform:translateY(-1px)}
 .theme-toggle svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -35,33 +47,39 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:
 [data-theme="dark"] .theme-toggle .t-dark{display:inline-block}
 [data-theme="dark"] .theme-toggle .t-light{display:none}
 
-.container{max-width:760px;margin:0 auto;padding:44px 24px 0}
-a{color:var(--purple);text-decoration:none}
-a:hover{text-decoration:underline}
-
-/* ---- хлібні крихти ---- */
+/* ---------- каркас ---------- */
+.wrap{max-width:1120px;margin:0 auto;padding:calc(var(--nav-h) + 32px) 24px 0}
 .crumbs{font-size:13px;color:var(--muted);margin-bottom:22px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
 .crumbs a{color:var(--muted)}
 .crumbs a:hover{color:var(--purple)}
 .crumbs span[aria-current]{color:var(--text-soft)}
-
 .badge{display:inline-block;background:var(--badge-bg);color:var(--purple);font-size:12px;font-weight:700;padding:5px 11px;border-radius:20px;margin-bottom:18px}
 
-/* ---- лістинг ---- */
+/* ---------- дві колонки: зміст + текст ---------- */
+.art-layout{display:flex;gap:44px;align-items:flex-start}
+.side-nav{flex:0 0 220px;position:sticky;top:calc(var(--nav-h) + 24px);display:flex;flex-direction:column;gap:8px}
+.side-h{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:8px}
+.toc{display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--border)}
+.toc a{font-size:13.5px;color:var(--muted);padding:7px 0 7px 14px;margin-left:-1px;border-left:2px solid transparent;line-height:1.35;transition:color .16s,border-color .16s}
+.toc a:hover{color:var(--text);text-decoration:none}
+.toc a.on{color:var(--purple);border-left-color:var(--purple);font-weight:600}
+.art-main{flex:1;min-width:0;max-width:740px}
+
+/* ---------- лістинг ---------- */
 .blog-head h1{font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:12px}
-.blog-head .lede{font-size:17px;color:var(--text-soft);margin-bottom:44px;max-width:600px}
+.blog-head .lede{font-size:17px;color:var(--text-soft);margin-bottom:40px;max-width:620px}
 .post-list{list-style:none;display:flex;flex-direction:column;gap:14px}
-.post-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 26px;transition:border-color .2s,transform .15s}
-.post-card:hover{border-color:var(--purple);transform:translateY(-2px);text-decoration:none}
+.post-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 26px;transition:border-color .2s,transform .15s,box-shadow .2s}
+.post-card:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:0 8px 22px rgba(126,33,213,.08);text-decoration:none}
 .post-card h2{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.4px;line-height:1.35;margin-bottom:8px}
 .post-card p{font-size:15px;color:var(--text-soft);margin-bottom:12px}
-.post-meta{font-size:13px;color:var(--muted);display:flex;gap:10px;align-items:center}
+.post-meta{font-size:13px;color:var(--muted)}
 .empty{border:1px dashed var(--border-strong);border-radius:16px;padding:34px 26px;text-align:center;color:var(--muted);font-size:15px}
 
-/* ---- стаття ---- */
+/* ---------- стаття ---------- */
 article h1{font-family:var(--display);font-size:34px;font-weight:800;letter-spacing:-.9px;line-height:1.22;margin-bottom:14px}
 .article-meta{font-size:14px;color:var(--muted);margin-bottom:34px;padding-bottom:24px;border-bottom:1px solid var(--border)}
-article h2{font-family:var(--display);font-size:23px;font-weight:700;letter-spacing:-.5px;margin:42px 0 14px;line-height:1.3}
+article h2{font-family:var(--display);font-size:23px;font-weight:700;letter-spacing:-.5px;margin:42px 0 14px;line-height:1.3;scroll-margin-top:calc(var(--nav-h) + 20px)}
 article h3{font-size:18px;font-weight:700;margin:30px 0 10px}
 article p{margin-bottom:18px;color:var(--text-soft);font-size:17px}
 article ul,article ol{margin:0 0 18px 22px;color:var(--text-soft);font-size:17px}
@@ -71,7 +89,7 @@ article img{max-width:100%;height:auto;border-radius:14px;border:1px solid var(-
 article figure{margin:26px 0}
 article figure img{margin:0}
 article figcaption{font-size:13px;color:var(--muted);margin-top:9px;text-align:center}
-article blockquote{border-left:3px solid var(--purple);padding:4px 0 4px 20px;margin:26px 0;color:var(--text-soft);font-style:italic}
+article blockquote{border-left:3px solid var(--purple);padding:4px 0 4px 20px;margin:26px 0;color:var(--text-soft)}
 article code{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:2px 6px;font-size:14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 article table{width:100%;border-collapse:collapse;margin:26px 0;font-size:15px;display:block;overflow-x:auto}
 article th,article td{border:1px solid var(--border);padding:10px 13px;text-align:left}
@@ -79,26 +97,88 @@ article th{background:var(--surface);font-weight:700;color:var(--text)}
 article td{color:var(--text-soft)}
 article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
 
-/* ---- CTA в кінці статті ---- */
-.cta{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;margin:48px 0 0;text-align:center}
-.cta h3{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.4px}
-.cta p{font-size:15px;color:var(--text-soft);margin-bottom:20px}
-.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-weight:700;font-size:15px;padding:13px 28px;border-radius:12px;transition:transform .15s,box-shadow .2s}
-.cta-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(126,33,213,.35);text-decoration:none;color:#fff}
+/* ---------- універсальний промо-банер ---------- */
+.promo{margin:48px 0 0;text-align:center;background:var(--promo-grad);border:1px solid var(--border-strong);border-radius:24px;padding:40px 32px}
+.promo h3{font-family:var(--display);font-size:22px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-.5px;line-height:1.25}
+.promo p{font-size:15px;color:var(--text-soft);margin:0 auto 22px;max-width:460px}
+.promo-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.promo-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);color:var(--text-soft);font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:100px}
+.promo-btn{display:inline-block;background:var(--purple);color:#fff;font-weight:700;font-size:15px;padding:14px 30px;border-radius:100px;box-shadow:0 0 24px rgba(126,33,213,.4);transition:transform .15s,box-shadow .2s}
+.promo-btn:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(126,33,213,.6);text-decoration:none;color:#fff}
 
-/* ---- футер ---- */
-.blog-footer{margin-top:64px;padding:24px 0 40px;border-top:1px solid var(--border);font-size:14px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between}
+/* ---------- схожі статті ---------- */
+.related{margin-top:48px;border-top:1px solid var(--border);padding-top:26px}
+.related h3{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.4px;margin-bottom:14px;color:var(--text)}
+.rel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rel{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px;transition:border-color .16s,transform .15s}
+.rel:hover{text-decoration:none;border-color:var(--border-strong);transform:translateY(-1px)}
+.rel-t{font-size:14.5px;font-weight:700;color:var(--text);line-height:1.35}
+.rel-d{font-size:12.5px;color:var(--muted)}
+
+/* ---------- телеграм ---------- */
+.tg-block{margin-top:28px;display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 22px}
+.tg-ic{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#2aabee,#229ed9);display:flex;align-items:center;justify-content:center}
+.tg-ic svg{width:24px;height:24px;fill:#fff}
+.tg-tx{flex:1;min-width:0}
+.tg-tx strong{display:block;font-size:15px;color:var(--text);font-weight:700}
+.tg-tx span{font-size:13.5px;color:var(--muted)}
+.tg-btn{flex:0 0 auto;background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-size:13.5px;font-weight:700;padding:10px 18px;border-radius:100px;transition:border-color .2s}
+.tg-btn:hover{border-color:var(--purple);text-decoration:none;color:var(--text)}
+
+/* ---------- футер ---------- */
+.blog-footer{margin-top:56px;padding:24px 0 40px;border-top:1px solid var(--border);font-size:14px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
 .blog-footer a{color:var(--muted)}
 .blog-footer a:hover{color:var(--purple)}
 
+/* ---------- ненавʼязливий поп-ап ---------- */
+.dl-pop{position:fixed;right:20px;bottom:20px;z-index:400;width:330px;max-width:calc(100vw - 40px);background:var(--surface);border:1px solid var(--border-strong);border-radius:18px;padding:20px 22px;box-shadow:0 18px 50px rgba(0,0,0,.18);opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
+[data-theme="dark"] .dl-pop{box-shadow:0 18px 50px rgba(0,0,0,.6)}
+.dl-pop.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.dl-pop h4{font-family:var(--display);font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-.3px;padding-right:22px}
+.dl-pop p{font-size:13.5px;color:var(--text-soft);margin-bottom:14px}
+.dl-pop-btns{display:flex;gap:8px}
+.dl-pop-btn{flex:1;text-align:center;background:var(--purple);color:#fff;font-size:13px;font-weight:700;padding:10px 12px;border-radius:100px;transition:transform .15s}
+.dl-pop-btn:hover{transform:translateY(-1px);text-decoration:none;color:#fff}
+.dl-pop-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.dl-pop-btn.ghost:hover{border-color:var(--purple);color:var(--text)}
+.dl-pop-x{position:absolute;top:12px;right:12px;width:26px;height:26px;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:17px;line-height:1;border-radius:8px}
+.dl-pop-x:hover{color:var(--text);background:var(--surface-2)}
+
+@media (max-width:1024px) and (min-width:641px){
+  .site-nav{padding:16px 20px}
+  .nav-links{gap:18px}
+  .nav-links a:not(.nav-pill){font-size:12.5px}
+  .nav-actions{margin-left:10px}
+}
+@media (max-width:860px) and (min-width:641px){
+  .site-nav{padding:14px 16px}
+  .nav-logo-text{display:none}
+  .nav-links{gap:16px}
+  .nav-links a[href*="#"]:not(.nav-pill){display:none}
+}
+@media (max-width:900px){
+  .art-layout{display:block}
+  .side-nav{display:none}
+  .art-main{max-width:none}
+  .rel-grid{grid-template-columns:1fr}
+}
 @media (max-width:640px){
-  .container{padding:30px 18px 0}
+  :root{--nav-h:62px}
+  .site-nav{padding:12px 12px}
+  .nav-links a:not(.nav-pill){display:none}
+  .nav-links{gap:8px}
+  .nav-pill{padding:9px 13px;font-size:12px}
+  .nav-actions{margin-left:8px;gap:7px}
+  .wrap{padding:calc(var(--nav-h) + 22px) 18px 0}
   .blog-head h1{font-size:29px}
   article h1{font-size:27px}
   article h2{font-size:20px;margin:34px 0 12px}
   article p,article ul,article ol{font-size:16px}
   .post-card{padding:20px}
-  /* на вузькому екрані лишаємо тільки верхні рівні — повний шлях є в JSON-LD */
   .crumbs span[aria-current],.crumbs span:nth-last-child(2){display:none}
-  .nav-right a{display:none}
+  .promo{padding:30px 20px;border-radius:20px}
+  .tg-block{flex-direction:column;align-items:flex-start;gap:12px}
+  /* на мобільному — вузька смуга знизу, не перекриває текст */
+  .dl-pop{left:10px;right:10px;bottom:10px;width:auto;padding:14px 16px;border-radius:14px}
+  .dl-pop p{display:none}
 }
