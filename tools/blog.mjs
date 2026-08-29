@@ -8,6 +8,7 @@
  */
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -90,6 +91,20 @@ function renderListing(posts) {
     </li>`).join('\n');
 }
 
+/* HTML і CSS кешуються окремо (GitHub Pages віддає max-age=600), тож нова
+   розмітка може застати старі стилі. Версія в посиланні це виключає. */
+function stampCss(posts) {
+  const css = readFileSync(join(BLOG, 'blog.css'));
+  const v = createHash('sha1').update(css).digest('hex').slice(0, 8);
+  const files = [join(BLOG, 'index.html'), ...posts.map((p) => p.file)];
+  for (const file of files) {
+    const html = readFileSync(file, 'utf8');
+    const out = html.replace(/href="\/blog\/blog\.css(\?v=[a-f0-9]+)?"/, `href="/blog/blog.css?v=${v}"`);
+    if (out !== html) writeFileSync(file, out);
+  }
+  return v;
+}
+
 function renderRelated(post, all) {
   const others = all.filter((p) => p.slug !== post.slug).slice(0, 8);
   if (!others.length) return '';
@@ -97,7 +112,7 @@ function renderRelated(post, all) {
             <span class="rel-t">${esc(p.title)}</span>
             <span class="rel-d">${human(p.date)}</span>
           </a>`).join('\n');
-  const arrow = (dir, d) => `<button class="rel-nav ${dir}" type="button" aria-label="${dir === 'prev' ? 'Попередні' : 'Наступні'}" hidden><svg viewBox="0 0 24 24"><path d="${d}"/></svg></button>`;
+  const arrow = (dir, d) => `<button class="rel-nav ${dir}" type="button" aria-label="${dir === 'prev' ? 'Попередні' : 'Наступні'}" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg></button>`;
   return `      <section class="related">
         <h3>Схожі статті</h3>
         <div class="rel-wrap">
@@ -214,11 +229,12 @@ function cmdBuild() {
   const live = all.filter((p) => !p.draft);
   writeRelated(live);
   writeListing(live);
+  const cssV = stampCss(all);
   writeFeed(live);
   writeSitemap(live);
   const drafts = all.length - live.length;
   console.log(`✓ зібрано: ${live.length} опублікованих${drafts ? `, ${drafts} чернеток (не в індексі)` : ''}`);
-  console.log('  оновлено: blog/index.html, blog/feed.xml, sitemap.xml');
+  console.log(`  оновлено: blog/index.html, blog/feed.xml, sitemap.xml (css v=${cssV})`);
   if (warnings) console.log(`  ⚠ попереджень: ${warnings}`);
 }
 
