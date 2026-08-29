@@ -2510,5 +2510,31 @@
     }); } catch (e) {}
   })();
 </script>
+<script>
+/* Атрибуція встановлень: стаття блогу веде на /?src=blog-<slug>.
+   Тут підставляємо мітки кампанії в посилання на стори й прибираємо
+   параметр з URL, щоб не дробити статистику переглядів лендінгу.
+   Виконується до відкладеного скрипта Umami, тож той бачить чистий шлях. */
+(function () {
+  try {
+    var src = new URLSearchParams(location.search).get('src');
+    if (!src || !/^[a-z0-9-]+$/.test(src)) return;
+    var ct = src.slice(0, 40); // Apple обмежує campaign token 40 символами
+    document.querySelectorAll('a[href*="apps.apple.com"]').forEach(function (a) {
+      var u = new URL(a.href);
+      u.searchParams.set('pt', '129059770');
+      u.searchParams.set('ct', ct);
+      u.searchParams.set('mt', '8');
+      a.href = u.toString();
+    });
+    document.querySelectorAll('a[href*="play.google.com"]').forEach(function (a) {
+      var u = new URL(a.href);
+      u.searchParams.set('referrer', 'utm_source=blog&utm_medium=cta&utm_content=' + ct);
+      a.href = u.toString();
+    });
+    history.replaceState(null, '', location.pathname + location.hash);
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
