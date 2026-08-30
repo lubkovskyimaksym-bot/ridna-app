@@ -80,15 +80,32 @@ function check(posts) {
 }
 
 /* ---------- генерація ---------- */
+/* обкладинка не обовʼязкова: якщо у теці статті лежить cover.<ext> — вона
+   стає мініатюрою в лістингу; якщо ні — картка рендериться без неї */
+function coverOf(slug) {
+  for (const ext of ['webp', 'jpg', 'jpeg', 'png']) {
+    if (existsSync(join(BLOG, slug, `cover.${ext}`))) return `/blog/${slug}/cover.${ext}`;
+  }
+  return null;
+}
+
 function renderListing(posts) {
   if (!posts.length) return '    <li class="empty">Перші статті зʼявляться найближчим часом.</li>';
-  return posts.map((p) => `    <li>
-      <a class="post-card" href="/blog/${p.slug}/">
-        <h2>${esc(p.title)}</h2>
-        <p>${esc(p.description)}</p>
-        <span class="post-meta"><time datetime="${p.date}">${human(p.date)}</time></span>
+  return posts.map((p) => {
+    const cover = coverOf(p.slug);
+    const thumb = cover
+      ? `\n        <img class="post-thumb" src="${cover}" alt="" loading="lazy" width="336" height="176" />`
+      : '';
+    return `    <li>
+      <a class="post-card" href="/blog/${p.slug}/">${thumb}
+        <div class="post-body">
+          <h2>${esc(p.title)}</h2>
+          <p>${esc(p.description)}</p>
+          <span class="post-meta"><time datetime="${p.date}">${human(p.date)}</time></span>
+        </div>
       </a>
-    </li>`).join('\n');
+    </li>`;
+  }).join('\n');
 }
 
 /* HTML і CSS кешуються окремо (GitHub Pages віддає max-age=600), тож нова

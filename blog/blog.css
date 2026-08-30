@@ -74,12 +74,26 @@ a:hover{text-decoration:underline}
 .blog-head h1{font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:12px}
 .blog-head .lede{font-size:17px;color:var(--text-soft);margin-bottom:40px;max-width:620px}
 .post-list{list-style:none;display:flex;flex-direction:column;gap:14px}
-.post-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 26px;transition:border-color .2s,transform .15s,box-shadow .2s}
+.post-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 22px;transition:border-color .2s,transform .15s,box-shadow .2s}
 .post-card:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:0 8px 22px rgba(126,33,213,.08);text-decoration:none}
 .post-card h2{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.4px;line-height:1.35;margin-bottom:8px}
 .post-card p{font-size:15px;color:var(--text-soft);margin-bottom:12px}
 .post-meta{font-size:13px;color:var(--muted)}
 .empty{border:1px dashed var(--border-strong);border-radius:16px;padding:34px 26px;text-align:center;color:var(--muted);font-size:15px}
+
+/* ---------- зображення в статті ---------- */
+.cover{width:100%;aspect-ratio:1200/630;object-fit:cover;border-radius:18px;border:1px solid var(--border);margin:0 0 30px;display:block;background:var(--surface-2)}
+figure{margin:30px 0}
+figure img{margin:0}
+figcaption{font-size:13px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.5}
+/* вертикальний скриншот телефона не має розтягуватись на всю ширину */
+.shot{max-width:300px;margin:0 auto;display:block;border-radius:20px;border:1px solid var(--border);box-shadow:0 18px 40px rgba(0,0,0,.14)}
+[data-theme="dark"] .shot{box-shadow:0 18px 40px rgba(0,0,0,.5)}
+
+/* ---------- обкладинка в картці лістингу ---------- */
+.post-card{display:flex;gap:20px;align-items:flex-start}
+.post-thumb{flex:0 0 168px;aspect-ratio:1200/630;object-fit:cover;border-radius:11px;border:1px solid var(--border);background:var(--surface-2)}
+.post-body{flex:1;min-width:0}
 
 /* ---------- стаття ---------- */
 article h1{font-family:var(--display);font-size:34px;font-weight:800;letter-spacing:-.9px;line-height:1.22;margin-bottom:14px}
@@ -101,6 +115,13 @@ article th,article td{border:1px solid var(--border);padding:10px 13px;text-alig
 article th{background:var(--surface);font-weight:700;color:var(--text)}
 article td{color:var(--text-soft)}
 article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
+
+/* ---------- нативний блок: частина тексту, не банер ---------- */
+.native{margin:42px 0 0;padding:22px 24px;border-left:3px solid var(--purple);background:var(--surface-2);border-radius:0 14px 14px 0}
+.native h2{margin:0 0 12px;font-size:20px;letter-spacing:-.4px}
+.native p{margin-bottom:12px}
+.native p:last-child{margin-bottom:0}
+.native a{font-weight:700}
 
 /* ---------- промо-банер: репліка фінального блоку лендінгу ---------- */
 .promo{margin:56px 0 0;background:linear-gradient(135deg,rgba(126,33,213,.10) 0%,#FFFFFF 55%,rgba(126,33,213,.10) 100%);border:1px solid rgba(126,33,213,.3);border-radius:36px;padding:56px 32px;text-align:center;position:relative;overflow:hidden;box-shadow:0 40px 80px -20px rgba(126,33,213,.18)}
@@ -189,8 +210,10 @@ article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
   article h1{font-size:27px}
   article h2{font-size:20px;margin:34px 0 12px}
   article p,article ul,article ol{font-size:16px}
-  .post-card{padding:20px}
-  .rel-nav{display:none}
+  .post-card{padding:16px;flex-direction:column;gap:14px}
+  .post-thumb{flex:none;width:100%}
+  .shot{max-width:250px}
+    .rel-nav{display:none}
   .rel{flex-basis:230px}
   .crumb-row{gap:10px}
   .all-posts{padding:7px 13px;font-size:12.5px}
