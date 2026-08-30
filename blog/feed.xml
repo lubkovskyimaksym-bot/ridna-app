@@ -6,6 +6,12 @@
     <description>Практичні розбори для власників Instagram-магазинів: замовлення, Direct, доставка, оплати.</description>
     <language>uk</language>
     <atom:link href="https://ridna.net/blog/feed.xml" rel="self" type="application/rss+xml" />
-
+    <item>
+      <title>Що таке ТТН Нової Пошти і як її створити для замовлення</title>
+      <link>https://ridna.net/blog/shcho-take-ttn-novoyi-poshty/</link>
+      <guid isPermaLink="true">https://ridna.net/blog/shcho-take-ttn-novoyi-poshty/</guid>
+      <description>ТТН — це номер, за яким рухається посилка. Які дані потрібні від клієнта, як створити накладну заздалегідь і яких помилок уникнути новачку.</description>
+      <pubDate>Sat, 29 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
   </channel>
 </rss>
