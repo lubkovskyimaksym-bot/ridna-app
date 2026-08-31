@@ -75,6 +75,11 @@ function check(posts) {
       warn(p.slug, `мітка кампанії "blog-${p.slug}" довша за 40 символів — Apple її обріже`);
     if (!/<!-- RELATED:START -->/.test(p.html))
       warn(p.slug, 'немає маркерів RELATED — блок схожих статей не згенерується');
+    const natives = (p.html.match(/class="native"/g) || []).length;
+    if (natives === 0) warn(p.slug, 'немає нативного блоку в кінці статті');
+    if (natives > 1) warn(p.slug, `нативних блоків ${natives} — імовірно лишилась болванка з шаблону`);
+    if (/Підзаголовок під тему статті|Два-три речення, що продовжують/.test(p.html))
+      warn(p.slug, 'у нативному блоці лишився текст-болванка з шаблону');
   }
   return warnings;
 }

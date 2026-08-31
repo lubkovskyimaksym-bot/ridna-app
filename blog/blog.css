@@ -116,6 +116,26 @@ article th{background:var(--surface);font-weight:700;color:var(--text)}
 article td{color:var(--text-soft)}
 article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
 
+/* ---------- калькулятор у статті ---------- */
+.calc{margin:32px 0;padding:24px;background:var(--surface);border:1px solid var(--border-strong);border-radius:18px}
+.calc-h{font-family:var(--display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.3px;margin-bottom:4px}
+.calc-sub{font-size:13.5px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.calc-f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.calc-f label{font-size:13px;font-weight:600;color:var(--text-soft);line-height:1.35}
+.calc-f input{width:100%;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;transition:border-color .18s}
+.calc-f input:focus{outline:none;border-color:var(--purple)}
+.calc-f input:invalid{border-color:var(--danger,#F87171)}
+.calc-out{margin-top:20px;padding-top:18px;border-top:1px solid var(--border)}
+.calc-rows{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-row{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.calc-row.win{border-color:var(--purple);background:var(--badge-bg)}
+.calc-row .k{display:block;font-size:12.5px;color:var(--muted);margin-bottom:4px}
+.calc-row .v{display:block;font-family:var(--display);font-size:19px;font-weight:800;color:var(--text);letter-spacing:-.4px}
+.calc-verdict{margin-top:14px;font-size:14.5px;color:var(--text-soft);line-height:1.5}
+.calc-verdict strong{color:var(--text)}
+.calc-note{margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.5}
+
 /* ---------- нативний блок: частина тексту, не банер ---------- */
 .native{margin:42px 0 0;padding:22px 24px;border-left:3px solid var(--purple);background:var(--surface-2);border-radius:0 14px 14px 0}
 .native h2{margin:0 0 12px;font-size:20px;letter-spacing:-.4px}
@@ -210,6 +230,8 @@ article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
   article h1{font-size:27px}
   article h2{font-size:20px;margin:34px 0 12px}
   article p,article ul,article ol{font-size:16px}
+  .calc-grid,.calc-rows{grid-template-columns:1fr}
+  .calc{padding:18px}
   .post-card{padding:16px;flex-direction:column;gap:14px}
   .post-thumb{flex:none;width:100%}
   .shot{max-width:250px}
