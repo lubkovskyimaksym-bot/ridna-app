@@ -116,6 +116,15 @@ article th{background:var(--surface);font-weight:700;color:var(--text)}
 article td{color:var(--text-soft)}
 article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
 
+/* ---------- завантаження файлу зі статті ---------- */
+.dl-file{display:flex;align-items:center;gap:16px;margin:30px 0;padding:20px 22px;background:var(--surface);border:1px solid var(--border-strong);border-radius:16px}
+.dl-file-ic{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--badge-bg);color:var(--purple);display:flex;align-items:center;justify-content:center}
+.dl-file-tx{flex:1;min-width:0}
+.dl-file-tx strong{display:block;font-size:15px;color:var(--text);font-weight:700;margin-bottom:2px}
+.dl-file-tx span{font-size:13px;color:var(--muted)}
+.dl-file-btn{flex:0 0 auto;background:var(--purple);color:#fff;font-size:14px;font-weight:700;padding:11px 22px;border-radius:100px;transition:transform .15s,box-shadow .2s}
+.dl-file-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(126,33,213,.35);text-decoration:none;color:#fff}
+
 /* ---------- калькулятор у статті ---------- */
 .calc{margin:32px 0;padding:24px;background:var(--surface);border:1px solid var(--border-strong);border-radius:18px}
 .calc-h{font-family:var(--display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.3px;margin-bottom:4px}
@@ -235,6 +244,7 @@ article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
   article h1{font-size:27px}
   article h2{font-size:20px;margin:34px 0 12px}
   article p,article ul,article ol{font-size:16px}
+  .dl-file{flex-direction:column;align-items:flex-start;gap:12px}
   .calc-grid,.calc-rows{grid-template-columns:1fr}
   .calc{padding:18px}
   .post-card{padding:16px;flex-direction:column;gap:14px}
