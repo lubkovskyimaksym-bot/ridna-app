@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/blog/blog.css?v=469a571c" />
+  <link rel="stylesheet" href="/blog/blog.css?v=3c825286" />
 
   <script type="application/ld+json">
   {
@@ -166,17 +166,32 @@
 
     <p>Порівнювати треба не «комісія проти нуля», а <strong>втрати проти втрат</strong> на одне замовлення.</p>
 
+    <p><em>Втрати на накладеному платежі</em> = комісія + (частка невикупу × повна вартість одного повернення).</p>
+
+    <p><em>Втрати на передоплаті</em> = частка покупців, які відмовились платити наперед × ваша маржа із замовлення.</p>
+
+    <p>Підставте свої числа — і побачите, що відповідь не універсальна:</p>
+
     <div class="calc" id="calc">
       <div class="calc-h">Калькулятор: що вигідніше саме вам</div>
       <p class="calc-sub">Підставте свої числа — рахунок іде на 100 замовлень, щоб було з чим порівнювати.</p>
       <div class="calc-grid">
         <div class="calc-f">
-          <label for="c-margin">Маржа з одного замовлення, ₴</label>
-          <input type="number" id="c-margin" value="400" min="0" step="10" inputmode="numeric" />
+          <label for="c-check">Середній чек, ₴</label>
+          <input type="number" id="c-check" value="1000" min="0" step="50" inputmode="numeric" />
         </div>
         <div class="calc-f">
-          <label for="c-fee">Комісія за накладений платіж, ₴ за замовлення</label>
-          <input type="number" id="c-fee" value="30" min="0" step="5" inputmode="numeric" />
+          <label for="c-margin">Ваша маржа з одного замовлення, ₴</label>
+          <input type="number" id="c-margin" value="400" min="0" step="10" inputmode="numeric" />
+        </div>
+        <div class="calc-f calc-f-pair">
+          <label for="c-fee-pct">Комісія за накладений платіж</label>
+          <div class="calc-pair">
+            <input type="number" id="c-fee-pct" value="2" min="0" max="100" step="0.1" inputmode="decimal" aria-label="Комісія у відсотках" />
+            <span>%&nbsp;+</span>
+            <input type="number" id="c-fee-fix" value="20" min="0" step="1" inputmode="numeric" aria-label="Фіксована частина комісії" />
+            <span>₴</span>
+          </div>
         </div>
         <div class="calc-f">
           <label for="c-unred">Скільки посилок не забирають, %</label>
@@ -196,59 +211,70 @@
           <div class="calc-row" id="c-row-cod">
             <span class="k">Накладений платіж</span>
             <span class="v" id="c-cod">—</span>
+            <span class="s" id="c-fee-note"></span>
           </div>
           <div class="calc-row" id="c-row-pre">
             <span class="k">Передоплата</span>
             <span class="v" id="c-pre">—</span>
+            <span class="s" id="c-pre-note"></span>
           </div>
         </div>
         <p class="calc-verdict" id="c-verdict" aria-live="polite"></p>
-        <p class="calc-note">Рахуємо чистий результат зі 100 замовлень. Комісію за онлайн-оплату не враховуємо: вона зазвичай суттєво менша за комісію післяплати. Розрахунок орієнтовний і не замінює вашого обліку.</p>
+        <p class="calc-note">Рахуємо чистий результат зі 100 замовлень. Комісію за післяплату платить продавець; якщо ви перекладаєте її на покупця — поставте нулі. Стандартний тариф Нової Пошти на момент публікації — 2% від суми плюс 20 ₴, актуальний звіряйте на їхньому сайті. Комісію за онлайн-оплату не враховуємо: вона зазвичай суттєво менша. Розрахунок орієнтовний і не замінює вашого обліку.</p>
       </div>
     </div>
 
     <script>
     (function(){
       var box=document.getElementById('calc'); if(!box)return;
-      var f=['c-margin','c-fee','c-unred','c-return','c-refuse'].map(function(id){return document.getElementById(id);});
+      var ids=['c-check','c-margin','c-fee-pct','c-fee-fix','c-unred','c-return','c-refuse'];
+      var el={}; ids.forEach(function(i){ el[i]=document.getElementById(i); });
       var fmt=new Intl.NumberFormat('uk-UA',{maximumFractionDigits:0});
       var sent=false;
-      function num(el,max){
-        var v=parseFloat(el.value);
+      function num(node,max){
+        var v=parseFloat(node.value);
         if(!isFinite(v)||v<0)v=0;
         if(max!==undefined&&v>max)v=max;
         return v;
       }
       function calc(){
-        var margin=num(f[0]), fee=num(f[1]), unred=num(f[2],100), ret=num(f[3]), refuse=num(f[4],100);
-        var paid=100-unred;                              // скільки посилок викупили
-        var cod=paid*(margin-fee)-unred*ret;             // післяплата
-        var pre=(100-refuse)*margin;                     // передоплата
+        var check=num(el['c-check']), margin=num(el['c-margin']),
+            pct=num(el['c-fee-pct'],100), fix=num(el['c-fee-fix']),
+            unred=num(el['c-unred'],100), ret=num(el['c-return']),
+            refuse=num(el['c-refuse'],100);
+
+        var fee=check*pct/100+fix;                 // комісія з одного отриманого замовлення
+        var paid=100-unred;                        // скільки посилок викупили
+        var cod=paid*(margin-fee)-unred*ret;
+        var pre=(100-refuse)*margin;
+
         document.getElementById('c-cod').textContent=fmt.format(Math.round(cod))+' ₴';
         document.getElementById('c-pre').textContent=fmt.format(Math.round(pre))+' ₴';
+        document.getElementById('c-fee-note').textContent='комісія '+fmt.format(Math.round(fee))+' ₴ із замовлення · '+paid+' викуплено';
+        document.getElementById('c-pre-note').textContent=(100-refuse)+' замовлень зі 100';
+
         var rc=document.getElementById('c-row-cod'), rp=document.getElementById('c-row-pre');
         rc.classList.toggle('win',cod>pre); rp.classList.toggle('win',pre>cod);
-        var d=Math.abs(Math.round(cod-pre));
+
         var v=document.getElementById('c-verdict');
-        if(cod===pre){ v.innerHTML='За вашими числами варіанти рівноцінні.'; }
-        else {
+        var d=Math.abs(Math.round(cod-pre));
+        if(Math.round(cod)===Math.round(pre)){
+          v.innerHTML='За вашими числами варіанти рівноцінні.';
+        } else {
           var better=cod>pre?'вигідніший <strong>накладений платіж</strong>':'вигідніша <strong>передоплата</strong>';
           v.innerHTML='За вашими числами '+better+' — різниця близько <strong>'+fmt.format(d)+' ₴</strong> на 100 замовлень.';
         }
+        if(margin<fee){
+          v.innerHTML+=' <br>Зверніть увагу: комісія більша за вашу маржу — на такому чеку післяплата збиткова в принципі.';
+        }
         if(!sent&&window.umami){ sent=true; try{window.umami.track('calc_used',{slug:'nakladenyi-platizh-chy-peredoplata'});}catch(e){} }
       }
-      f.forEach(function(el){ el.addEventListener('input',calc); });
+      ids.forEach(function(i){ el[i].addEventListener('input',calc); });
       calc();
     })();
     </script>
 
-    <p><em>Втрати на накладеному платежі</em> = комісія + (частка невикупу × повна вартість одного повернення).</p>
-
-    <p><em>Втрати на передоплаті</em> = частка покупців, які відмовились платити наперед × ваша маржа із замовлення.</p>
-
-    <p>Припустимо (цифри умовні, підставте свої): з десяти відправлень одне повертається, а повний цикл повернення коштує вам близько половини маржі з одного замовлення. Тоді накладений платіж з’їдає приблизно 5% маржі плюс комісію. Якщо ж на передоплату не погоджується кожен четвертий — ви втрачаєте 25% замовлень. За таких вхідних накладений платіж вигідніший, і суттєво.</p>
-
-    <p>Але варто відсотку невикупу піднятися до третини, а частці незгодних на передоплату впасти до десятої — картина перевертається.</p>
+    <p>Тут ховається неочевидне. Комісія за післяплату <strong>відсоткова</strong>, тож чим дорожчий ваш товар, тим більше ви за неї платите — а ризик невикупу на дорогих замовленнях і без того вищий. Магазину з чеком у кілька сотень гривень післяплата зазвичай вигідна, магазину з чеком у кілька тисяч — уже ні. Одна й та сама порада для обох буде хибною.</p>
 
     <p><strong>Висновок не в тому, що якийсь варіант кращий.</strong> Він у тому, що без двох власних цифр — вашого відсотка невикупу й вашої частки відмов — вибір робиться навмання.</p>
 

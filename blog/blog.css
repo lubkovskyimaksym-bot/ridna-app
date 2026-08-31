@@ -126,6 +126,11 @@ article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
 .calc-f input{width:100%;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;transition:border-color .18s}
 .calc-f input:focus{outline:none;border-color:var(--purple)}
 .calc-f input:invalid{border-color:var(--danger,#F87171)}
+.calc-f-pair{grid-column:1/-1}
+.calc-pair{display:flex;align-items:center;gap:8px}
+.calc-pair input{flex:0 1 110px}
+.calc-pair span{font-size:14px;font-weight:700;color:var(--text-soft);white-space:nowrap}
+.calc-row .s{display:block;font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4}
 .calc-out{margin-top:20px;padding-top:18px;border-top:1px solid var(--border)}
 .calc-rows{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .calc-row{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
