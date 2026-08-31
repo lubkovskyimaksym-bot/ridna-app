@@ -245,6 +245,24 @@ function cmdPublish(slug) {
   console.log('  Не забудь: node tools/blog.mjs build');
 }
 
+function cmdDate(slug, date) {
+  const file = join(BLOG, slug || '', 'index.html');
+  if (!slug || !existsSync(file)) throw new Error(`не знайдено blog/${slug}/index.html`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date || '')) throw new Error('дата у форматі РРРР-ММ-ДД');
+  if (Number.isNaN(Date.parse(date + 'T12:00:00Z'))) throw new Error(`неіснуюча дата: ${date}`);
+
+  let html = readFileSync(file, 'utf8');
+  const before = (html.match(/"datePublished":\s*"([^"]+)"/) || [])[1];
+  html = html
+    .replace(/(<meta property="article:published_time" content=")[^"]*(")/, `$1${date}$2`)
+    .replace(/(<meta property="article:modified_time" content=")[^"]*(")/, `$1${date}$2`)
+    .replace(/("datePublished":\s*")[^"]*(")/, `$1${date}$2`)
+    .replace(/("dateModified":\s*")[^"]*(")/, `$1${date}$2`)
+    .replace(/<time datetime="[^"]*">[^<]*<\/time>/, `<time datetime="${date}">${human(date)}</time>`);
+  writeFileSync(file, html);
+  console.log(`✓ ${slug}: ${before || '—'} → ${date} (${human(date)})`);
+}
+
 function cmdBuild() {
   const all = readPosts();
   const warnings = check(all);
@@ -260,12 +278,13 @@ function cmdBuild() {
   if (warnings) console.log(`  ⚠ попереджень: ${warnings}`);
 }
 
-const [cmd, arg] = process.argv.slice(2);
+const [cmd, arg, arg2] = process.argv.slice(2);
 try {
   if (cmd === 'new') cmdNew(arg);
   else if (cmd === 'publish') cmdPublish(arg);
+  else if (cmd === 'date') cmdDate(arg, arg2);
   else if (cmd === 'build') cmdBuild();
-  else console.log('Команди:\n  node tools/blog.mjs new <slug>\n  node tools/blog.mjs publish <slug>\n  node tools/blog.mjs build');
+  else console.log('Команди:\n  node tools/blog.mjs new <slug>\n  node tools/blog.mjs publish <slug>\n  node tools/blog.mjs date <slug> <РРРР-ММ-ДД>\n  node tools/blog.mjs build');
 } catch (e) {
   console.error(`✗ ${e.message}`);
   process.exit(1);
