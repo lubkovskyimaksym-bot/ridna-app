@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" /><!-- DRAFT: знімається командою `node tools/blog.mjs publish <slug>` -->
+
+  <title>Як продавати під замовлення: облік, передоплата й строки — Блог Ridna</title>
+  <meta name="description" content="Продаж під замовлення й перепродаж: як фіксувати унікальні позиції, брати часткову передоплату й не губити строки очікування." />
+  <link rel="canonical" href="https://ridna.net/blog/prodazh-pid-zamovlennya/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ridna.net/blog/prodazh-pid-zamovlennya/" />
+  <meta property="og:site_name" content="Ridna" />
+  <meta property="og:title" content="Як продавати під замовлення: облік, передоплата й строки" />
+  <meta property="og:description" content="Продаж під замовлення й перепродаж: як фіксувати унікальні позиції, брати часткову передоплату й не губити строки очікування." />
+  <meta property="og:image" content="https://ridna.net/blog/prodazh-pid-zamovlennya/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta property="article:published_time" content="2026-09-07" />
+  <meta property="article:modified_time" content="2026-09-07" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Як продавати під замовлення: облік, передоплата й строки" />
+  <meta name="twitter:description" content="Продаж під замовлення й перепродаж: як фіксувати унікальні позиції, брати часткову передоплату й не губити строки очікування." />
+  <meta name="twitter:image" content="https://ridna.net/blog/prodazh-pid-zamovlennya/og.jpg" />
+
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/logo2.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="alternate" type="application/rss+xml" title="Блог Ridna" href="/blog/feed.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/blog.css?v=5b7801f6" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Як продавати під замовлення: облік, передоплата й строки",
+    "description": "Продаж під замовлення й перепродаж: як фіксувати унікальні позиції, брати часткову передоплату й не губити строки очікування.",
+    "image": "https://ridna.net/blog/prodazh-pid-zamovlennya/og.jpg",
+    "datePublished": "2026-09-07",
+    "dateModified": "2026-09-07",
+    "inLanguage": "uk-UA",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ridna.net/blog/prodazh-pid-zamovlennya/" },
+    "author": { "@type": "Organization", "name": "Ridna", "url": "https://ridna.net" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Ridna",
+      "url": "https://ridna.net",
+      "logo": { "@type": "ImageObject", "url": "https://ridna.net/logo2.svg" }
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Головна", "item": "https://ridna.net/" },
+      { "@type": "ListItem", "position": 2, "name": "Блог", "item": "https://ridna.net/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "Як продавати під замовлення: облік, передоплата й строки" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "uk-UA",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Як вести облік продажів під замовлення?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ключове — фіксувати домовленість одразу й бачити статус. У Ridna позиція додається в замовлення без заведення каталогу через швидку позицію, часткова оплата фіксується явно, а замовлення лишається в списку зі статусом, доки не завершиться."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Яку передоплату брати при продажу під замовлення?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Сума має не покрити собівартість, а створити відчуття зобовʼязання: хто заплатив навіть частину, майже завжди доводить угоду до кінця. У замовленні статус оплати показується як «не оплачено», «частково» або «оплачено»."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Як не забути про замовлення, яке чекає тижнями?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "За статусами. Підтверджене й частково оплачене замовлення видно в списку окремо від решти, тож щоденний перегляд показує, що зупинилось і за яким постачальником чекати."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Чи можна додати товар, якого немає в каталозі?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Так. Швидка позиція дозволяє додати фото, назву, ціну й кількість прямо в замовлення, не створюючи повноцінну картку товару. Позиція при цьому враховується в аналітиці нарівні з рештою."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Umami — аналітика без кукі -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="79ee62ea-0553-465a-bc94-cfca1065474e"></script>
+  <script>(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+</head>
+<body>
+<!-- ШАПКА:START — синхронізована з лендінгом, правити в tools/post-template.html -->
+<nav class="site-nav">
+  <a href="/" class="nav-logo">
+    <img src="/logo2.svg" alt="Ridna" class="nav-logo-img" />
+    <span class="nav-logo-text">Ridna</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Можливості</a></li>
+    <li><a href="/#how">Як працює</a></li>
+    <li><a href="/#pricing">Тарифи</a></li>
+    <li><a href="/blog/" class="is-current">Блог</a></li>
+    <li><a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="nav">База знань</a></li>
+    <li class="nav-actions">
+      <a href="/pay" class="nav-pill nav-pill-ghost" data-umami-event="login_pay" data-umami-event-place="nav">Вхід</a>
+      <a href="https://t.me/ridna_crm" target="_blank" rel="noopener" class="nav-pill" data-umami-event="contact_open" data-umami-event-place="blog-nav">Звʼязатись</a>
+      <button class="theme-toggle" aria-label="Перемкнути тему" type="button"><svg class="t-light" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="t-dark" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    </li>
+  </ul>
+</nav>
+<!-- ШАПКА:END -->
+
+<div class="wrap">
+  <div class="crumb-row">
+    <nav class="crumbs" aria-label="Хлібні крихти">
+      <a href="/">Головна</a> <span>/</span> <a href="/blog/">Блог</a> <span>/</span> <span aria-current="page">Як продавати під замовлення: облік, передоплата й строки</span>
+    </nav>
+    <a href="/blog/" class="all-posts">Усі статті <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+
+  <div class="art-layout">
+    <aside class="side-nav">
+      <div class="side-h">На цій сторінці</div>
+      <nav id="toc" class="toc"></nav>
+    </aside>
+
+    <div class="art-main">
+      <article>
+        <h1>Як продавати під замовлення: облік, передоплата й строки</h1>
+        <p class="article-meta"><time datetime="2026-09-07">7 вересня 2026 р.</time> · Ridna</p>
+
+        <!-- ↓↓↓ ТЕКСТ СТАТТІ ↓↓↓ -->
+    <img class="cover" src="/blog/prodazh-pid-zamovlennya/cover.webp" alt="Кравецька сантиметрова стрічка крупним планом" width="1200" height="630" fetchpriority="high" />
+
+    <div class="summary">
+      <div class="summary-h">Коротко</div>
+      <p>Продаж під замовлення відрізняється від звичайного тим, що між домовленістю й відправкою минають дні або тижні — і саме в цьому проміжку губляться замовлення й забуваються обіцянки.</p>
+      <p>Опора тут — часткова передоплата й явний статус. У Ridna позиція додається в замовлення без заведення каталогу, оплата фіксується як «частково», а замовлення видно в списку зі статусом, доки не завершиться.</p>
+    </div>
+
+    <blockquote id="review-note">
+      <strong>Перед публікацією підтвердь</strong> назву функції «швидка позиція» в інтерфейсі й те,
+      що вона вже доступна користувачам. Опис узятий із коду, у базі знань її поки немає.
+      Цей блок прибираю перед публікацією.
+    </blockquote>
+
+    <p>Під замовлення продають по-різному: щось везуть із-за кордону, щось шиють, щось замовляють у постачальника після підтвердження. Спільне одне — <strong>товару на руках немає в момент домовленості</strong>, а гроші й зобов’язання вже з’явились.</p>
+
+    <p>Саме через цей розрив така торгівля обліковується найгірше: замовлення живе тижнями, а в переписці за цей час встигає загубитись.</p>
+
+    <h2>Три ризики, яких немає у звичайному продажу</h2>
+
+    <p><strong>Клієнт передумає за час очікування.</strong> Він домовився імпульсивно, а через десять днів настрій минув. Без передоплати ви лишаєтесь із товаром, замовленим під нього.</p>
+
+    <p><strong>Ви забудете деталі.</strong> Через два тижні згадати точний колір, розмір і те, що обіцяли знижку, неможливо, якщо це не записано.</p>
+
+    <p><strong>Строк розтягнеться.</strong> Постачальник затримав, а ви не помітили, бо замовлення просто лежало в чаті без нагадування.</p>
+
+    <h2>Часткова передоплата як фіксація намірів</h2>
+
+    <p>Це головний інструмент у продажу під замовлення. Сума має не покрити собівартість, а створити <strong>відчуття зобов’язання</strong>: хто заплатив навіть частину, майже завжди доводить угоду до кінця.</p>
+
+    <p>У Ridna спосіб оплати обирається в замовленні — передоплата, накладений платіж або картка онлайн, — а статус показує реальний стан: <strong>не оплачено, частково або оплачено</strong>. Часткова оплата видно окремо, тож у будь-який момент ясно, скільки вже отримано.</p>
+
+    <p>Посилання на оплату карткою можна створити з картки замовлення на потрібну суму — хоч на всю, хоч на частину — і надіслати клієнту прямо в чат. Це доступно на тарифі Pro з підключеним Monobank або LiqPay; ручний запис оплати працює й на Старті.</p>
+
+    <h2>Позиція, якої немає в каталозі</h2>
+
+    <p>Під замовлення часто продають унікальні речі: конкретна модель, конкретний розмір, іноді взагалі одна штука. Заводити для цього повноцінну картку товару — марна робота.</p>
+
+    <p>Для таких випадків у Ridna є <strong>швидка позиція</strong>: фото, назва, ціна й кількість додаються прямо в замовлення. Позиція при цьому не зникає в нікуди — вона стає справжнім товаром і рахується в аналітиці разом з рештою.</p>
+
+    <p>Це дозволяє зафіксувати домовленість у ту саму хвилину, а не «коли дійдуть руки завести товар».</p>
+
+    <h2>Статуси замість пам’яті</h2>
+
+    <p>Замовлення проходить етапи: <em>нове → підтверджене → відправлене → завершене</em>. Для продажу під замовлення критичний саме другий: підтверджене й оплачене частково замовлення може стояти тижнями, і його треба бачити.</p>
+
+    <p>У списку замовлень видно, що зупинилось. Раз на день переглянути — і одразу ясно, за яким постачальником чекати й кому написати про затримку до того, як клієнт напише сам.</p>
+
+    <p>Коли товар прийшов, ТТН створюється з тієї ж картки; якщо посилку відправляє постачальник — його номер накладної прив’язується до замовлення, і статуси доставки видно так само.</p>
+
+    <h2>Що писати клієнту й коли</h2>
+
+    <ul>
+      <li><strong>Одразу після передоплати</strong> — підтвердити замовлення й назвати орієнтовний строк. Не «скоро», а діапазон у днях.</li>
+      <li><strong>У середині очікування</strong> — коротке «усе за планом». Це знімає більшість тривожних питань.</li>
+      <li><strong>При затримці</strong> — написати першим. Клієнт вибачає затримку, але не вибачає мовчання.</li>
+      <li><strong>При відправці</strong> — номер накладної в чат.</li>
+    </ul>
+
+    <p>Три з чотирьох повідомлень пишуться за секунди, якщо замовлення й переписка в одному вікні, і перетворюються на окрему справу, якщо вони в різних.</p>
+
+    <h2>Скільки заробили насправді</h2>
+
+    <p>У продажу під замовлення різниця між оборотом і заробітком найпомітніша: ви платите постачальнику, за доставку, іноді двічі за доставку.</p>
+
+    <p>Якщо в позиції вказана собівартість, аналітика показує дохід як виручку мінус собівартість — за будь-який період, поруч із середнім чеком і конверсією. Плюс причини скасувань: у цій моделі вони майже завжди вказують на конкретного постачальника або конкретний строк, який ви не витримуєте.</p>
+
+    <p>Тариф Старт — 499 ₴ на місяць, Pro — 799 ₴ з безлімітом і кількома акаунтами. Перші 30 днів безкоштовні без картки.</p>
+
+    <section class="faq">
+      <h2>Часті питання</h2>
+      <p class="faq-q">Як вести облік продажів під замовлення?</p>
+      <p class="faq-a">Ключове — фіксувати домовленість одразу й бачити статус. У Ridna позиція додається в замовлення без заведення каталогу через швидку позицію, часткова оплата фіксується явно, а замовлення лишається в списку зі статусом, доки не завершиться.</p>
+      <p class="faq-q">Яку передоплату брати при продажу під замовлення?</p>
+      <p class="faq-a">Сума має не покрити собівартість, а створити відчуття зобовʼязання: хто заплатив навіть частину, майже завжди доводить угоду до кінця. У замовленні статус оплати показується як «не оплачено», «частково» або «оплачено».</p>
+      <p class="faq-q">Як не забути про замовлення, яке чекає тижнями?</p>
+      <p class="faq-a">За статусами. Підтверджене й частково оплачене замовлення видно в списку окремо від решти, тож щоденний перегляд показує, що зупинилось і за яким постачальником чекати.</p>
+      <p class="faq-q">Чи можна додати товар, якого немає в каталозі?</p>
+      <p class="faq-a">Так. Швидка позиція дозволяє додати фото, назву, ціну й кількість прямо в замовлення, не створюючи повноцінну картку товару. Позиція при цьому враховується в аналітиці нарівні з рештою.</p>
+    </section>
+        <!-- ↑↑↑ ТЕКСТ СТАТТІ ↑↑↑ -->
+
+        <section class="native">
+          <h2>Перевірити на кількох замовленнях</h2>
+          <p>Продаж під замовлення найбільше страждає від розриву в часі: домовились сьогодні, відправили через два тижні, а між цим — тиша й забуті деталі.</p>
+          <p>У <a href="/?src=blog-prodazh-pid-zamovlennya">Ridna</a> замовлення тримає деталі, оплату й строк в одному місці, а швидка позиція дозволяє зафіксувати навіть унікальний товар за кілька дотиків. 30 днів безкоштовно без картки — вистачить, щоб провести кілька замовлень повним циклом.</p>
+        </section>
+      </article>
+
+      <div class="promo">
+        <div class="promo-badges"><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="1"/><rect x="3" y="7" width="18" height="3"/><line x1="12" y1="7" x2="12" y2="20"/><circle cx="9" cy="5.5" r="2"/><circle cx="15" cy="5.5" r="2"/></svg>−33% перші 3 місяці</span><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Без картки</span><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 хв на налаштування</span></div>
+        <h3>Ridna — CRM для <span class="accent">Instagram-магазинів</span></h3>
+        <p>Завантаж Ridna і отримай −33% на перші 3 місяці — для перших 33 магазинів.</p>
+        <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-prodazh-pid-zamovlennya&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="article-banner" data-umami-event-slug="prodazh-pid-zamovlennya">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Darticle-banner%26utm_content%3Dblog-prodazh-pid-zamovlennya" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="article-banner" data-umami-event-slug="prodazh-pid-zamovlennya">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+      </div>
+
+<!-- RELATED:START -->
+<!-- RELATED:END -->
+
+      <footer class="blog-footer">
+        <span>© 2026 Ridna · Зроблено в Україні</span>
+        <span><a href="/blog/">Усі статті</a> · <a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="post-footer">База знань</a> · <a href="/blog/feed.xml">RSS</a></span>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="dl-back" id="dlBack"></div>
+<div class="dl-pop" id="dlPop" role="dialog" aria-modal="true" aria-label="Завантажити Ridna">
+  <button class="dl-pop-x" id="dlPopX" aria-label="Закрити" type="button">×</button>
+  <h4>Спробувати Ridna</h4>
+  <p>Замовлення, Direct і ТТН Нової Пошти в одному застосунку. 30 днів безкоштовно.</p>
+  <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-prodazh-pid-zamovlennya&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="popup" data-umami-event-slug="prodazh-pid-zamovlennya">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Dpopup%26utm_content%3Dblog-prodazh-pid-zamovlennya" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="popup" data-umami-event-slug="prodazh-pid-zamovlennya">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+</div>
+
+<script>
+/* перемикач теми */
+(function(){function t(){var r=document.documentElement;var n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}}document.querySelectorAll('.theme-toggle').forEach(function(b){b.addEventListener('click',t);});try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){if(!localStorage.getItem('theme'))document.documentElement.setAttribute('data-theme',e.matches?'dark':'light');});}catch(e){}})();
+
+/* зміст статті з підсвіткою поточного розділу */
+(function(){
+  var toc=document.getElementById('toc'), side=document.querySelector('.side-nav');
+  if(!toc)return;
+  var hs=[].slice.call(document.querySelectorAll('article h2'));
+  if(hs.length<2){ if(side)side.style.display='none'; return; }
+  var links=[];
+  hs.forEach(function(h,i){
+    h.id='s'+i;
+    var a=document.createElement('a');
+    a.href='#s'+i; a.textContent=h.textContent;
+    toc.appendChild(a); links.push({a:a,h:h});
+  });
+  function absTop(el){ return el.getBoundingClientRect().top + window.scrollY; }
+  function spy(){ var cur=links[0], thr=window.scrollY+150;
+    for(var i=0;i<links.length;i++){ if(absTop(links[i].h)<=thr) cur=links[i]; }
+    links.forEach(function(l){ l.a.classList.toggle('on', l===cur); }); }
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy,{passive:true});
+  spy();
+})();
+
+/* карусель схожих статей: стрілки зʼявляються лише за наявності переповнення */
+(function(){
+  var box=document.querySelector('.rel-carousel'); if(!box)return;
+  var prev=document.querySelector('.rel-nav.prev'), next=document.querySelector('.rel-nav.next');
+  function step(){ var c=box.querySelector('.rel'); return c ? c.offsetWidth+12 : 280; }
+  function sync(){
+    var over=box.scrollWidth-box.clientWidth>4;
+    if(!over){ prev.hidden=true; next.hidden=true; return; }
+    prev.hidden=box.scrollLeft<=2;
+    next.hidden=box.scrollLeft>=box.scrollWidth-box.clientWidth-2;
+  }
+  function go(dx){ box.scrollBy({left:dx,behavior:'smooth'}); setTimeout(sync,400); }
+  prev.addEventListener('click',function(){ go(-step()); });
+  next.addEventListener('click',function(){ go(step()); });
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  sync();
+})();
+
+/* поп-ап: по центру, після 10% прокрутки, один раз на відвідувача */
+(function(){
+  var pop=document.getElementById('dlPop'), back=document.getElementById('dlBack'); if(!pop)return;
+  var KEY='dlpop-dismissed';
+  try{ if(localStorage.getItem(KEY))return; }catch(e){}
+  function close(){ pop.classList.remove('show'); back.classList.remove('show'); try{localStorage.setItem(KEY,'1');}catch(e){} }
+  document.getElementById('dlPopX').addEventListener('click',close);
+  back.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  pop.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',close); });
+  var shown=false;
+  function check(){
+    if(shown)return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    if(h>0 && window.scrollY/h>=0.10){ shown=true; pop.classList.add('show'); back.classList.add('show'); window.removeEventListener('scroll',check); }
+  }
+  window.addEventListener('scroll',check,{passive:true});
+})();
+</script>
+<a class="tg-fab" href="https://t.me/ridna_crm" target="_blank" rel="noopener" aria-label="Telegram Ridna" data-umami-event="tg_subscribe"><svg viewBox="0 0 24 24" width="27" height="27" fill="#fff" aria-hidden="true"><path d="M9.8 16.6 9.6 20c.4 0 .6-.2.8-.4l1.9-1.8 3.9 2.9c.7.4 1.2.2 1.4-.7l2.6-12.2c.2-1-.4-1.4-1-1.1L3.4 12.1c-1 .4-1 1-.2 1.2l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg><span class="tg-fab-label">Ridna в Telegram</span></a>
+</body>
+</html>
