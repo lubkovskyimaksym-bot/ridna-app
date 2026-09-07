@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" /><!-- DRAFT: знімається командою `node tools/blog.mjs publish <slug>` -->
 
   <title>CRM для дропшипінгу: як вести замовлення без власного складу — Блог Ridna</title>
   <meta name="description" content="Чому дропшиперу незручні звичайні CRM, як додавати позиції без заведення каталогу і як бачити статус посилки, яку відправляє постачальник." />
@@ -164,14 +163,6 @@
       <p>У Ridna для цього є швидка позиція: фото, назва, ціна й кількість додаються прямо в замовлення. Якщо посилку відправляє постачальник, його номер ТТН прив’язується до замовлення — і статуси доставки видно так само, як для власних відправлень.</p>
     </div>
 
-    <blockquote id="review-note">
-      <strong>Перед публікацією підтвердь:</strong> чи «швидка позиція» вже доступна користувачам у релізі
-      й чи саме так вона називається в інтерфейсі. Я взяв опис із коду (<code>QuickItemSheet</code>), бо в
-      базі знань ця функція ще не описана — її варто туди додати окремо.
-      Також звір: ручна оплата справді безкоштовна на тарифі Старт, а посилання на оплату карткою — на Pro.
-      Цей блок прибираю перед публікацією.
-    </blockquote>
-
     <p>Дропшипінг ламає звичайну логіку обліку. Усі CRM побудовані навколо припущення, що у вас є свій каталог: ви заводите товари, стежите за залишками, рахуєте собівартість. У дропшипера каталог чужий, змінюється щотижня, а половина позицій продається рівно один раз.</p>
 
     <p>Тому найчастіше все зводиться до переписки й нотаток — і разом із цим зникає можливість щось порахувати.</p>
@@ -259,6 +250,47 @@
       </div>
 
 <!-- RELATED:START -->
+      <section class="related">
+        <h3>Схожі статті</h3>
+        <div class="rel-wrap">
+          <button class="rel-nav prev" type="button" aria-label="Попередні" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <div class="rel-carousel">
+          <a class="rel" href="/blog/prodazh-pid-zamovlennya/">
+            <span class="rel-t">Як продавати під замовлення: облік, передоплата й строки</span>
+            <span class="rel-d">7 вересня 2026 р.</span>
+          </a>
+          <a class="rel" href="/blog/orhanizuvaty-robotu-samij/">
+            <span class="rel-t">Як організувати роботу Instagram-магазину, якщо працюєш сама</span>
+            <span class="rel-d">31 серпня 2026 р.</span>
+          </a>
+          <a class="rel" href="/blog/skilky-zarobyla-instagram-magazyn/">
+            <span class="rel-t">Як порахувати, скільки я заробила в Instagram-магазині</span>
+            <span class="rel-d">27 серпня 2026 р.</span>
+          </a>
+          <a class="rel" href="/blog/stvoryty-ttn-z-telefonu/">
+            <span class="rel-t">Як швидко створити ТТН Нової Пошти з телефону</span>
+            <span class="rel-d">24 серпня 2026 р.</span>
+          </a>
+          <a class="rel" href="/blog/zamovlennya-z-direct-bez-vtrat/">
+            <span class="rel-t">Як не губити замовлення в Direct: рішення в одному вікні</span>
+            <span class="rel-d">20 серпня 2026 р.</span>
+          </a>
+          <a class="rel" href="/blog/chym-zaminyty-zoshyt-zamovlen/">
+            <span class="rel-t">Чим замінити зошит для запису замовлень</span>
+            <span class="rel-d">17 серпня 2026 р.</span>
+          </a>
+          <a class="rel" href="/blog/prohramy-dlya-vedennya-zamovlen/">
+            <span class="rel-t">Які є програми для ведення замовлень з Instagram</span>
+            <span class="rel-d">13 серпня 2026 р.</span>
+          </a>
+          <a class="rel" href="/blog/bezpeka-pidklyuchennya-instagram/">
+            <span class="rel-t">Чи безпечно підключати Instagram до сторонніх додатків</span>
+            <span class="rel-d">10 серпня 2026 р.</span>
+          </a>
+          </div>
+          <button class="rel-nav next" type="button" aria-label="Наступні" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </section>
 <!-- RELATED:END -->
 
       <footer class="blog-footer">
