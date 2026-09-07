@@ -116,6 +116,19 @@ article th{background:var(--surface);font-weight:700;color:var(--text)}
 article td{color:var(--text-soft)}
 article hr{border:0;border-top:1px solid var(--border);margin:38px 0}
 
+/* ---------- блок «Коротко»: найцитованіший фрагмент статті ---------- */
+.summary{margin:0 0 30px;padding:20px 24px;background:var(--badge-bg);border-radius:16px;border:1px solid var(--border-strong)}
+.summary-h{font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--purple);margin-bottom:10px}
+.summary p{font-size:16.5px;color:var(--text);margin-bottom:10px;line-height:1.6}
+.summary p:last-child{margin-bottom:0}
+
+/* ---------- часті питання ---------- */
+.faq{margin-top:48px;border-top:1px solid var(--border);padding-top:26px}
+.faq h2{margin-top:0}
+.faq-q{font-size:16.5px;font-weight:700;color:var(--text);margin:22px 0 8px;line-height:1.4}
+.faq-q:first-of-type{margin-top:14px}
+.faq-a{font-size:16px;color:var(--text-soft);margin-bottom:0;line-height:1.65}
+
 /* ---------- завантаження файлу зі статті ---------- */
 .dl-file{display:flex;align-items:center;gap:16px;margin:30px 0;padding:20px 22px;background:var(--surface);border:1px solid var(--border-strong);border-radius:16px}
 .dl-file-ic{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--badge-bg);color:var(--purple);display:flex;align-items:center;justify-content:center}
