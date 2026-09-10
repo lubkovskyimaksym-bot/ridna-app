@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" /><!-- DRAFT: знімається командою `node tools/blog.mjs publish <slug>` -->
+
+  <title>Що робити, коли клієнтка не забирає посилку з Нової Пошти — Блог Ridna</title>
+  <meta name="description" content="Скільки посилка лежить у відділенні, з якого дня зберігання стає платним, скільки коштує кожен день і хто платить за повернення." />
+  <link rel="canonical" href="https://ridna.net/blog/kliyentka-ne-zabyraye-posylku/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ridna.net/blog/kliyentka-ne-zabyraye-posylku/" />
+  <meta property="og:site_name" content="Ridna" />
+  <meta property="og:title" content="Що робити, коли клієнтка не забирає посилку з Нової Пошти" />
+  <meta property="og:description" content="Скільки посилка лежить у відділенні, з якого дня зберігання стає платним, скільки коштує кожен день і хто платить за повернення." />
+  <meta property="og:image" content="https://ridna.net/blog/kliyentka-ne-zabyraye-posylku/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta property="article:published_time" content="2026-09-10" />
+  <meta property="article:modified_time" content="2026-09-10" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Що робити, коли клієнтка не забирає посилку з Нової Пошти" />
+  <meta name="twitter:description" content="Скільки посилка лежить у відділенні, з якого дня зберігання стає платним, скільки коштує кожен день і хто платить за повернення." />
+  <meta name="twitter:image" content="https://ridna.net/blog/kliyentka-ne-zabyraye-posylku/og.jpg" />
+
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/logo2.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="alternate" type="application/rss+xml" title="Блог Ridna" href="/blog/feed.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/blog.css?v=5b7801f6" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Що робити, коли клієнтка не забирає посилку з Нової Пошти",
+    "description": "Скільки посилка лежить у відділенні, з якого дня зберігання стає платним, скільки коштує кожен день і хто платить за повернення.",
+    "image": "https://ridna.net/blog/kliyentka-ne-zabyraye-posylku/og.jpg",
+    "datePublished": "2026-09-10",
+    "dateModified": "2026-09-10",
+    "inLanguage": "uk-UA",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ridna.net/blog/kliyentka-ne-zabyraye-posylku/" },
+    "author": { "@type": "Organization", "name": "Ridna", "url": "https://ridna.net" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Ridna",
+      "url": "https://ridna.net",
+      "logo": { "@type": "ImageObject", "url": "https://ridna.net/logo2.svg" }
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Головна", "item": "https://ridna.net/" },
+      { "@type": "ListItem", "position": 2, "name": "Блог", "item": "https://ridna.net/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "Що робити, коли клієнтка не забирає посилку з Нової Пошти" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "uk-UA",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Скільки днів посилка зберігається на Новій Пошті?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Загальний строк зберігання — 30 календарних днів, відлік починається з наступного дня після надходження у відділення одержувача. Перші 7 днів безплатно, далі зберігання платне. Після 30 днів відправлення вважається незатребуваним."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Скільки коштує платне зберігання посилки?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "За офіційними тарифами Нової Пошти: мала посилка до 2 кг — 15 ₴ за добу, середня до 10 кг — 25 ₴, велика до 30 кг — 35 ₴, шини та диски — 50 ₴, палети — 150 ₴. Плата нараховується з восьмого дня зберігання."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Хто платить за повернення невикупленої посилки?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Зворотну доставку оплачує відправник, тобто продавець, за стандартними тарифами. Разом із платним зберіганням і вартістю пакування це робить невикуп найдорожчою статтею при роботі з післяплатою."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Чи можна повернути посилку раніше, ніж за 30 днів?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Так, через послугу автоматичного повернення: вона дозволяє задати власний строк зберігання, після якого посилка їде назад автоматично. Послуга доступна клієнтам із договором, підключення безплатне, налаштовується в бізнес-кабінеті."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Umami — аналітика без кукі -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="79ee62ea-0553-465a-bc94-cfca1065474e"></script>
+  <script>(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+</head>
+<body>
+<!-- ШАПКА:START — синхронізована з лендінгом, правити в tools/post-template.html -->
+<nav class="site-nav">
+  <a href="/" class="nav-logo">
+    <img src="/logo2.svg" alt="Ridna" class="nav-logo-img" />
+    <span class="nav-logo-text">Ridna</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Можливості</a></li>
+    <li><a href="/#how">Як працює</a></li>
+    <li><a href="/#pricing">Тарифи</a></li>
+    <li><a href="/blog/" class="is-current">Блог</a></li>
+    <li><a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="nav">База знань</a></li>
+    <li class="nav-actions">
+      <a href="/pay" class="nav-pill nav-pill-ghost" data-umami-event="login_pay" data-umami-event-place="nav">Вхід</a>
+      <a href="https://t.me/ridna_crm" target="_blank" rel="noopener" class="nav-pill" data-umami-event="contact_open" data-umami-event-place="blog-nav">Звʼязатись</a>
+      <button class="theme-toggle" aria-label="Перемкнути тему" type="button"><svg class="t-light" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="t-dark" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    </li>
+  </ul>
+</nav>
+<!-- ШАПКА:END -->
+
+<div class="wrap">
+  <div class="crumb-row">
+    <nav class="crumbs" aria-label="Хлібні крихти">
+      <a href="/">Головна</a> <span>/</span> <a href="/blog/">Блог</a> <span>/</span> <span aria-current="page">Що робити, коли клієнтка не забирає посилку з Нової Пошти</span>
+    </nav>
+    <a href="/blog/" class="all-posts">Усі статті <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+
+  <div class="art-layout">
+    <aside class="side-nav">
+      <div class="side-h">На цій сторінці</div>
+      <nav id="toc" class="toc"></nav>
+    </aside>
+
+    <div class="art-main">
+      <article>
+        <h1>Що робити, коли клієнтка не забирає посилку з Нової Пошти</h1>
+        <p class="article-meta"><time datetime="2026-09-10">10 вересня 2026 р.</time> · Ridna</p>
+
+        <!-- ↓↓↓ ТЕКСТ СТАТТІ ↓↓↓ -->
+    <img class="cover" src="/blog/kliyentka-ne-zabyraye-posylku/cover.webp" alt="Стос картонних коробок, що чекають на складі" width="1200" height="630" fetchpriority="high" />
+
+    <div class="summary">
+      <div class="summary-h">Коротко</div>
+      <p>Відправлення зберігається у відділенні Нової Пошти 30 календарних днів. Перші 7 днів безплатно, далі зберігання платне: від 15 ₴ на добу за посилку до 2 кг і до 35 ₴ за посилку до 30 кг.</p>
+      <p>Відлік починається з наступного дня після надходження у відділення одержувача. Після 30 днів відправлення вважається незатребуваним, і компанія має право розпорядитись ним на власний розсуд.</p>
+    </div>
+
+    <p>Ситуація буденна: посилка доїхала, клієнтка обіцяла забрати «завтра», і вже пʼятий день мовчить. Далі починаються питання, на які майже ніде немає прямої відповіді: скільки вона там пролежить, з якого моменту капають гроші й хто зрештою за це платить.</p>
+
+    <p>Розбираємо за офіційними умовами Нової Пошти.</p>
+
+    <h2>Скільки посилка лежить у відділенні</h2>
+
+    <p>Загальний строк зберігання — <strong>30 календарних днів</strong>. Відлік починається не з дня прибуття, а <strong>з наступного дня</strong> після надходження у відділення одержувача.</p>
+
+    <p>Після 30 днів відправлення вважається незатребуваним, і перевізник має право розпорядитись ним на власний розсуд — аж до утилізації. Тобто чекати «поки колись забере» не вийде: у цієї історії є кінець.</p>
+
+    <h2>З якого дня зберігання стає платним</h2>
+
+    <p>Безплатно посилка лежить <strong>перші 7 днів</strong> (для палет — 3 дні). З восьмого дня нараховується плата за кожну добу.</p>
+
+    <table>
+      <thead><tr><th>Тип відправлення</th><th>Платне зберігання, ₴/день</th></tr></thead>
+      <tbody>
+        <tr><td>Мала, до 2 кг</td><td>15 ₴</td></tr>
+        <tr><td>Середня, до 10 кг</td><td>25 ₴</td></tr>
+        <tr><td>Велика, до 30 кг</td><td>35 ₴</td></tr>
+        <tr><td>Вантаж до 100 кг (за кожні 100 кг)</td><td>50 ₴</td></tr>
+        <tr><td>Шини та диски</td><td>50 ₴</td></tr>
+        <tr><td>Палети</td><td>150 ₴</td></tr>
+      </tbody>
+    </table>
+
+    <p>Порахуймо типовий випадок: посилка з одягом до 2 кг, клієнтка не забирає три тижні. Сім днів безплатно, далі чотирнадцять днів по 15 ₴ — це <strong>210 ₴</strong> лише за зберігання, окрім самої зворотної доставки.</p>
+
+    <h2>Хто платить</h2>
+
+    <p>Тут і криється неприємність. Якщо посилка повертається, <strong>зворотну доставку оплачує відправник</strong> — тобто ви. Вартість рахується за стандартними тарифами, як за звичайне відправлення.</p>
+
+    <p>Тому повний рахунок за одну незабрану посилку складається з трьох частин: платне зберігання, зворотна доставка й ваш час. Плюс товар, який три тижні їздив країною замість того, щоб продаватись.</p>
+
+    <h2>Автоматичне повернення: як не чекати 30 днів</h2>
+
+    <p>У Нової Пошти є послуга <strong>автоматичного повернення відправлень</strong>. Вона дозволяє задати власний строк зберігання: після нього посилка їде назад без вашої участі.</p>
+
+    <p>Що варто знати:</p>
+
+    <ul>
+      <li>послуга доступна клієнтам, які підписали договір із Новою Поштою;</li>
+      <li>підключення безплатне, вартість самого повернення — за стандартними тарифами;</li>
+      <li>якщо одержувач відмовився від отримання, посилка повертається одразу, не чекаючи кінця строку;</li>
+      <li>налаштовується в бізнес-кабінеті, у розділі «Налаштування» → «Керування послугами».</li>
+    </ul>
+
+    <p>Практична вигода очевидна: замість того щоб платити за зберігання два тижні, ви ставите свій строк — і платите тільки за повернення.</p>
+
+    <h2>Якщо клієнтка просить почекати</h2>
+
+    <p>Строк зберігання можна продовжити, але <strong>тільки за наявності підключеного автоматичного повернення</strong>. Обмеження такі:</p>
+
+    <ul>
+      <li><strong>відправник</strong> може продовжити на 1–10 календарних днів, кількість разів необмежена;</li>
+      <li><strong>одержувач</strong> — на 1–3 календарні дні й лише один раз.</li>
+    </ul>
+
+    <p>Якщо відправлення створене до підключення послуги, продовження буде недоступне.</p>
+
+    <h2>Що робити практично</h2>
+
+    <ol>
+      <li><strong>Надіслати номер накладної одразу</strong> після відправки. Половина «не забрала» — це «не знала, що прийшло».</li>
+      <li><strong>Нагадати на 5–6 день</strong>, поки зберігання ще безплатне. Одне повідомлення дешевше за 15 ₴ на добу.</li>
+      <li><strong>Попередити про строк.</strong> «Посилка чекає до вівторка, далі поїде назад» працює краще за «заберіть, будь ласка».</li>
+      <li><strong>Записати тих, хто не забрав.</strong> Для повторного замовлення від такої людини — тільки передоплата.</li>
+      <li><strong>Порахувати відсоток невикупу</strong> за каналами. Часто виявляється, що проблема не в клієнтах узагалі, а в одному джерелі трафіку.</li>
+    </ol>
+
+    <p>Як рахувати, що вигідніше — післяплата чи передоплата — з калькулятором <a href="/blog/nakladenyi-platizh-chy-peredoplata/">в окремій статті</a>. Як контролювати статус посилки після відправки — <a href="/blog/vidstezhyty-posylku-novoyi-poshty/">тут</a>.</p>
+
+    <p><em>Умови й тарифи наведені за офіційною сторінкою Нової Пошти станом на вересень 2026 року. Перед тим як спиратися на конкретні суми, звіряйте актуальні тарифи на novaposhta.ua.</em></p>
+
+    <section class="faq">
+      <h2>Часті питання</h2>
+      <p class="faq-q">Скільки днів посилка зберігається на Новій Пошті?</p>
+      <p class="faq-a">Загальний строк зберігання — 30 календарних днів, відлік починається з наступного дня після надходження у відділення одержувача. Перші 7 днів безплатно, далі зберігання платне. Після 30 днів відправлення вважається незатребуваним.</p>
+      <p class="faq-q">Скільки коштує платне зберігання посилки?</p>
+      <p class="faq-a">За офіційними тарифами Нової Пошти: мала посилка до 2 кг — 15 ₴ за добу, середня до 10 кг — 25 ₴, велика до 30 кг — 35 ₴, шини та диски — 50 ₴, палети — 150 ₴. Плата нараховується з восьмого дня зберігання.</p>
+      <p class="faq-q">Хто платить за повернення невикупленої посилки?</p>
+      <p class="faq-a">Зворотну доставку оплачує відправник, тобто продавець, за стандартними тарифами. Разом із платним зберіганням і вартістю пакування це робить невикуп найдорожчою статтею при роботі з післяплатою.</p>
+      <p class="faq-q">Чи можна повернути посилку раніше, ніж за 30 днів?</p>
+      <p class="faq-a">Так, через послугу автоматичного повернення: вона дозволяє задати власний строк зберігання, після якого посилка їде назад автоматично. Послуга доступна клієнтам із договором, підключення безплатне, налаштовується в бізнес-кабінеті.</p>
+    </section>
+        <!-- ↑↑↑ ТЕКСТ СТАТТІ ↑↑↑ -->
+
+        <section class="native">
+          <h2>Щоб не рахувати це вручну</h2>
+          <p>Кожна незабрана посилка — це зберігання, зворотна доставка й заморожений товар. Побачити реальний масштаб можна лише тоді, коли невикупи пораховані, а не оцінені на око.</p>
+          <p>У <a href="/?src=blog-kliyentka-ne-zabyraye-posylku">Ridna</a> статус доставки видно прямо в замовленні, поруч зі статусом оплати — тож ви помічаєте застряглу посилку на пʼятий день, а не на двадцятий. 30 днів безкоштовно без картки.</p>
+        </section>
+      </article>
+
+      <div class="promo">
+        <div class="promo-badges"><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="1"/><rect x="3" y="7" width="18" height="3"/><line x1="12" y1="7" x2="12" y2="20"/><circle cx="9" cy="5.5" r="2"/><circle cx="15" cy="5.5" r="2"/></svg>−33% перші 3 місяці</span><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Без картки</span><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 хв на налаштування</span></div>
+        <h3>Ridna — CRM для <span class="accent">Instagram-магазинів</span></h3>
+        <p>Завантаж Ridna і отримай −33% на перші 3 місяці — для перших 33 магазинів.</p>
+        <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-kliyentka-ne-zabyraye-posylku&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="article-banner" data-umami-event-slug="kliyentka-ne-zabyraye-posylku">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Darticle-banner%26utm_content%3Dblog-kliyentka-ne-zabyraye-posylku" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="article-banner" data-umami-event-slug="kliyentka-ne-zabyraye-posylku">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+      </div>
+
+<!-- RELATED:START -->
+<!-- RELATED:END -->
+
+      <footer class="blog-footer">
+        <span>© 2026 Ridna · Зроблено в Україні</span>
+        <span><a href="/blog/">Усі статті</a> · <a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="post-footer">База знань</a> · <a href="/blog/feed.xml">RSS</a></span>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="dl-back" id="dlBack"></div>
+<div class="dl-pop" id="dlPop" role="dialog" aria-modal="true" aria-label="Завантажити Ridna">
+  <button class="dl-pop-x" id="dlPopX" aria-label="Закрити" type="button">×</button>
+  <h4>Спробувати Ridna</h4>
+  <p>Замовлення, Direct і ТТН Нової Пошти в одному застосунку. 30 днів безкоштовно.</p>
+  <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-kliyentka-ne-zabyraye-posylku&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="popup" data-umami-event-slug="kliyentka-ne-zabyraye-posylku">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Dpopup%26utm_content%3Dblog-kliyentka-ne-zabyraye-posylku" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="popup" data-umami-event-slug="kliyentka-ne-zabyraye-posylku">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+</div>
+
+<script>
+/* перемикач теми */
+(function(){function t(){var r=document.documentElement;var n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}}document.querySelectorAll('.theme-toggle').forEach(function(b){b.addEventListener('click',t);});try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){if(!localStorage.getItem('theme'))document.documentElement.setAttribute('data-theme',e.matches?'dark':'light');});}catch(e){}})();
+
+/* зміст статті з підсвіткою поточного розділу */
+(function(){
+  var toc=document.getElementById('toc'), side=document.querySelector('.side-nav');
+  if(!toc)return;
+  var hs=[].slice.call(document.querySelectorAll('article h2'));
+  if(hs.length<2){ if(side)side.style.display='none'; return; }
+  var links=[];
+  hs.forEach(function(h,i){
+    h.id='s'+i;
+    var a=document.createElement('a');
+    a.href='#s'+i; a.textContent=h.textContent;
+    toc.appendChild(a); links.push({a:a,h:h});
+  });
+  function absTop(el){ return el.getBoundingClientRect().top + window.scrollY; }
+  function spy(){ var cur=links[0], thr=window.scrollY+150;
+    for(var i=0;i<links.length;i++){ if(absTop(links[i].h)<=thr) cur=links[i]; }
+    links.forEach(function(l){ l.a.classList.toggle('on', l===cur); }); }
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy,{passive:true});
+  spy();
+})();
+
+/* карусель схожих статей: стрілки зʼявляються лише за наявності переповнення */
+(function(){
+  var box=document.querySelector('.rel-carousel'); if(!box)return;
+  var prev=document.querySelector('.rel-nav.prev'), next=document.querySelector('.rel-nav.next');
+  function step(){ var c=box.querySelector('.rel'); return c ? c.offsetWidth+12 : 280; }
+  function sync(){
+    var over=box.scrollWidth-box.clientWidth>4;
+    if(!over){ prev.hidden=true; next.hidden=true; return; }
+    prev.hidden=box.scrollLeft<=2;
+    next.hidden=box.scrollLeft>=box.scrollWidth-box.clientWidth-2;
+  }
+  function go(dx){ box.scrollBy({left:dx,behavior:'smooth'}); setTimeout(sync,400); }
+  prev.addEventListener('click',function(){ go(-step()); });
+  next.addEventListener('click',function(){ go(step()); });
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  sync();
+})();
+
+/* поп-ап: по центру, після 10% прокрутки, один раз на відвідувача */
+(function(){
+  var pop=document.getElementById('dlPop'), back=document.getElementById('dlBack'); if(!pop)return;
+  var KEY='dlpop-dismissed';
+  try{ if(localStorage.getItem(KEY))return; }catch(e){}
+  function close(){ pop.classList.remove('show'); back.classList.remove('show'); try{localStorage.setItem(KEY,'1');}catch(e){} }
+  document.getElementById('dlPopX').addEventListener('click',close);
+  back.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  pop.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',close); });
+  var shown=false;
+  function check(){
+    if(shown)return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    if(h>0 && window.scrollY/h>=0.10){ shown=true; pop.classList.add('show'); back.classList.add('show'); window.removeEventListener('scroll',check); }
+  }
+  window.addEventListener('scroll',check,{passive:true});
+})();
+</script>
+<a class="tg-fab" href="https://t.me/ridna_crm" target="_blank" rel="noopener" aria-label="Telegram Ridna" data-umami-event="tg_subscribe"><svg viewBox="0 0 24 24" width="27" height="27" fill="#fff" aria-hidden="true"><path d="M9.8 16.6 9.6 20c.4 0 .6-.2.8-.4l1.9-1.8 3.9 2.9c.7.4 1.2.2 1.4-.7l2.6-12.2c.2-1-.4-1.4-1-1.1L3.4 12.1c-1 .4-1 1-.2 1.2l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg><span class="tg-fab-label">Ridna в Telegram</span></a>
+</body>
+</html>
