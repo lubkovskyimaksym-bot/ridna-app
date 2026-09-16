@@ -42,7 +42,16 @@
     "image": "https://ridna.net/og-image.png",
     "operatingSystem": "iOS, Android",
     "applicationCategory": "BusinessApplication",
-    "description": "Мобільна CRM для Instagram-магазину: Direct, замовлення, ТТН Нової Пошти й оплати в одному застосунку",
+    "description": "Мобільна CRM для Instagram-магазину: Direct, замовлення, ТТН Нової Пошти, оплати й власний інтернет-магазин за посиланням — в одному застосунку",
+    "featureList": [
+      "Власний інтернет-магазин за посиланням на shop.ridna.net — каталог, кошик, доставка й оплата, без розробника й без окремого хостингу",
+      "Повідомлення з Instagram Direct і коментарі під дописами в одному вікні",
+      "Замовлення просто з чату: контакт, товари, знижка, оплата й доставка",
+      "ТТН Нової Пошти з картки замовлення, номер клієнту в чат одним дотиком",
+      "Онлайн-оплата карткою через Monobank або LiqPay посиланням на оплату",
+      "Каталог товарів із кількістю та собівартістю, імпорт з Excel і з постів Instagram",
+      "Аналітика: виручка, прибуток, середній чек, конверсія, топ клієнтів і товарів"
+    ],
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -977,6 +986,10 @@
     }
     .price-list li.dim::before {
       content: '–'; color: var(--muted); font-weight: 500;
+    }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
     }
     /* Swipe-to-toggle animation на pricing-grid. При зміні білінгу
        (свайп або клік на toggle) додається клас .switching-left/right
@@ -2055,9 +2068,9 @@
         <li>Чати + коментарі</li>
         <li>Створення ТТН за один тап</li>
         <li>Повна аналітика</li>
-        <li class="dim">LiqPay автоплатежі</li>
-        <li class="dim">Monobank автоплатежі</li>
-        <li class="dim">Свій сайт — магазин за посиланням</li>
+        <li class="dim">LiqPay автоплатежі<span class="sr-only"> — недоступно на тарифі Старт</span></li>
+        <li class="dim">Monobank автоплатежі<span class="sr-only"> — недоступно на тарифі Старт</span></li>
+        <li class="dim">Свій сайт — магазин за посиланням<span class="sr-only"> — недоступно на тарифі Старт</span></li>
       </ul>
       <a href="/pay" class="price-cta outline" data-umami-event="pricing_cta" data-umami-event-plan="start">Почати з тарифу Старт</a>
     </div>

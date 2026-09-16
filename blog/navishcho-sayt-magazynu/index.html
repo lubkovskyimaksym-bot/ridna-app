@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" /><!-- DRAFT: знімається командою `node tools/blog.mjs publish <slug>` -->
+
+  <title>Навіщо магазину сайт, якщо вже є Instagram — Блог Ridna</title>
+  <meta name="description" content="П’ять ситуацій, у яких профіль перестає справлятися, і що саме дає сторінка з каталогом, куди можна просто дати посилання." />
+  <link rel="canonical" href="https://ridna.net/blog/navishcho-sayt-magazynu/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ridna.net/blog/navishcho-sayt-magazynu/" />
+  <meta property="og:site_name" content="Ridna" />
+  <meta property="og:title" content="Навіщо магазину сайт, якщо вже є Instagram" />
+  <meta property="og:description" content="П’ять ситуацій, у яких профіль перестає справлятися, і що саме дає сторінка з каталогом, куди можна просто дати посилання." />
+  <meta property="og:image" content="https://ridna.net/blog/navishcho-sayt-magazynu/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta property="article:published_time" content="2026-09-16" />
+  <meta property="article:modified_time" content="2026-09-16" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Навіщо магазину сайт, якщо вже є Instagram" />
+  <meta name="twitter:description" content="П’ять ситуацій, у яких профіль перестає справлятися, і що саме дає сторінка з каталогом, куди можна просто дати посилання." />
+  <meta name="twitter:image" content="https://ridna.net/blog/navishcho-sayt-magazynu/og.jpg" />
+
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/logo2.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="alternate" type="application/rss+xml" title="Блог Ridna" href="/blog/feed.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/blog.css?v=5b7801f6" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Навіщо магазину сайт, якщо вже є Instagram",
+    "description": "П’ять ситуацій, у яких профіль перестає справлятися, і що саме дає сторінка з каталогом, куди можна просто дати посилання.",
+    "image": "https://ridna.net/blog/navishcho-sayt-magazynu/og.jpg",
+    "datePublished": "2026-09-16",
+    "dateModified": "2026-09-16",
+    "inLanguage": "uk-UA",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ridna.net/blog/navishcho-sayt-magazynu/" },
+    "author": { "@type": "Organization", "name": "Ridna", "url": "https://ridna.net" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Ridna",
+      "url": "https://ridna.net",
+      "logo": { "@type": "ImageObject", "url": "https://ridna.net/logo2.svg" }
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Головна", "item": "https://ridna.net/" },
+      { "@type": "ListItem", "position": 2, "name": "Блог", "item": "https://ridna.net/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "Навіщо магазину сайт, якщо вже є Instagram" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "uk-UA",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Навіщо потрібен сайт, якщо є Instagram?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Instagram показує дописи стрічкою, а не каталогом: у ньому не можна відсортувати товари, показати наявність і дати клієнтці зібрати замовлення самій. Сторінка з каталогом знімає з продавця повторювану роботу — список наявності, ціни, умови доставки й збір замовлення. Профіль при цьому лишається головним джерелом покупців."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Чи замінює сайт Instagram-профіль?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ні, вони закривають різні задачі. Профіль приводить людей і дає живе спілкування, сторінка приймає замовлення без участі продавця. Сайт сам по собі трафіку не дає — покупці й далі приходять із дописів, сторіс і посилання в шапці профілю."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Як зробити магазин за посиланням для Instagram?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "У Ridna це вмикається тумблером у розділі «Мій магазин»: ви обираєте коротку адресу після shop.ridna.net/, ставите назву, лого, тему й шрифт — і магазин стає публічним. Він показує той самий каталог, що вже є у вашому застосунку, і налаштування займає близько трьох хвилин."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Куди приходять замовлення з такого магазину?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Прямо в застосунок, уже з адресою та способом доставки. Вони стають звичайними замовленнями поруч із тими, які ви створили з Direct, — з тими самими статусами, ТТН Нової Пошти й аналітикою. Переносити нічого вручну не треба."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Umami — аналітика без кукі -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="79ee62ea-0553-465a-bc94-cfca1065474e"></script>
+  <script>(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+</head>
+<body>
+<!-- ШАПКА:START — синхронізована з лендінгом, правити в tools/post-template.html -->
+<nav class="site-nav">
+  <a href="/" class="nav-logo">
+    <img src="/logo2.svg" alt="Ridna" class="nav-logo-img" />
+    <span class="nav-logo-text">Ridna</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Можливості</a></li>
+    <li><a href="/#how">Як працює</a></li>
+    <li><a href="/#pricing">Тарифи</a></li>
+    <li><a href="/blog/" class="is-current">Блог</a></li>
+    <li><a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="nav">База знань</a></li>
+    <li class="nav-actions">
+      <a href="/pay" class="nav-pill nav-pill-ghost" data-umami-event="login_pay" data-umami-event-place="nav">Вхід</a>
+      <a href="https://t.me/ridna_crm" target="_blank" rel="noopener" class="nav-pill" data-umami-event="contact_open" data-umami-event-place="blog-nav">Звʼязатись</a>
+      <button class="theme-toggle" aria-label="Перемкнути тему" type="button"><svg class="t-light" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="t-dark" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    </li>
+  </ul>
+</nav>
+<!-- ШАПКА:END -->
+
+<div class="wrap">
+  <div class="crumb-row">
+    <nav class="crumbs" aria-label="Хлібні крихти">
+      <a href="/">Головна</a> <span>/</span> <a href="/blog/">Блог</a> <span>/</span> <span aria-current="page">Навіщо магазину сайт, якщо вже є Instagram</span>
+    </nav>
+    <a href="/blog/" class="all-posts">Усі статті <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+
+  <div class="art-layout">
+    <aside class="side-nav">
+      <div class="side-h">На цій сторінці</div>
+      <nav id="toc" class="toc"></nav>
+    </aside>
+
+    <div class="art-main">
+      <article>
+        <h1>Навіщо магазину сайт, якщо вже є Instagram</h1>
+        <p class="article-meta"><time datetime="2026-09-16">16 вересня 2026 р.</time> · Ridna</p>
+
+        <!-- ↓↓↓ ТЕКСТ СТАТТІ ↓↓↓ -->
+    <img class="cover" src="/blog/navishcho-sayt-magazynu/cover.webp" alt="Клієнтка гортає телефон, сидячи вдома на дивані" width="1200" height="630" fetchpriority="high" />
+
+    <div class="summary">
+      <div class="summary-h">Коротко</div>
+      <p>Instagram — це вітрина з коментарями, а не каталог. У ньому не можна відсортувати за розміром, показати наявність і дати клієнтці зібрати замовлення самій: усе це лягає на вас у Direct.</p>
+      <p>Сайт потрібен не для краси, а щоб зняти з вас повторювану роботу: список наявності, ціни, умови доставки й збір замовлення переїжджають на сторінку, де клієнтка робить це сама.</p>
+      <p><strong>Ridna створює такий магазин сама</strong> — тумблером у розділі «Мій магазин». Він живе за адресою <strong>shop.ridna.net/назва-магазину</strong>, показує ваш каталог із застосунку й приймає замовлення з кошиком, доставкою та оплатою карткою. Замовлення падають назад у застосунок уже з адресою.</p>
+      <p>Це не заміна Instagram, а друга половина звʼязки: профіль приводить людей, сторінка приймає замовлення.</p>
+    </div>
+
+    <h2>Що Instagram робить добре</h2>
+
+    <p>Почнімо з очевидного: профіль — сильний інструмент, і відмовлятися від нього немає жодних причин. Він приводить людей, дає живе спілкування й дозволяє продавати без жодних вкладень. Для перших десятків замовлень нічого більше не потрібно.</p>
+
+    <p>Але в нього є межа, і вона завжди в одному місці: <strong>Instagram показує стрічку, а не каталог</strong>. Дописи лежать у хронологічному порядку, а не за категоріями, розмірами чи наявністю.</p>
+
+    <h2>П’ять ситуацій, коли профілю стає мало</h2>
+
+    <p><strong>1. «А що є в наявності?»</strong> Найчастіше питання й найдорожче. Ви щоразу вручну пишете список того, що лишилось, — і робите це десятки разів на тиждень різним людям.</p>
+
+    <p><strong>2. «А скільки коштує?» під дописом піврічної давнини.</strong> Ціна змінилась, допис лишився. Кожен старий пост живе своїм життям і генерує запитання.</p>
+
+    <p><strong>3. Клієнтка хоче подивитись усе разом.</strong> Гортати стрічку — не те саме, що відкрити каталог і побачити двадцять позицій однією сіткою.</p>
+
+    <p><strong>4. Збір замовлення.</strong> У Direct людина описує словами: «оту синю, другий розмір, і ще ту сумку». Ви розшифровуєте, уточнюєте, рахуєте суму й запитуєте адресу. У кошику вона зробила б це сама, і без помилок.</p>
+
+    <p><strong>5. Оплата.</strong> Номер картки в переписці — це довіра авансом і ручна звірка потім. Посилання на оплату або кнопка на сайті закривають питання без вашої участі.</p>
+
+    <h2>Чого сайт не робить</h2>
+
+    <p>Одразу про межі, щоб не було завищених очікувань. Сайт сам по собі <strong>не приводить покупців</strong>. Трафік і далі йде з Instagram — з дописів, сторіс і шапки профілю. Уявлення, що з запуском сторінки почнуться замовлення «з пошуку», на старті не справджується: щоб сайт почав давати органічний трафік, потрібні місяці роботи над SEO, і це окрема професія.</p>
+
+    <p>Тому корисно думати про сторінку не як про нове джерело клієнтів, а як про місце, де замовлення оформлюється без вас.</p>
+
+    <h2>Як це виглядає на практиці</h2>
+
+    <p>У Ridna магазин за посиланням вмикається тумблером у розділі <strong>Меню → Мій магазин</strong>. Далі ви обираєте коротку адресу після <strong>shop.ridna.net/</strong>, ставите назву, лого, кольорову тему й шрифт — і магазин стає публічним.</p>
+
+    <p>Усередині він показує той самий каталог, який у вас уже є в застосунку: ті самі картки товарів із фото, цінами й наявністю. Клієнтка складає замовлення в кошик, обирає доставку й оплачує карткою, якщо ви підключили Monobank або LiqPay.</p>
+
+    <p>Найважливіше — що відбувається далі: <strong>замовлення приходить прямо в застосунок, уже з адресою й способом доставки</strong>. Не в пошту, не в окрему адмінку, не в третю систему, з якої його треба переносити. Воно одразу стає звичайним замовленням поруч із тими, що ви створили з Direct, — з тими самими статусами, ТТН і аналітикою.</p>
+
+    <p>Посилання на магазин ставиться в шапку профілю, і далі на питання «а що є?» ви відповідаєте одним рядком замість списку.</p>
+
+    <h2>Instagram і сайт разом, а не замість</h2>
+
+    <table>
+      <thead>
+        <tr><th>Задача</th><th>Instagram</th><th>Магазин за посиланням</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Привести людей</td><td>так, головне джерело</td><td>ні</td></tr>
+        <tr><td>Показати весь асортимент разом</td><td>стрічкою, без сортування</td><td>каталогом</td></tr>
+        <tr><td>Відповісти «що є в наявності»</td><td>вручну, щоразу</td><td>сторінка відповідає сама</td></tr>
+        <tr><td>Зібрати замовлення</td><td>ви в переписці</td><td>клієнтка в кошику</td></tr>
+        <tr><td>Взяти адресу доставки</td><td>питаєте в Direct</td><td>приходить із замовленням</td></tr>
+        <tr><td>Прийняти оплату</td><td>переказ на картку</td><td>карткою на сайті</td></tr>
+      </tbody>
+    </table>
+
+    <p>Видно, що це не конкуренти: перший рядок закриває тільки профіль, решту — сторінка.</p>
+
+    <h2>Коли сайт вам ще не потрібен</h2>
+
+    <p>Якщо у вас десять позицій, які оновлюються раз на сезон, і два-три замовлення на тиждень — профіль справляється, а сторінка стане ще одним місцем, яке треба підтримувати в актуальному стані.</p>
+
+    <p>Орієнтир простий: рахуйте, скільки разів на тиждень ви пишете руками те, що могло б бути написане один раз на сторінці. Коли це число переходить за десяток, сайт починає економити вам години, а не лестити самолюбству.</p>
+
+    <p>Про те, як зробити такий магазин без розробника й скільки це коштує, — у статтях <a href="/blog/internet-magazyn-bez-saytu/">інтернет-магазин без сайту: вітрина за посиланням</a> і <a href="/blog/internet-magazyn-bezkoshtovno/">як створити інтернет-магазин безкоштовно</a>.</p>
+
+    <section class="faq">
+      <h2>Часті питання</h2>
+      <p class="faq-q">Навіщо потрібен сайт, якщо є Instagram?</p>
+      <p class="faq-a">Instagram показує дописи стрічкою, а не каталогом: у ньому не можна відсортувати товари, показати наявність і дати клієнтці зібрати замовлення самій. Сторінка з каталогом знімає з продавця повторювану роботу — список наявності, ціни, умови доставки й збір замовлення. Профіль при цьому лишається головним джерелом покупців.</p>
+      <p class="faq-q">Чи замінює сайт Instagram-профіль?</p>
+      <p class="faq-a">Ні, вони закривають різні задачі. Профіль приводить людей і дає живе спілкування, сторінка приймає замовлення без участі продавця. Сайт сам по собі трафіку не дає — покупці й далі приходять із дописів, сторіс і посилання в шапці профілю.</p>
+      <p class="faq-q">Як зробити магазин за посиланням для Instagram?</p>
+      <p class="faq-a">У Ridna це вмикається тумблером у розділі «Мій магазин»: ви обираєте коротку адресу після shop.ridna.net/, ставите назву, лого, тему й шрифт — і магазин стає публічним. Він показує той самий каталог, що вже є у вашому застосунку, і налаштування займає близько трьох хвилин.</p>
+      <p class="faq-q">Куди приходять замовлення з такого магазину?</p>
+      <p class="faq-a">Прямо в застосунок, уже з адресою та способом доставки. Вони стають звичайними замовленнями поруч із тими, які ви створили з Direct, — з тими самими статусами, ТТН Нової Пошти й аналітикою. Переносити нічого вручну не треба.</p>
+    </section>
+        <!-- ↑↑↑ ТЕКСТ СТАТТІ ↑↑↑ -->
+
+        <section class="native">
+          <h2>Посилання замість двадцяти однакових відповідей</h2>
+          <p>Найбільше часу в Instagram-магазині зʼїдає не пакування, а повторення: що є в наявності, скільки коштує, як доставка. Одні й ті самі речення різним людям щодня.</p>
+          <p><a href="/?src=blog-navishcho-sayt">Ridna</a> вмикає вам магазин за посиланням з каталогом, кошиком і доставкою — а замовлення звідти приходять у той самий застосунок, де ви ведете Direct. 30 днів безкоштовно з можливостями Pro, без картки.</p>
+        </section>
+      </article>
+
+      <div class="promo">
+        <div class="promo-badges"><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="1"/><rect x="3" y="7" width="18" height="3"/><line x1="12" y1="7" x2="12" y2="20"/><circle cx="9" cy="5.5" r="2"/><circle cx="15" cy="5.5" r="2"/></svg>−33% перші 3 місяці</span><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Без картки</span><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 хв на налаштування</span></div>
+        <h3>Ridna — CRM для <span class="accent">Instagram-магазинів</span></h3>
+        <p>Завантаж Ridna і отримай −33% на перші 3 місяці — для перших 33 магазинів.</p>
+        <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-navishcho-sayt-magazynu&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="article-banner" data-umami-event-slug="navishcho-sayt-magazynu">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Darticle-banner%26utm_content%3Dblog-navishcho-sayt-magazynu" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="article-banner" data-umami-event-slug="navishcho-sayt-magazynu">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+      </div>
+
+<!-- RELATED:START -->
+<!-- RELATED:END -->
+
+      <footer class="blog-footer">
+        <span>© 2026 Ridna · Зроблено в Україні</span>
+        <span><a href="/blog/">Усі статті</a> · <a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="post-footer">База знань</a> · <a href="/blog/feed.xml">RSS</a></span>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="dl-back" id="dlBack"></div>
+<div class="dl-pop" id="dlPop" role="dialog" aria-modal="true" aria-label="Завантажити Ridna">
+  <button class="dl-pop-x" id="dlPopX" aria-label="Закрити" type="button">×</button>
+  <h4>Спробувати Ridna</h4>
+  <p>Замовлення, Direct і ТТН Нової Пошти в одному застосунку. 30 днів безкоштовно.</p>
+  <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-navishcho-sayt-magazynu&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="popup" data-umami-event-slug="navishcho-sayt-magazynu">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Dpopup%26utm_content%3Dblog-navishcho-sayt-magazynu" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="popup" data-umami-event-slug="navishcho-sayt-magazynu">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+</div>
+
+<script>
+/* перемикач теми */
+(function(){function t(){var r=document.documentElement;var n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}}document.querySelectorAll('.theme-toggle').forEach(function(b){b.addEventListener('click',t);});try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){if(!localStorage.getItem('theme'))document.documentElement.setAttribute('data-theme',e.matches?'dark':'light');});}catch(e){}})();
+
+/* зміст статті з підсвіткою поточного розділу */
+(function(){
+  var toc=document.getElementById('toc'), side=document.querySelector('.side-nav');
+  if(!toc)return;
+  var hs=[].slice.call(document.querySelectorAll('article h2'));
+  if(hs.length<2){ if(side)side.style.display='none'; return; }
+  var links=[];
+  hs.forEach(function(h,i){
+    h.id='s'+i;
+    var a=document.createElement('a');
+    a.href='#s'+i; a.textContent=h.textContent;
+    toc.appendChild(a); links.push({a:a,h:h});
+  });
+  function absTop(el){ return el.getBoundingClientRect().top + window.scrollY; }
+  function spy(){ var cur=links[0], thr=window.scrollY+150;
+    for(var i=0;i<links.length;i++){ if(absTop(links[i].h)<=thr) cur=links[i]; }
+    links.forEach(function(l){ l.a.classList.toggle('on', l===cur); }); }
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy,{passive:true});
+  spy();
+})();
+
+/* карусель схожих статей: стрілки зʼявляються лише за наявності переповнення */
+(function(){
+  var box=document.querySelector('.rel-carousel'); if(!box)return;
+  var prev=document.querySelector('.rel-nav.prev'), next=document.querySelector('.rel-nav.next');
+  function step(){ var c=box.querySelector('.rel'); return c ? c.offsetWidth+12 : 280; }
+  function sync(){
+    var over=box.scrollWidth-box.clientWidth>4;
+    if(!over){ prev.hidden=true; next.hidden=true; return; }
+    prev.hidden=box.scrollLeft<=2;
+    next.hidden=box.scrollLeft>=box.scrollWidth-box.clientWidth-2;
+  }
+  function go(dx){ box.scrollBy({left:dx,behavior:'smooth'}); setTimeout(sync,400); }
+  prev.addEventListener('click',function(){ go(-step()); });
+  next.addEventListener('click',function(){ go(step()); });
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  sync();
+})();
+
+/* поп-ап: по центру, після 10% прокрутки, один раз на відвідувача */
+(function(){
+  var pop=document.getElementById('dlPop'), back=document.getElementById('dlBack'); if(!pop)return;
+  var KEY='dlpop-dismissed';
+  try{ if(localStorage.getItem(KEY))return; }catch(e){}
+  function close(){ pop.classList.remove('show'); back.classList.remove('show'); try{localStorage.setItem(KEY,'1');}catch(e){} }
+  document.getElementById('dlPopX').addEventListener('click',close);
+  back.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  pop.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',close); });
+  var shown=false;
+  function check(){
+    if(shown)return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    if(h>0 && window.scrollY/h>=0.10){ shown=true; pop.classList.add('show'); back.classList.add('show'); window.removeEventListener('scroll',check); }
+  }
+  window.addEventListener('scroll',check,{passive:true});
+})();
+</script>
+<a class="tg-fab" href="https://t.me/ridna_crm" target="_blank" rel="noopener" aria-label="Telegram Ridna" data-umami-event="tg_subscribe"><svg viewBox="0 0 24 24" width="27" height="27" fill="#fff" aria-hidden="true"><path d="M9.8 16.6 9.6 20c.4 0 .6-.2.8-.4l1.9-1.8 3.9 2.9c.7.4 1.2.2 1.4-.7l2.6-12.2c.2-1-.4-1.4-1-1.1L3.4 12.1c-1 .4-1 1-.2 1.2l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg><span class="tg-fab-label">Ridna в Telegram</span></a>
+</body>
+</html>
