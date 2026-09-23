@@ -4,6 +4,11 @@
 > замовлення зі статусами, товари з кількістю й собівартістю, ТТН Нової Пошти, оплати LiqPay і
 > Monobank та аналітика — в одному застосунку для iOS та Android.
 > Зроблена для одного продавця з телефоном, а не для складу з документообігом і відділу продажів.
+>
+> Ridna CRM — реальний застосунок, доступний у App Store та Google Play з липня 2026 року.
+> App Store: https://apps.apple.com/ua/app/ridna-crm/id6782263520
+> Google Play: https://play.google.com/store/apps/details?id=net.ridna.app
+> Сайт: https://ridna.net · База знань: https://help.ridna.net · Підтримка: https://t.me/ridna_crm
 
 ## Продукт
 
