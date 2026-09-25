@@ -140,7 +140,13 @@
       "ТТН Нової Пошти з картки замовлення, номер клієнту в чат одним дотиком",
       "Онлайн-оплата карткою через Monobank або LiqPay посиланням на оплату",
       "Каталог товарів із кількістю та собівартістю, імпорт з Excel і з постів Instagram",
-      "Аналітика: виручка, прибуток, середній чек, конверсія, топ клієнтів і товарів"
+      "Аналітика: виручка, прибуток, середній чек, конверсія, топ клієнтів і товарів",
+      "Телефон і адресу покупця розпізнаємо прямо з переписки й підставляємо в картку одним дотиком",
+      "Кілька Instagram-акаунтів в одному застосунку; та сама клієнтка не дублюється між акаунтами",
+      "Залишки товарів списуються автоматично після продажу і повертаються при скасуванні",
+      "Номер ТТН і трекінг клієнту надсилаються автоматично, статуси доставки оновлюються самі",
+      "Push-сповіщення про нові повідомлення, коментарі та оплати",
+      "Картка клієнта з історією замовлень, тегами й адресами доставки"
     ],
     "offers": {
       "@type": "Offer",
@@ -1652,7 +1658,7 @@
     .ease-group { margin-top: 34px; }
     .ease-group:first-of-type { margin-top: 4px; }
     .ease-group-title { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--purple-light); margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
-    .ease-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; }
+    .ease-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
     .ease-card { display: flex; gap: 13px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 15px 17px; transition: border-color .2s, transform .15s; }
     .ease-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
     .ease-card .ic { width: 22px; height: 22px; color: var(--purple); margin-top: 1px; }
@@ -2180,38 +2186,38 @@
   </div>
 
   <div class="ease-group reveal">
-    <div class="ease-group-title"><svg class="ic"><use href="#ic-zap"/></svg> Менше ручної роботи</div>
-    <div class="ease-grid">
-      <div class="ease-card"><svg class="ic"><use href="#ic-sparkle"/></svg><span>Телефон і адресу беремо прямо з переписки — не переписуєш руками</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-package"/></svg><span>«Вінниця, відділення 15» саме стає адресою для посилки</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-bag"/></svg><span>Кількість товару оновлюється сама після кожного продажу</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-bell"/></svg><span>Сповіщаємо про нове повідомлення, коментар чи оплату — нічого не проґавиш</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-truck"/></svg><span>Клієнтка сама бачить, де її посилка — трекінг іде автоматично</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-user"/></svg><span>Імена й фото клієнток підтягуються з Instagram</span></div>
-    </div>
+    <h3 class="ease-group-title"><svg class="ic"><use href="#ic-zap"/></svg> Менше ручної роботи</h3>
+    <ul class="ease-grid">
+      <li class="ease-card"><svg class="ic"><use href="#ic-sparkle"/></svg><span>Телефон і адресу беремо прямо з переписки — не переписуєш руками</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-package"/></svg><span>«Вінниця, відділення 15» саме стає адресою для посилки</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-bag"/></svg><span>Кількість товару оновлюється сама після кожного продажу</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-bell"/></svg><span>Сповіщаємо про нове повідомлення, коментар чи оплату — нічого не проґавиш</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-truck"/></svg><span>Клієнтка сама бачить, де її посилка — трекінг іде автоматично</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-user"/></svg><span>Імена й фото клієнток підтягуються з Instagram</span></li>
+    </ul>
   </div>
 
   <div class="ease-group reveal">
-    <div class="ease-group-title"><svg class="ic"><use href="#ic-heart"/></svg> Усе під рукою</div>
-    <div class="ease-grid">
-      <div class="ease-card"><svg class="ic"><use href="#ic-message"/></svg><span>Усі повідомлення й коментарі — в одному місці</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-note"/></svg><span>Прямо в чаті видно, що людина вже замовила і на який пост відповідає</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-smartphone"/></svg><span>Кілька Instagram-акаунтів разом, і та сама клієнтка не двоїться</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-heart"/></svg><span>Про кожну — усе в одному: що купувала, телефон, куди слати</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-package"/></svg><span>Каталог із розмірами, кольорами й залишками</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-camera"/></svg><span>Товари додаються з твоїх постів або таблиці — не по одному вручну</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-truck"/></svg><span>Накладна Нової Пошти — за пару секунд із замовлення</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-card"/></svg><span>Оплата: скидаєш посилання або береш готівкою</span></div>
-    </div>
+    <h3 class="ease-group-title"><svg class="ic"><use href="#ic-heart"/></svg> Усе під рукою</h3>
+    <ul class="ease-grid">
+      <li class="ease-card"><svg class="ic"><use href="#ic-message"/></svg><span>Усі повідомлення й коментарі — в одному місці</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-note"/></svg><span>Прямо в чаті видно, що людина вже замовила і на який пост відповідає</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-smartphone"/></svg><span>Кілька Instagram-акаунтів разом, і та сама клієнтка не двоїться</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-heart"/></svg><span>Про кожну — усе в одному: що купувала, телефон, куди слати</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-package"/></svg><span>Каталог із розмірами, кольорами й залишками</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-camera"/></svg><span>Товари додаються з твоїх постів або таблиці — не по одному вручну</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-truck"/></svg><span>Накладна Нової Пошти — за пару секунд із замовлення</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-card"/></svg><span>Оплата: скидаєш посилання або береш готівкою</span></li>
+    </ul>
   </div>
 
   <div class="ease-group reveal">
-    <div class="ease-group-title"><svg class="ic"><use href="#ic-trend"/></svg> Рости спокійно</div>
-    <div class="ease-grid">
-      <div class="ease-card"><svg class="ic"><use href="#ic-bag"/></svg><span>Свій інтернет-магазин за посиланням — кидай у біо чи сторіз</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-chart"/></svg><span>Бачиш, скільки реально заробила: виручка, прибуток, найкращі товари</span></div>
-      <div class="ease-card"><svg class="ic"><use href="#ic-book"/></svg><span>Підказки й підтримка, коли щось незрозуміло</span></div>
-    </div>
+    <h3 class="ease-group-title"><svg class="ic"><use href="#ic-trend"/></svg> Рости спокійно</h3>
+    <ul class="ease-grid">
+      <li class="ease-card"><svg class="ic"><use href="#ic-bag"/></svg><span>Свій інтернет-магазин за посиланням — кидай у біо чи сторіз</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-chart"/></svg><span>Бачиш, скільки реально заробила: виручка, прибуток, найкращі товари</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-book"/></svg><span>Підказки й підтримка, коли щось незрозуміло</span></li>
+    </ul>
   </div>
 </section>
 
