@@ -2681,10 +2681,19 @@
       const btn = form.querySelector('.contact-submit');
       const social = form.social.value.trim();
       const phone = form.phone.value.trim();
+      // Джерело ліда: UTM-мітки + звідки прийшов (referrer) + сторінка відправки.
+      const _p = new URLSearchParams(location.search);
+      const _utm = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+        .map((k) => _p.get(k) && `${k}=${_p.get(k)}`).filter(Boolean).join(' · ');
+      const source = [
+        _utm,
+        document.referrer && ('ref: ' + document.referrer),
+        'page: ' + location.pathname + location.search,
+      ].filter(Boolean).join(' | ').slice(0, 500);
       const payload = {
         name: form.name.value,
         contact: [social && `TG/IG: ${social}`, phone && `Тел: ${phone}`].filter(Boolean).join(' · '),
-        message: form.message.value, hp: form.hp.value,
+        message: form.message.value, hp: form.hp.value, source,
       };
       if (!form.name.value.trim() || !social || !phone || !form.message.value.trim()) {
         statusEl.style.color = 'var(--danger)';
