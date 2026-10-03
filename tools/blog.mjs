@@ -278,13 +278,59 @@ function cmdBuild() {
   if (warnings) console.log(`  ⚠ попереджень: ${warnings}`);
 }
 
+// IndexNow — миттєве сповіщення Bing (а також Yandex, Seznam, Naver) про нові
+// й оновлені сторінки. Ключ лежить у корені як <KEY>.txt і має бути задеплоєний.
+// Google у протоколі не бере участі: для нього працює лише sitemap із lastmod.
+//
+// ВАЖЛИВО: запускати ПІСЛЯ git push і деплою GitHub Pages — інакше пошуковик
+// прийде на сторінку, якої ще немає або яка ще під noindex.
+const INDEXNOW_KEY = '4dda1387bd4d92ae921969573591fb65';
+
+async function cmdIndexNow(target) {
+  const all = readPosts().filter((p) => !p.draft);
+  let urls;
+  if (!target || target === '--all') {
+    urls = [`${SITE}/`, `${SITE}/blog/`, ...all.map((p) => `${SITE}/blog/${p.slug}/`)];
+  } else {
+    const slugs = process.argv.slice(3).filter((s) => !s.startsWith('--'));
+    for (const s of slugs) {
+      const post = all.find((p) => p.slug === s);
+      if (!post) throw new Error(`немає опублікованої статті "${s}" (можливо, ще чернетка)`);
+    }
+    urls = [`${SITE}/blog/`, ...slugs.map((s) => `${SITE}/blog/${s}/`)];
+  }
+
+  const keyUrl = `${SITE}/${INDEXNOW_KEY}.txt`;
+  const probe = await fetch(keyUrl);
+  const body = probe.ok ? (await probe.text()).trim() : '';
+  if (body !== INDEXNOW_KEY)
+    throw new Error(`файл ключа недоступний або не збігається: ${keyUrl} (HTTP ${probe.status}). Спершу запушити й дочекатись деплою.`);
+
+  const res = await fetch('https://api.indexnow.org/indexnow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify({
+      host: new URL(SITE).host,
+      key: INDEXNOW_KEY,
+      keyLocation: keyUrl,
+      urlList: urls,
+    }),
+  });
+
+  console.log(`IndexNow → HTTP ${res.status} (${res.status === 200 || res.status === 202 ? 'прийнято' : 'перевір відповідь'})`);
+  console.log(`  надіслано URL: ${urls.length}`);
+  for (const u of urls.slice(0, 8)) console.log(`    ${u}`);
+  if (urls.length > 8) console.log(`    … і ще ${urls.length - 8}`);
+}
+
 const [cmd, arg, arg2] = process.argv.slice(2);
 try {
   if (cmd === 'new') cmdNew(arg);
   else if (cmd === 'publish') cmdPublish(arg);
   else if (cmd === 'date') cmdDate(arg, arg2);
   else if (cmd === 'build') cmdBuild();
-  else console.log('Команди:\n  node tools/blog.mjs new <slug>\n  node tools/blog.mjs publish <slug>\n  node tools/blog.mjs date <slug> <РРРР-ММ-ДД>\n  node tools/blog.mjs build');
+  else if (cmd === 'indexnow') await cmdIndexNow(arg);
+  else console.log('Команди:\n  node tools/blog.mjs new <slug>\n  node tools/blog.mjs publish <slug>\n  node tools/blog.mjs date <slug> <РРРР-ММ-ДД>\n  node tools/blog.mjs build\n  node tools/blog.mjs indexnow <slug>... | --all   (після деплою)');
 } catch (e) {
   console.error(`✗ ${e.message}`);
   process.exit(1);
