@@ -441,32 +441,6 @@
     .price-cta.outline:hover { background: rgba(126,33,213,0.1); border-color: var(--purple); }
     .price-cta:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ============== OFFER STRIP (33 users — з головного лендоса) ============== */
-    .offer-strip {
-      background: linear-gradient(135deg, var(--purple), #6019B5);
-      color: var(--text);
-      border-radius: 18px;
-      padding: 22px 32px;
-      margin-bottom: 48px;
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 24px; flex-wrap: wrap;
-      box-shadow: 0 20px 40px -10px rgba(126,33,213,0.5);
-    }
-    .offer-text {
-      font-family: 'Unbounded', sans-serif;
-      font-weight: 700; font-size: 17px; line-height: 1.3;
-    }
-    .offer-counter {
-      font-family: 'Manrope', sans-serif;
-      font-size: 13px; font-weight: 600;
-      background: rgba(255,255,255,0.15); color: var(--text);
-      padding: 10px 16px; border-radius: 100px;
-      white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;
-    }
-    .offer-counter::before {
-      content: ''; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--success); animation: pulse 2s infinite;
-    }
 
     /* ============== LEGAL ============== */
     .legal-grid {
@@ -557,7 +531,6 @@
     @media (max-width: 760px) {
       .pricing-grid { grid-template-columns: 1fr; gap: 24px; }
       .legal-grid { grid-template-columns: 1fr; }
-      .offer-strip { padding: 20px 24px; flex-direction: column; align-items: flex-start; gap: 14px; }
       .price-card { padding: 32px 26px; }
       .price-num { font-size: 48px; }
     }
@@ -616,7 +589,7 @@
     .store-btn-text { display: flex; flex-direction: column; line-height: 1; text-align: left; }
     .store-btn-text small { font-size: 10px; opacity: 0.85; margin-bottom: 4px; }
     .store-btn-text strong { font-size: 16px; font-weight: 700; }
-    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .offer-strip, .offer-counter, .store-btn { color: var(--btn-text) !important; }
+    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .store-btn { color: var(--btn-text) !important; }
     .theme-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; cursor:pointer; flex-shrink:0; margin-left:auto; background:var(--surface-2); border:1px solid var(--border); color:var(--text); transition:background .2s,border-color .2s,transform .15s; }
     .theme-toggle:hover { border-color:var(--purple); transform:translateY(-1px); }
     .theme-toggle svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
@@ -749,7 +722,6 @@
         <li class="dim">Monobank автоплатежі</li>
         <li class="dim">Свій сайт — магазин за посиланням</li>
         <li class="dim">Фіскальні чеки через касу Checkbox</li>
-        <li class="dim">Показ замовлення клієнту в чаті</li>
       </ul>
       <button type="button" class="price-cta outline" data-pay-cta>Оплатити Старт</button>
     </div>
@@ -773,19 +745,12 @@
         <li class="highlight">Monobank автоплатежі</li>
         <li class="highlight">Свій сайт — магазин за посиланням</li>
         <li class="highlight">Фіскальні чеки через касу Checkbox</li>
-        <li class="highlight">Показ замовлення клієнту в чаті</li>
         <li>Чати + коментарі</li>
         <li>Створення ТТН за один тап</li>
         <li>Повна аналітика</li>
       </ul>
       <button type="button" class="price-cta solid" data-pay-cta>Оплатити Pro</button>
     </div>
-  </div>
-
-  <!-- OFFER STRIP — перші 33 -->
-  <div class="offer-strip">
-    <div class="offer-text">Перші 33 магазини отримують −33% знижки на перші 3 місяці</div>
-    <div class="offer-counter" id="offerCounter">21 з 33 місць ще доступні</div>
   </div>
 
   <!-- ============== LEGAL ============== -->
