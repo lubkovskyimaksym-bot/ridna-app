@@ -290,7 +290,12 @@ async function cmdIndexNow(target) {
   const all = readPosts().filter((p) => !p.draft);
   let urls;
   if (!target || target === '--all') {
-    urls = [`${SITE}/`, `${SITE}/blog/`, ...all.map((p) => `${SITE}/blog/${p.slug}/`)];
+    // беремо все з sitemap.xml — так у список потрапляють і не-блогові
+    // сторінки (/integrations/ тощо), і нічого не треба дублювати руками
+    const sm = readFileSync(join(ROOT, 'sitemap.xml'), 'utf8');
+    urls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    const drafts = new Set(readPosts().filter((p) => p.draft).map((p) => `${SITE}/blog/${p.slug}/`));
+    urls = urls.filter((u) => !drafts.has(u));
   } else {
     const slugs = process.argv.slice(3).filter((s) => !s.startsWith('--'));
     for (const s of slugs) {

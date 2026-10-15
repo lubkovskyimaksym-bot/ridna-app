@@ -76,7 +76,7 @@ Content-Type: application/json; charset=utf-8
 
 ```bash
 node tools/blog.mjs indexnow <slug> [<slug>...]   # конкретні статті
-node tools/blog.mjs indexnow --all                # усе опубліковане
+node tools/blog.mjs indexnow --all                # усі URL із sitemap.xml
 ```
 
 Що вона робить, окрім самого запиту:
@@ -88,6 +88,9 @@ node tools/blog.mjs indexnow --all                # усе опублікова�
   content="noindex">` до списку не потрапляють: інакше краулер прийде на
   сторінку, яку ми самі закрили від індексації.
 - **Додає `/blog/`** до списку, бо лістинг теж змінився.
+- **`--all` читає `sitemap.xml`**, а не лише статті блогу: так у список
+  потрапляють і не-блогові сторінки (наприклад `/integrations/`), і нічого
+  не доводиться дублювати в коді. Чернетки з нього відфільтровуються.
 
 ## Правила використання
 
