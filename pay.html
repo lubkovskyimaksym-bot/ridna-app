@@ -441,6 +441,54 @@
     .price-cta.outline:hover { background: rgba(126,33,213,0.1); border-color: var(--purple); }
     .price-cta:disabled { opacity: 0.5; cursor: not-allowed; }
 
+    /* ============== ЧАТ НА САЙТІ — доповнення до Pro ============== */
+    .addon-opt {
+      position: relative;
+      display: flex; align-items: flex-start; gap: 12px;
+      margin: -8px 0 20px; padding: 14px 16px;
+      background: var(--glass);
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+      cursor: pointer; user-select: none;
+      transition: border-color 0.2s;
+    }
+    .addon-opt:hover { border-color: var(--purple); }
+    .addon-opt input { position: absolute; opacity: 0; pointer-events: none; }
+    .addon-box {
+      width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+      border: 1.5px solid var(--purple-mid); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .addon-box::after {
+      content: ''; width: 10px; height: 5px; margin-top: -3px;
+      border-left: 2px solid #fff; border-bottom: 2px solid #fff;
+      transform: rotate(-45deg); opacity: 0; transition: opacity 0.15s;
+    }
+    .addon-opt input:checked + .addon-box { background: var(--purple); border-color: var(--purple); }
+    .addon-opt input:checked + .addon-box::after { opacity: 1; }
+    .addon-opt input:focus-visible + .addon-box { outline: 2px solid var(--purple-light); outline-offset: 2px; }
+    .addon-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .addon-title { font-size: 14px; font-weight: 700; color: var(--text); }
+    .addon-price { color: var(--purple-light); white-space: nowrap; }
+    [data-theme="light"] .addon-price { color: var(--purple); }
+    .addon-sub { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    .ap-row-val.muted { color: var(--muted); font-weight: 500; }
+    #apChatRow { gap: 12px; }
+    #apChatRow .ap-row-key { white-space: nowrap; }
+    #apChatRow .ap-row-val {
+      display: inline-flex; align-items: center; justify-content: flex-end;
+      flex-wrap: wrap; gap: 6px 10px; text-align: right;
+    }
+    .ap-chat-pay {
+      background: var(--purple); border: none; border-radius: 10px;
+      padding: 6px 12px; font-family: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 0 16px rgba(126,33,213,0.35); transition: background 0.2s;
+    }
+    .ap-chat-pay:hover { background: var(--purple-light); }
+    .ap-chat-pay:disabled { opacity: 0.6; cursor: not-allowed; }
+
 
     /* ============== LEGAL ============== */
     .legal-grid {
@@ -564,6 +612,13 @@
       color: var(--text); letter-spacing: -1px;
     }
     .pm-note { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .pm-warn {
+      font-size: 13px; line-height: 1.45; color: var(--warning);
+      background: rgba(251,191,36,0.10); border: 1px solid rgba(251,191,36,0.35);
+      border-radius: 10px; padding: 10px 12px; margin: -8px 0 18px;
+    }
+    .pm-warn:empty { display: none; }
+    [data-theme="light"] .pm-warn { color: #92400E; }
     .pm-confirm {
       display: block; width: 100%; background: var(--purple); color: var(--text); border: none;
       padding: 14px; border-radius: 14px; font-family: 'Manrope', sans-serif;
@@ -589,7 +644,7 @@
     .store-btn-text { display: flex; flex-direction: column; line-height: 1; text-align: left; }
     .store-btn-text small { font-size: 10px; opacity: 0.85; margin-bottom: 4px; }
     .store-btn-text strong { font-size: 16px; font-weight: 700; }
-    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .store-btn { color: var(--btn-text) !important; }
+    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .store-btn, .ap-chat-pay { color: var(--btn-text) !important; }
     .theme-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; cursor:pointer; flex-shrink:0; margin-left:auto; background:var(--surface-2); border:1px solid var(--border); color:var(--text); transition:background .2s,border-color .2s,transform .15s; }
     .theme-toggle:hover { border-color:var(--purple); transform:translateY(-1px); }
     .theme-toggle svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
@@ -680,6 +735,10 @@
         <span class="ap-row-key">Активна до</span>
         <span class="ap-row-val" id="apUntil">—</span>
       </div>
+      <div class="ap-row" id="apChatRow" style="display:none;">
+        <span class="ap-row-key">Чат на сайті</span>
+        <span class="ap-row-val"><span id="apChat">—</span><button class="ap-chat-pay" id="apChatPay" type="button" style="display:none;">Оплатити чат</button></span>
+      </div>
     </div>
     <div class="ap-history" id="apHistory" style="display:none;">
       <div class="ap-history-title">Історія платежів</div>
@@ -751,6 +810,14 @@
         <li>Створення ТТН за один тап</li>
         <li>Повна аналітика</li>
       </ul>
+      <label class="addon-opt">
+        <input type="checkbox" id="addonChat" />
+        <span class="addon-box" aria-hidden="true"></span>
+        <span class="addon-text">
+          <span class="addon-title">Чат на сайті · <span class="addon-price" data-addon-price data-month="+299 ₴/міс" data-year="+2 868 ₴/рік">+299 ₴/міс</span></span>
+          <span class="addon-sub">Відповідай гостям свого сайту з Ridna</span>
+        </span>
+      </label>
       <button type="button" class="price-cta solid" data-pay-cta>Оплатити Pro</button>
     </div>
   </div>
@@ -764,6 +831,7 @@
       <ul>
         <li><strong>Старт — 499 ₴/міс</strong> або <strong>4 788 ₴/рік</strong> (економія 1 200 ₴). До 100 замовлень на місяць, 30 товарів у каталозі, 1 Instagram-акаунт.</li>
         <li><strong>Pro — 799 ₴/міс</strong> або <strong>7 668 ₴/рік</strong> (економія 1 920 ₴). Безлімітні замовлення, безлімітний каталог, кілька Instagram-акаунтів, інтеграція з Monobank.</li>
+        <li><strong>Чат на сайті — 299 ₴/міс</strong> або <strong>2 868 ₴/рік</strong>, доповнення до Pro. Діє до кінця оплаченого Pro. Докуповуєш посеред періоду — платиш лише за дні, що лишились, не більше року за раз.</li>
       </ul>
       <p>Деталі функцій — на <a href="/#features">головній сторінці</a>.</p>
     </section>
@@ -837,6 +905,7 @@
       <span>До сплати</span><span class="pm-total" id="pmTotal">—</span>
     </div>
     <p class="pm-note" id="pmNote"></p>
+    <p class="pm-warn" id="pmWarn"></p>
     <button class="pm-confirm" id="pmConfirm">Перейти до оплати</button>
     <button class="pm-cancel" id="pmCancel">Скасувати</button>
   </div>
@@ -860,6 +929,8 @@
   let userToken = null;
   let userEmail = null;
   let tokenPayload = null;
+  // Стан акаунта з quote (loadCurrentSub): тариф, його кінець і чат на сайті.
+  let acct = { plan: null, periodEnd: null, chatUntil: null, chatEnabled: false };
 
   // ====================================================================
   // 1. AUTH GATE — парсимо JWT (без crypto-верифікації, бо це публічна
@@ -945,6 +1016,8 @@
       }
     });
 
+    document.querySelectorAll('[data-addon-price]').forEach(el => { el.textContent = el.dataset[period]; });
+
     // Update CTA labels
     document.querySelectorAll('[data-pay-cta]').forEach(btn => {
       const card = btn.closest('.price-card');
@@ -976,6 +1049,44 @@
       const d = new Date(iso);
       return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
     } catch (e) { return ''; }
+  }
+  function plDays(n) {
+    const m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return 'день';
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'дні';
+    return 'днів';
+  }
+  const DAY_MS = 86400000;
+  const msOf = (iso) => (iso ? new Date(iso).getTime() : 0);
+
+  // ── Чат на сайті (доповнення до Pro) ─────────────────────────────────
+  // Працює зараз: у пробному — сам, на Pro — лише з оплаченим доповненням.
+  const addonChat = document.getElementById('addonChat');
+  function chatWorksNow() {
+    return acct.chatEnabled && (acct.plan === 'trial' || (acct.plan === 'pro' && !!acct.chatUntil));
+  }
+
+  // Рядок «Чат на сайті» у блоці «Акаунт» (+ кнопка оплати лише чату).
+  function renderChatRow() {
+    const row = document.getElementById('apChatRow');
+    const val = document.getElementById('apChat');
+    const btn = document.getElementById('apChatPay');
+    if (!row || !val || !btn) return;
+    let text = '';
+    let canPay = false;
+    if (acct.plan === 'pro') {
+      text = acct.chatUntil ? `до ${fmtDate(acct.chatUntil)}` : 'не оплачено';
+      // Докупити можна, поки чат не покриває Pro до кінця (менше доби — не пропонуємо).
+      canPay = msOf(acct.periodEnd) - msOf(acct.chatUntil) >= DAY_MS;
+    } else if (acct.plan === 'trial' && acct.chatEnabled) {
+      text = 'безкоштовно, поки триває пробний';
+    }
+    if (!text) { row.style.display = 'none'; return; }
+    val.textContent = text;
+    val.parentElement.classList.toggle('muted', acct.plan === 'trial' || !acct.chatUntil);
+    btn.textContent = acct.chatUntil ? 'Продовжити' : 'Оплатити чат';
+    btn.style.display = canPay ? '' : 'none';
+    row.style.display = 'flex';
   }
 
   // Виклик серверної функції (quote або create — залежно від payload).
@@ -1013,6 +1124,16 @@
     try {
       const { data } = await callFn({ plan: 'pro', billing: 'month', quote: true });
       const plan = data.currentPlan; // приходить навіть на 409 (downgrade)
+      acct = {
+        plan: plan || null,
+        periodEnd: data.currentPeriodEnd || null,
+        chatUntil: data.activeUntil || null,
+        chatEnabled: !!data.chatEnabled,
+      };
+      renderChatRow();
+      // Чат уже увімкнений чи оплачений — галочка стоїть сама: продовжуючи
+      // Pro, його легко загубити, не помітивши.
+      if (addonChat) addonChat.checked = acct.chatEnabled || !!acct.chatUntil;
       if (!plan) {
         planEl.textContent = 'Немає активної';
         if (untilRow) untilRow.style.display = 'none';
@@ -1039,7 +1160,7 @@
     if (!wrap || !list || !userToken) return;
     try {
       const res = await fetch(
-        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,amount,currency,status,created_at&status=in.(success,reversed)&order=created_at.desc&limit=12`,
+        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,kind,amount,currency,status,created_at&status=in.(success,reversed)&order=created_at.desc&limit=12`,
         { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${userToken}` } },
       );
       if (!res.ok) return;
@@ -1054,15 +1175,17 @@
         pending:    { t: 'в обробці',     c: 'pend' },
       };
       const items = rows.map((r) => {
-        const planL = PLAN_LABEL[r.plan] || r.plan;
-        const periodL = r.billing === 'year' ? 'рік' : 'місяць';
+        // kind: plan — тариф; plan_addon — тариф + чат на сайті; addon — лише чат.
+        const main = r.kind === 'addon'
+          ? 'Чат на сайті'
+          : `${PLAN_LABEL[r.plan] || r.plan} · ${r.billing === 'year' ? 'рік' : 'місяць'}${r.kind === 'plan_addon' ? ' + чат' : ''}`;
         const amt = r.currency === 'USD'
           ? `$${((r.amount || 0) / 100).toFixed(2)}`
           : `${fmtUah((r.amount || 0) / 100)} ₴`;
         const st = STATUS[r.status] || { t: r.status, c: 'pend' };
         return `<div class="ap-hist-item">
           <div>
-            <div class="ap-hist-main">${planL} · ${periodL}</div>
+            <div class="ap-hist-main">${main}</div>
             <div class="ap-hist-date">${fmtDate(r.created_at)}</div>
           </div>
           <div class="ap-hist-right">
@@ -1096,51 +1219,86 @@
   const modal = document.getElementById('payModal');
   let pendingPay = null;
 
-  function openPayModal(plan, billing, q) {
-    pendingPay = { plan, billing };
-    const planLabel = plan === 'basic' ? 'Старт' : 'Pro';
-    const periodLabel = billing === 'year' ? 'рік' : 'місяць';
-    document.getElementById('pmTitle').textContent = `Тариф ${planLabel} · ${periodLabel}`;
+  // p: { plan, billing, addon }; plan: null — лише чат на сайті (тариф уже Pro).
+  function openPayModal(p, q) {
+    pendingPay = p;
+    const chat = q.addon && q.addon.included ? q.addon : null;
+    const rows = [];
+    let title;
+    let note;
+    let warn = '';
 
-    const rows = [`<div class="pm-row"><span>Базова ціна</span><span>${fmtUah(q.breakdown.baseUah)} ₴</span></div>`];
-    if (q.breakdown.discountUah > 0) {
-      rows.push(`<div class="pm-row pm-minus"><span>Знижка −33%</span><span>−${fmtUah(q.breakdown.discountUah)} ₴</span></div>`);
+    if (!p.plan) {
+      title = 'Чат на сайті';
+      rows.push(`<div class="pm-row"><span>${chat.days} ${plDays(chat.days)}, до ${fmtDate(chat.until)}</span><span>${fmtUah(chat.amountUah)} ₴</span></div>`);
+      note = msOf(chat.until) < msOf(q.currentPeriodEnd) - DAY_MS
+        ? `Чат на сайті — до ${fmtDate(chat.until)}, далі докупиш окремо`
+        : `Чат працюватиме до ${fmtDate(chat.until)} — разом із Pro`;
+    } else {
+      const planLabel = p.plan === 'basic' ? 'Старт' : 'Pro';
+      const periodLabel = p.billing === 'year' ? 'рік' : 'місяць';
+      title = `Тариф ${planLabel} · ${periodLabel}`;
+
+      rows.push(`<div class="pm-row"><span>Базова ціна</span><span>${fmtUah(q.breakdown.baseUah)} ₴</span></div>`);
+      if (q.breakdown.discountUah > 0) {
+        rows.push(`<div class="pm-row pm-minus"><span>Знижка −33%</span><span>−${fmtUah(q.breakdown.discountUah)} ₴</span></div>`);
+      }
+      if (q.breakdown.creditUah > 0) {
+        const curLabel = PLAN_LABEL[q.currentPlan] || 'поточного тарифу';
+        rows.push(`<div class="pm-row pm-minus"><span>Залишок ${curLabel}</span><span>−${fmtUah(q.breakdown.creditUah)} ₴</span></div>`);
+      }
+      if (chat) {
+        rows.push(`<div class="pm-row"><span>Чат на сайті · ${chat.days} ${plDays(chat.days)}, до ${fmtDate(chat.until)}</span><span>${fmtUah(chat.amountUah)} ₴</span></div>`);
+      }
+
+      note = `Підписка діятиме до ${fmtDate(q.newPeriodEnd)}`;
+      if (q.action === 'upgrade') note = `Pro з сьогодні до ${fmtDate(q.newPeriodEnd)}`;
+      else if (q.action === 'renew') note = `Продовжимо до ${fmtDate(q.newPeriodEnd)}`;
+      else if (q.action === 'downgrade') note = `Новий тариф застосується після завершення поточного ${fmtDate(q.startsAt)} і буде діяти до ${fmtDate(q.newPeriodEnd)}`;
+      // Більше року чату за раз не продаємо — Pro може тривати довше.
+      if (chat && msOf(chat.until) < msOf(q.newPeriodEnd) - DAY_MS) {
+        note += `. Чат на сайті — до ${fmtDate(chat.until)}, далі докупиш окремо`;
+      }
+
+      // Чат зараз працює, а в рахунку його немає — кажемо наперед, що буде.
+      if (!chat && !p.addon && chatWorksNow()) {
+        if (p.plan === 'basic') warn = 'Чат на сайті працює лише з Pro — на «Старті» він вимкнеться';
+        else if (q.action === 'trial') warn = 'Чат на сайті вимкнеться одразу після оплати — без доповнення він не працює';
+        else if (acct.chatUntil) warn = `Чат на сайті працюватиме до ${fmtDate(acct.chatUntil)}, далі вимкнеться`;
+      }
     }
-    if (q.breakdown.creditUah > 0) {
-      const curLabel = PLAN_LABEL[q.currentPlan] || 'поточного тарифу';
-      rows.push(`<div class="pm-row pm-minus"><span>Залишок ${curLabel}</span><span>−${fmtUah(q.breakdown.creditUah)} ₴</span></div>`);
-    }
+
+    document.getElementById('pmTitle').textContent = title;
     document.getElementById('pmRows').innerHTML = rows.join('');
     document.getElementById('pmTotal').textContent = `${fmtUah(q.amountUah)} ₴`;
-
-    let note = `Підписка діятиме до ${fmtDate(q.newPeriodEnd)}`;
-    if (q.action === 'upgrade') note = `Pro з сьогодні до ${fmtDate(q.newPeriodEnd)}`;
-    else if (q.action === 'renew') note = `Продовжимо до ${fmtDate(q.newPeriodEnd)}`;
-    else if (q.action === 'downgrade') note = `Новий тариф застосується після завершення поточного ${fmtDate(q.startsAt)} і буде діяти до ${fmtDate(q.newPeriodEnd)}`;
     document.getElementById('pmNote').textContent = note;
-
+    document.getElementById('pmWarn').textContent = warn;
     modal.classList.add('open');
   }
   function closePayModal() { modal.classList.remove('open'); pendingPay = null; }
 
   document.querySelectorAll('[data-pay-cta]').forEach(btn => {
     btn.addEventListener('click', async () => {
-      // Гард «одне джерело»: активна iOS-підписка → не даємо платити на вебі
-      // (інакше подвійна оплата — Apple далі авто-списує).
-      if (iapActive) {
-        alert('Ти підписаний через App Store. Керуй підпискою там: Налаштування → акаунт → Підписки. Щоб платити на сайті — спершу скасуй підписку в App Store і повертайся.');
-        return;
-      }
       const card = btn.closest('.price-card');
       const plan = card.dataset.plan;
       const billing = selectedBilling;
+      const addon = plan === 'pro' && !!(addonChat && addonChat.checked);
+
+      // Гард «одне джерело»: активна iOS-підписка → не даємо платити на вебі
+      // (інакше подвійна оплата — Apple далі авто-списує). Чат на сайті —
+      // окрема оплата, для неї кнопка «Оплатити чат» у блоці акаунта.
+      if (iapActive) {
+        alert('Ти підписаний через App Store. Керуй підпискою там: Налаштування → акаунт → Підписки. Щоб платити на сайті — спершу скасуй підписку в App Store і повертайся.'
+          + (addon ? '\n\nЧат на сайті можна оплатити окремо — кнопкою «Оплатити чат» угорі.' : ''));
+        return;
+      }
 
       btn.disabled = true;
       const originalText = btn.textContent;
       btn.textContent = 'Рахуємо…';
 
       try {
-        const { res, data } = await callFn({ plan, billing, quote: true });
+        const { res, data } = await callFn({ plan, billing, addon, quote: true });
         if (res.status === 401) {
           alert('Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.');
         } else if (res.status === 409 && data.error === 'downgrade_not_available') {
@@ -1148,7 +1306,7 @@
         } else if (!res.ok || !data.quote) {
           alert('Не вдалось порахувати ціну. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
         } else {
-          openPayModal(plan, billing, data);
+          openPayModal({ plan, billing, addon }, data);
         }
       } catch (e) {
         console.error(e);
@@ -1167,7 +1325,7 @@
     const t = c.textContent;
     c.textContent = 'Готуємо оплату…';
     try {
-      const { res, data } = await callFn({ plan: pendingPay.plan, billing: pendingPay.billing });
+      const { res, data } = await callFn({ plan: pendingPay.plan, billing: pendingPay.billing, addon: pendingPay.addon });
       if (!res.ok || !data.pageUrl) {
         alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
         c.disabled = false; c.textContent = t;
@@ -1182,6 +1340,37 @@
   });
   document.getElementById('pmCancel').addEventListener('click', closePayModal);
   document.getElementById('pmBackdrop').addEventListener('click', closePayModal);
+
+  // Лише чат на сайті — до кінця Pro (не більше року за раз). Гарду App Store
+  // тут немає: Pro через Apple лишається, а чат оплачується окремо, на вебі.
+  const apChatPay = document.getElementById('apChatPay');
+  if (apChatPay) {
+    apChatPay.addEventListener('click', async () => {
+      apChatPay.disabled = true;
+      const t = apChatPay.textContent;
+      apChatPay.textContent = 'Рахуємо…';
+      try {
+        const { res, data } = await callFn({ plan: null, addon: true, quote: true });
+        if (res.status === 401) {
+          alert('Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.');
+        } else if (data.error === 'addon_already_paid') {
+          alert('Чат на сайті вже оплачений до кінця Pro');
+        } else if (data.error === 'addon_requires_pro') {
+          alert('Чат на сайті працює лише з Pro');
+        } else if (!res.ok || !data.quote) {
+          alert('Не вдалось порахувати ціну. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+        } else {
+          openPayModal({ plan: null, billing: null, addon: true }, data);
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Не вдалось порахувати ціну. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+      } finally {
+        apChatPay.disabled = false;
+        apChatPay.textContent = t;
+      }
+    });
+  }
 
   // ====================================================================
   // SESSION PERSISTENCE — памʼятаємо веб-сесію до 30 днів (localStorage).
