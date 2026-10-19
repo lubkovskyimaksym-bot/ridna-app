@@ -490,73 +490,115 @@
     .ap-chat-pay:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* ============== ТВОЯ ПІДПИСКА (вже є Pro) ============== */
-    /* Хто вже платить, бачить свою підписку замість вибору тарифу; картки
-       тарифів — лише за «Змінити тариф». */
-    body.pro-view .ap-rows,
+    /* Хто вже платить, бачить свою підписку окремими картками: тариф,
+       доповнення, продовження, історія. Картки тарифів — за «Змінити тариф». */
+    /* account-panel вмикає unlock() inline-стилем — тому !important */
+    body.pro-view .account-panel { display: none !important; }
     body.pro-view .toggle-wrap,
     body.pro-view .pricing-grid { display: none; }
     body.pro-view.plans-open .toggle-wrap { display: block; }
     body.pro-view.plans-open .pricing-grid { display: grid; }
-    .sub-view { margin-top: 16px; }
-    .sv-plan {
-      display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-      padding-top: 14px; border-top: 1px solid var(--border);
+    body.pro-view .price-card[data-plan="pro"] .addon-opt { display: none; }
+
+    .pv { max-width: 600px; margin: 0 auto 28px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
+    .pv[hidden], .pv [hidden] { display: none !important; }
+    .pv-account {
+      display: flex; justify-content: center; align-items: baseline; flex-wrap: wrap; gap: 4px 10px;
+      margin: -10px 0 4px; font-size: 13px; color: var(--muted);
     }
-    .sv-plan-name { font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 800; color: var(--text); }
-    .sv-plan-until { font-size: 13px; color: var(--text-soft); text-align: right; }
-    .sv-title {
+    .pv-account b { color: var(--text-soft); font-weight: 600; word-break: break-all; }
+    .pv-account button { background: none; border: none; padding: 2px; cursor: pointer; color: var(--muted); font: inherit; text-decoration: underline; }
+    .pv-account button:hover { color: var(--text-soft); }
+
+    .pv-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px 22px; }
+    .pv-label {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px;
       font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px;
-      margin-top: 18px; padding-top: 16px; margin-bottom: 10px; border-top: 1px solid var(--border);
     }
-    .sv-module { background: var(--glass); border: 1px solid var(--border-bright); border-radius: 14px; padding: 14px 16px; }
-    .sv-module-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-    .sv-module-name { font-size: 14px; font-weight: 700; color: var(--text); }
-    .sv-module-state { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
-    .sv-module-state.muted { color: var(--muted); font-weight: 500; }
-    .sv-module-desc { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
-    .sv-module-btn {
-      display: block; width: 100%; margin-top: 12px; padding: 10px 14px;
-      background: transparent; color: var(--text); border: 1.5px solid var(--border-bright); border-radius: 12px;
-      font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    .pv-label button {
+      background: none; border: none; padding: 0; cursor: pointer;
+      color: var(--purple-light); font: 600 13px 'Manrope', sans-serif; text-transform: none; letter-spacing: 0;
     }
-    .sv-module-btn:hover { background: rgba(126,33,213,0.1); border-color: var(--purple); }
-    .sv-module-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .sv-period {
-      display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 14px;
-      border-radius: 100px; background: var(--surface); border: 1px solid var(--border);
+    [data-theme="light"] .pv-label button { color: var(--purple); }
+    .pv-label button:hover { text-decoration: underline; }
+
+    /* Тариф — головна картка */
+    .pv-plan {
+      background: linear-gradient(180deg, rgba(126,33,213,0.14), rgba(126,33,213,0.03));
+      border-color: rgba(126,33,213,0.4);
     }
-    .sv-period button {
-      border: none; background: transparent; color: var(--text-soft); cursor: pointer;
-      font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: 100px;
+    .pv-plan-name { font-family: 'Unbounded', sans-serif; font-size: 30px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; color: var(--text); }
+    .pv-plan-until { margin-top: 6px; font-size: 15px; color: var(--text-soft); }
+    .pv-plan-until b { color: var(--text); }
+    .pv-bar { margin-top: 14px; height: 6px; border-radius: 6px; background: var(--border); overflow: hidden; }
+    .pv-bar span { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--purple), var(--purple-light)); }
+
+    /* Доповнення — модулі */
+    .pv-module { display: flex; gap: 14px; align-items: flex-start; }
+    .pv-module-icon {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--purple-dim); color: var(--purple-light);
     }
-    .sv-period button.active { background: var(--purple); box-shadow: 0 0 14px rgba(126,33,213,0.45); }
-    .sv-lines { display: flex; flex-direction: column; gap: 10px; }
-    .sv-line { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; color: var(--text-soft); }
-    .sv-line > span:last-child { white-space: nowrap; color: var(--text); font-weight: 600; }
-    .sv-line.sv-minus > span:last-child { color: var(--success); }
-    .sv-check { position: relative; cursor: pointer; user-select: none; }
-    .sv-check .sv-check-label { flex: 1; }
-    .sv-check input { position: absolute; opacity: 0; pointer-events: none; }
-    .sv-check input:checked + .addon-box { background: var(--purple); border-color: var(--purple); }
-    .sv-check input:checked + .addon-box::after { opacity: 1; }
-    .sv-check input:focus-visible + .addon-box { outline: 2px solid var(--purple-light); outline-offset: 2px; }
-    .sv-check.off > span:last-child { color: var(--muted); font-weight: 500; text-decoration: line-through; }
-    .sv-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
-    .sv-note:empty { display: none; }
-    .sub-view .pm-warn { margin: 12px 0 0; }
-    .sv-renew {
-      display: block; width: 100%; margin-top: 16px; padding: 14px; border: none; border-radius: 14px;
-      background: var(--purple); font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer;
+    [data-theme="light"] .pv-module-icon { color: var(--purple); }
+    .pv-module-body { flex: 1; min-width: 0; }
+    .pv-module-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .pv-module-name { font-size: 15px; font-weight: 700; color: var(--text); }
+    .pv-module-price { font-size: 13px; color: var(--text-soft); white-space: nowrap; }
+    .pv-module-on { font-size: 12px; font-weight: 700; color: var(--success); white-space: nowrap; }
+    .pv-module-on::before { content: '●'; margin-right: 5px; }
+    .pv-module-desc { margin-top: 3px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+    .pv-module-btn {
+      margin-top: 12px; padding: 10px 16px; border-radius: 12px; cursor: pointer;
+      background: transparent; color: var(--text); border: 1.5px solid var(--border-bright);
+      font: 700 13px 'Manrope', sans-serif; transition: all 0.2s;
+    }
+    .pv-module-btn:hover { background: rgba(126,33,213,0.1); border-color: var(--purple); }
+    .pv-module-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .pv-nowrap { white-space: nowrap; }
+
+    /* Продовжити — плитки періоду з точною сумою */
+    .pv-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pv-tile {
+      display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; text-align: left; cursor: pointer;
+      background: transparent; color: var(--text); border: 1.5px solid var(--border); border-radius: 16px;
+      font-family: 'Manrope', sans-serif; transition: border-color 0.2s, background 0.2s;
+    }
+    .pv-tile:hover { border-color: var(--border-bright); }
+    .pv-tile.active { border-color: var(--purple); background: var(--purple-dim); box-shadow: inset 0 0 0 1px var(--purple); }
+    .pv-tile-name { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--text-soft); }
+    .pv-tile-name .save-badge { margin-left: 0; }
+    .pv-tile-sum { font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
+    .pv-tile-until { font-size: 12px; color: var(--muted); }
+    .pv-check {
+      position: relative; display: flex; align-items: center; gap: 10px; margin-top: 14px;
+      font-size: 14px; color: var(--text-soft); cursor: pointer; user-select: none;
+    }
+    .pv-check input { position: absolute; opacity: 0; pointer-events: none; }
+    .pv-check input:checked + .addon-box { background: var(--purple); border-color: var(--purple); }
+    .pv-check input:checked + .addon-box::after { opacity: 1; }
+    .pv-check input:focus-visible + .addon-box { outline: 2px solid var(--purple-light); outline-offset: 2px; }
+    .pv-check b { margin-left: auto; color: var(--text); white-space: nowrap; }
+    .pv-breakdown { margin-top: 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+    .pv-breakdown:empty { display: none; }
+    .pv .pm-warn { margin: 12px 0 0; }
+    .pv-renew {
+      display: block; width: 100%; margin-top: 16px; padding: 15px; border: none; border-radius: 14px; cursor: pointer;
+      background: var(--purple); font: 700 15px 'Manrope', sans-serif;
       box-shadow: 0 0 24px rgba(126,33,213,0.4); transition: all 0.2s;
     }
-    .sv-renew:hover { background: var(--purple-light); transform: translateY(-1px); }
-    .sv-renew:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .sv-amt { display: inline-block; white-space: nowrap; }
-    .sv-link {
-      display: block; margin: 10px auto 0; padding: 6px; background: none; border: none; cursor: pointer;
-      color: var(--text-soft); font-family: inherit; font-size: 13px; font-weight: 600;
+    .pv-renew:hover { background: var(--purple-light); transform: translateY(-1px); }
+    .pv-renew:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .pv-fine { margin-top: 10px; text-align: center; font-size: 12px; color: var(--muted); }
+
+    /* Історія платежів — переїжджає сюди окремою карткою */
+    .pv .ap-history { margin-top: 0; padding: 20px 22px; border-top: 1px solid var(--border); }
+
+    @media (max-width: 420px) {
+      .pv-card, .pv .ap-history { padding: 18px 16px; }
+      .pv-tile { padding: 12px; }
+      .pv-tile-sum { font-size: 19px; }
     }
-    .sv-link:hover { color: var(--text); text-decoration: underline; }
 
 
     /* ============== LEGAL ============== */
@@ -713,7 +755,7 @@
     .store-btn-text { display: flex; flex-direction: column; line-height: 1; text-align: left; }
     .store-btn-text small { font-size: 10px; opacity: 0.85; margin-bottom: 4px; }
     .store-btn-text strong { font-size: 16px; font-weight: 700; }
-    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .store-btn, .ap-chat-pay, .sv-renew, .sv-period button.active { color: var(--btn-text) !important; }
+    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .store-btn, .ap-chat-pay, .pv-renew { color: var(--btn-text) !important; }
     .theme-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; cursor:pointer; flex-shrink:0; margin-left:auto; background:var(--surface-2); border:1px solid var(--border); color:var(--text); transition:background .2s,border-color .2s,transform .15s; }
     .theme-toggle:hover { border-color:var(--purple); transform:translateY(-1px); }
     .theme-toggle svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
@@ -781,6 +823,64 @@
     <p class="hero-sub" id="heroSub">Платиш місяць або рік — без автосписань, продовжуєш коли захочеш. Безпечна оплата через Monobank.</p>
   </header>
 
+  <!-- ВЖЕ Є PRO (оплачений на сайті): тариф, доповнення, продовження, історія.
+       Заповнює renderSubView(); решта бачить вибір тарифу нижче. -->
+  <section class="pv" id="proView" hidden>
+    <div class="pv-account"><span>Акаунт <b id="pvEmail">—</b></span><button type="button" id="pvLogout">Вийти</button></div>
+
+    <div class="pv-card pv-plan">
+      <div class="pv-label"><span>Тариф</span><button type="button" id="pvChangePlan">Змінити тариф</button></div>
+      <div class="pv-plan-name">Pro</div>
+      <div class="pv-plan-until" id="pvPlanUntil">—</div>
+      <div class="pv-bar" id="pvBar" hidden><span id="pvBarFill"></span></div>
+    </div>
+
+    <div class="pv-card">
+      <div class="pv-label"><span>Доповнення</span></div>
+      <div class="pv-module">
+        <div class="pv-module-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
+        </div>
+        <div class="pv-module-body">
+          <div class="pv-module-head">
+            <span class="pv-module-name">Чат на сайті</span>
+            <span id="pvChatState"></span>
+          </div>
+          <div class="pv-module-desc" id="pvChatDesc"></div>
+          <button class="pv-module-btn" id="pvChatBtn" type="button" hidden></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-card" id="pvRenewCard">
+      <div class="pv-label"><span>Продовжити</span></div>
+      <div class="pv-tiles" role="radiogroup" aria-label="Період продовження">
+        <button type="button" class="pv-tile" data-pv-billing="month" role="radio">
+          <span class="pv-tile-name">Місяць</span>
+          <span class="pv-tile-sum" data-pv-sum>—</span>
+          <span class="pv-tile-until" data-pv-until></span>
+        </button>
+        <button type="button" class="pv-tile" data-pv-billing="year" role="radio">
+          <span class="pv-tile-name">Рік <span class="save-badge">−20%</span></span>
+          <span class="pv-tile-sum" data-pv-sum>—</span>
+          <span class="pv-tile-until" data-pv-until></span>
+        </button>
+      </div>
+      <label class="pv-check" id="pvChatLine" hidden>
+        <input type="checkbox" id="pvChatCheck" checked />
+        <span class="addon-box" aria-hidden="true"></span>
+        <span>Разом із чатом на сайті</span>
+        <b id="pvChatPrice"></b>
+      </label>
+      <p class="pv-breakdown" id="pvBreakdown"></p>
+      <p class="pm-warn" id="pvWarn"></p>
+      <button class="pv-renew" id="pvRenew" type="button" disabled>Рахуємо…</button>
+      <p class="pv-fine">Оплата через Monobank. Без автосписань.</p>
+    </div>
+
+    <div id="pvHistorySlot"></div>
+  </section>
+
   <!-- ACCOUNT / SUBSCRIPTION PANEL -->
   <div class="account-panel" id="accountPanel" style="display:none;">
     <div class="ap-head">
@@ -808,45 +908,6 @@
         <span class="ap-row-key">Чат на сайті</span>
         <span class="ap-row-val"><span id="apChat">—</span><button class="ap-chat-pay" id="apChatPay" type="button" style="display:none;">Оплатити чат</button></span>
       </div>
-    </div>
-
-    <!-- Вже є Pro (оплачений на сайті): підписка, доповнення окремими рядками
-         й продовження одним платежем. Заповнює renderSubView(). -->
-    <div class="sub-view" id="subView" style="display:none;">
-      <div class="sv-plan">
-        <span class="sv-plan-name">Pro</span>
-        <span class="sv-plan-until" id="svPlanUntil">—</span>
-      </div>
-
-      <div class="sv-title">Доповнення</div>
-      <div class="sv-module">
-        <div class="sv-module-head">
-          <span class="sv-module-name">Чат на сайті</span>
-          <span class="sv-module-state" id="svChatState">—</span>
-        </div>
-        <div class="sv-module-desc" id="svChatDesc">Кнопка чату на твоєму сайті й вітрині Ridna</div>
-        <button class="sv-module-btn" id="svChatBtn" type="button" style="display:none;"></button>
-      </div>
-
-      <div class="sv-title">Продовжити</div>
-      <div class="sv-period" role="tablist" aria-label="Період продовження">
-        <button type="button" data-sv-billing="month" class="active">Місяць</button>
-        <button type="button" data-sv-billing="year">Рік <span class="save-badge">−20%</span></button>
-      </div>
-      <div class="sv-lines">
-        <div class="sv-line"><span id="svPlanLine">Pro · місяць</span><span id="svPlanPrice">—</span></div>
-        <label class="sv-line sv-check" id="svChatLine" style="display:none;">
-          <input type="checkbox" id="svChatCheck" />
-          <span class="addon-box" aria-hidden="true"></span>
-          <span class="sv-check-label" id="svChatLineLabel">Чат на сайті</span>
-          <span id="svChatPrice">—</span>
-        </label>
-        <div class="sv-line sv-minus" id="svDiscountLine" style="display:none;"><span>Знижка −33%</span><span id="svDiscount">—</span></div>
-      </div>
-      <p class="sv-note" id="svNote"></p>
-      <p class="pm-warn" id="svWarn"></p>
-      <button class="sv-renew" id="svRenew" type="button" disabled>Рахуємо…</button>
-      <button class="sv-link" id="svChangePlan" type="button">Змінити тариф</button>
     </div>
 
     <div class="ap-history" id="apHistory" style="display:none;">
@@ -1127,14 +1188,7 @@
 
     document.querySelectorAll('[data-addon-price]').forEach(el => { el.textContent = el.dataset[period]; });
 
-    // Update CTA labels
-    document.querySelectorAll('[data-pay-cta]').forEach(btn => {
-      const card = btn.closest('.price-card');
-      const plan = card.dataset.plan;
-      const planLabel = plan === 'basic' ? 'Старт' : 'Pro';
-      btn.textContent = `Оплатити ${planLabel}`;
-    });
-
+    ctaLabels();
     renderSubView();
   }
 
@@ -1217,12 +1271,14 @@
     if (!userToken) return;
     try {
       const res = await fetch(
-        `${SUPABASE_REST}/subscriptions?select=source&status=eq.active&limit=1`,
+        `${SUPABASE_REST}/subscriptions?select=source,current_period_start&status=eq.active&order=current_period_end.desc&limit=1`,
         { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${userToken}` } },
       );
       if (!res.ok) return;
       const rows = await res.json();
       iapActive = Array.isArray(rows) && rows[0] && rows[0].source === 'ios_iap';
+      // Початок періоду — для смужки «скільки лишилось» у «Твоїй підписці».
+      if (Array.isArray(rows) && rows[0]) acct.periodStart = rows[0].current_period_start || null;
     } catch (e) { /* тихо */ }
   }
 
@@ -1245,7 +1301,8 @@
       // Чат уже увімкнений чи оплачений — галочка стоїть сама: продовжуючи
       // Pro, його легко загубити, не помітивши.
       if (addonChat) addonChat.checked = acct.chatEnabled || !!acct.chatUntil;
-      if (svChatCheck) svChatCheck.checked = acct.chatEnabled || !!acct.chatUntil;
+      // Підключений чат за замовчуванням продовжується разом із Pro.
+      if (pvChatCheck) pvChatCheck.checked = true;
       if (!plan) {
         planEl.textContent = 'Немає активної';
         if (untilRow) untilRow.style.display = 'none';
@@ -1406,6 +1463,12 @@
       const billing = selectedBilling;
       const addon = plan === 'pro' && !!(addonChat && addonChat.checked);
 
+      // Свій Pro продовжують у картці «Продовжити» вгорі.
+      if (proView && plan === 'pro') {
+        document.getElementById('pvRenewCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
       // Гард «одне джерело»: активна iOS-підписка → не даємо платити на вебі
       // (інакше подвійна оплата — Apple далі авто-списує). Чат на сайті —
       // окрема оплата, для неї кнопка «Оплатити чат» у блоці акаунта.
@@ -1496,25 +1559,54 @@
 
   // ====================================================================
   // 3a. ВЖЕ Є PRO — «Твоя підписка» замість вибору тарифу.
-  //    Порівняння тарифів — для тих, хто обирає. Хто вже платить, бачить свою
-  //    підписку, доповнення окремими рядками й продовження одним платежем.
-  //    Суми — з сервера (quote), тож на кнопці точна сума й вікно не потрібне:
-  //    підтвердження — сама сторінка Monobank.
+  //    Порівняння тарифів — для тих, хто обирає. Хто вже платить, бачить свій
+  //    тариф, доповнення й продовження окремими картками.
+  //    Доповнення підключається у своїй картці, а в продовження потрапляє,
+  //    коли вже підключене, — тож ніде немає двох різних цін за одне й те саме.
+  //    Суми — з сервера (quote): на плитках і кнопці точна сума, вікно не
+  //    потрібне — підтвердження дає сама сторінка Monobank.
   // ====================================================================
   let proView = false;
   let renewQ = null;      // { month: { on, off }, year: { on, off } } — quote продовження з чатом / без
-  let chatOnlyQ = null;   // quote «лише чат» або { error }
-  const svChatCheck = document.getElementById('svChatCheck');
+  let chatOnlyQ = null;   // quote «лише чат» (підключити до кінця Pro)
+  const pvChatCheck = document.getElementById('pvChatCheck');
+  const MONTHS_GEN = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+
+  // «8 листопада»; рік — лише коли не поточний.
+  function fmtDay(iso) {
+    const d = new Date(iso);
+    const y = d.getFullYear() !== new Date().getFullYear() ? ` ${d.getFullYear()}` : '';
+    return `${d.getDate()} ${MONTHS_GEN[d.getMonth()]}${y}`;
+  }
+
+  // Підписи кнопок на картках тарифів: свій Pro продовжують угорі.
+  function ctaLabels() {
+    document.querySelectorAll('[data-pay-cta]').forEach(btn => {
+      const plan = btn.closest('.price-card').dataset.plan;
+      btn.textContent = proView && plan === 'pro' ? 'Твій тариф — продовжити вгорі' : `Оплатити ${plan === 'basic' ? 'Старт' : 'Pro'}`;
+    });
+  }
 
   function applyView() {
     document.body.classList.toggle('pro-view', proView);
-    document.getElementById('subView').style.display = proView ? 'block' : 'none';
+    document.getElementById('proView').hidden = !proView;
+    // Історія платежів — у «Твоїй підписці» окремою карткою, інакше — у блоці акаунта.
+    const hist = document.getElementById('apHistory');
+    if (proView && hist.parentElement.id !== 'pvHistorySlot') {
+      document.getElementById('pvHistorySlot').appendChild(hist);
+      hist.classList.add('pv-card');
+    } else if (!proView && hist.parentElement.id === 'pvHistorySlot') {
+      document.getElementById('accountPanel').appendChild(hist);
+      hist.classList.remove('pv-card');
+    }
+    document.getElementById('pvEmail').textContent = userEmail || '—';
     document.getElementById('heroTitle').innerHTML = proView
       ? 'Твоя <span class="accent">підписка</span>'
       : 'Обери <span class="accent">тариф</span>';
     document.getElementById('heroSub').textContent = proView
       ? 'Без автосписань — продовжуєш, коли зручно. Безпечна оплата через Monobank.'
       : 'Платиш місяць або рік — без автосписань, продовжуєш коли захочеш. Безпечна оплата через Monobank.';
+    ctaLabels();
   }
 
   async function loadRenewQuotes() {
@@ -1537,68 +1629,92 @@
     return pair && pair.on && pair.on.addon && pair.on.addon.included ? pair.on : null;
   }
 
+  // Що піде в рахунок за період: чат — лише підключений і з галочкою.
+  function renewPick(billing) {
+    const pair = renewQ && renewQ[billing];
+    if (!pair || !pair.off) return null;
+    const withChat = acct.chatUntil ? chatQuote(pair) : null;
+    const on = !!withChat && pvChatCheck.checked;
+    return { withChat, on, q: on ? withChat : pair.off };
+  }
+
   function renderSubView() {
     if (!proView) return;
-    const left = Math.max(0, Math.ceil((msOf(acct.periodEnd) - Date.now()) / DAY_MS));
-    document.getElementById('svPlanUntil').textContent = `до ${fmtDate(acct.periodEnd)} · ще ${left} ${plDays(left)}`;
 
-    // ── Модуль «Чат на сайті» ──
-    const state = document.getElementById('svChatState');
-    state.textContent = acct.chatUntil ? `до ${fmtDate(acct.chatUntil)}` : '299 ₴/міс';
-    state.classList.toggle('muted', !acct.chatUntil);
-    document.getElementById('svChatDesc').style.display = acct.chatUntil ? 'none' : '';
-    const chatBtn = document.getElementById('svChatBtn');
-    const only = chatOnlyQ && chatOnlyQ.quote && chatOnlyQ.addon && chatOnlyQ.addon.included ? chatOnlyQ.addon : null;
-    chatBtn.style.display = only ? '' : 'none';
-    if (only) {
-      chatBtn.textContent = `${acct.chatUntil ? 'Продовжити' : 'Підключити'} — ${fmtUah(only.amountUah)} ₴ до ${fmtDate(only.until)}`;
+    // ── Тариф ──
+    const left = Math.max(0, Math.ceil((msOf(acct.periodEnd) - Date.now()) / DAY_MS));
+    document.getElementById('pvPlanUntil').innerHTML = `До <b>${fmtDay(acct.periodEnd)}</b> · ще ${left} ${plDays(left)}`;
+    const span = msOf(acct.periodEnd) - msOf(acct.periodStart);
+    const bar = document.getElementById('pvBar');
+    bar.hidden = !(acct.periodStart && span > 0);
+    if (!bar.hidden) {
+      const share = ((msOf(acct.periodEnd) - Date.now()) / span) * 100;
+      document.getElementById('pvBarFill').style.width = `${Math.min(100, Math.max(3, share))}%`;
     }
 
-    // ── Продовження ──
-    document.querySelectorAll('[data-sv-billing]').forEach(b => b.classList.toggle('active', b.dataset.svBilling === selectedBilling));
-    const renew = document.getElementById('svRenew');
+    // ── Доповнення: чат на сайті ──
+    const connected = !!acct.chatUntil;
+    const state = document.getElementById('pvChatState');
+    state.className = connected ? 'pv-module-on' : 'pv-module-price';
+    state.textContent = connected ? 'Підключено' : '299 ₴/міс';
+    document.getElementById('pvChatDesc').textContent = !connected
+      ? 'Кнопка чату на твоєму сайті й вітрині Ridna. Відповідаєш гостям із застосунку.'
+      : msOf(acct.chatUntil) >= msOf(acct.periodEnd) - DAY_MS
+        ? `До ${fmtDay(acct.chatUntil)} — разом із Pro`
+        : `До ${fmtDay(acct.chatUntil)}`;
+    const chatBtn = document.getElementById('pvChatBtn');
+    const only = chatOnlyQ && chatOnlyQ.quote && chatOnlyQ.addon && chatOnlyQ.addon.included ? chatOnlyQ.addon : null;
+    chatBtn.hidden = !only;
+    // Сума не рветься: на вузькому екрані переноситься цілком.
+    if (only) chatBtn.innerHTML = `${connected ? 'Продовжити' : 'Підключити'} до ${fmtDay(only.until)} <span class="pv-nowrap">— ${fmtUah(only.amountUah)} ₴</span>`;
+
+    // ── Продовжити ──
+    document.querySelectorAll('[data-pv-billing]').forEach(t => {
+      const active = t.dataset.pvBilling === selectedBilling;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-checked', active ? 'true' : 'false');
+      const p = renewPick(t.dataset.pvBilling);
+      t.querySelector('[data-pv-sum]').textContent = p ? `${fmtUah(p.q.amountUah)} ₴` : '—';
+      t.querySelector('[data-pv-until]').textContent = p ? `до ${fmtDay(p.q.newPeriodEnd)}` : '';
+    });
+    const renew = document.getElementById('pvRenew');
     if (!renewQ) {
       renew.disabled = true;
       renew.textContent = 'Рахуємо…';
       return;
     }
-    const pair = renewQ[selectedBilling];
-    if (!pair || !pair.off) {
+    const cur = renewPick(selectedBilling);
+    if (!cur) {
       renew.disabled = false;
       renew.dataset.retry = '1';
       renew.textContent = 'Не вдалось порахувати — спробуй ще';
       return;
     }
     delete renew.dataset.retry;
+    const { withChat, on, q } = cur;
 
-    const withChat = chatQuote(pair);
-    const on = !!withChat && svChatCheck.checked;
-    const q = on ? withChat : pair.off;
-    document.getElementById('svPlanLine').textContent = `Pro · ${selectedBilling === 'year' ? 'рік' : 'місяць'}`;
-    document.getElementById('svPlanPrice').textContent = `${fmtUah(q.breakdown.baseUah)} ₴`;
+    document.getElementById('pvChatLine').hidden = !withChat;
+    if (withChat) document.getElementById('pvChatPrice').textContent = `+${fmtUah(withChat.addon.amountUah)} ₴`;
 
-    const chatLine = document.getElementById('svChatLine');
-    chatLine.style.display = withChat ? '' : 'none';
-    if (withChat) {
-      document.getElementById('svChatLineLabel').textContent = `Чат на сайті · ${withChat.addon.days} ${plDays(withChat.addon.days)}`;
-      document.getElementById('svChatPrice').textContent = `${fmtUah(withChat.addon.amountUah)} ₴`;
-      chatLine.classList.toggle('off', !on);
-    }
-    document.getElementById('svDiscountLine').style.display = q.breakdown.discountUah > 0 ? '' : 'none';
-    document.getElementById('svDiscount').textContent = `−${fmtUah(q.breakdown.discountUah)} ₴`;
-
+    // Розбивка: Pro (зі знижкою — закреслена стара ціна) і чат.
+    const b = q.breakdown;
+    let breakdown = b.discountUah > 0
+      ? `Pro <s>${fmtUah(b.baseUah)}</s> ${fmtUah(b.baseUah - b.discountUah)} ₴ — знижка 33%`
+      : `Pro ${fmtUah(b.baseUah)} ₴`;
+    if (on) breakdown += ` · чат на сайті ${fmtUah(withChat.addon.amountUah)} ₴`;
     // Більше року чату за раз не продаємо — Pro може тривати довше.
-    document.getElementById('svNote').textContent = on && msOf(withChat.addon.until) < msOf(q.newPeriodEnd) - DAY_MS
-      ? `Чат на сайті — до ${fmtDate(withChat.addon.until)}, далі докупиш окремо`
-      : '';
+    if (on && msOf(withChat.addon.until) < msOf(q.newPeriodEnd) - DAY_MS) {
+      breakdown += `. Чат — до ${fmtDay(withChat.addon.until)}, далі докупиш окремо`;
+    }
+    document.getElementById('pvBreakdown').innerHTML = breakdown;
+
     // Чат зараз працює, а в продовженні його немає — кажемо наперед, що буде.
-    document.getElementById('svWarn').textContent = !on && chatWorksNow()
-      ? `Чат на сайті працюватиме до ${fmtDate(acct.chatUntil)}, далі вимкнеться`
+    document.getElementById('pvWarn').textContent = !on && chatWorksNow()
+      ? `Чат на сайті працюватиме до ${fmtDay(acct.chatUntil)}, далі вимкнеться`
       : '';
 
     renew.disabled = false;
-    // Сума не рветься: на вузькому екрані переноситься цілком.
-    renew.innerHTML = `Продовжити до ${fmtDate(q.newPeriodEnd)} <span class="sv-amt">— ${fmtUah(q.amountUah)} ₴</span>`;
+    renew.textContent = `Продовжити — ${fmtUah(q.amountUah)} ₴`;
   }
 
   // Рахунок → одразу Monobank. Не вийшло — повертаємо кнопку як була.
@@ -1623,13 +1739,13 @@
     btn.innerHTML = t;
   }
 
-  document.querySelectorAll('[data-sv-billing]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-pv-billing]').forEach(t => t.addEventListener('click', () => {
     // Через switchBilling — щоб картки тарифів за «Змінити тариф» ішли в такт.
-    if (b.dataset.svBilling !== selectedBilling) switchBilling(b.dataset.svBilling);
+    if (t.dataset.pvBilling !== selectedBilling) switchBilling(t.dataset.pvBilling);
   }));
-  svChatCheck.addEventListener('change', renderSubView);
+  pvChatCheck.addEventListener('change', renderSubView);
 
-  document.getElementById('svRenew').addEventListener('click', async (e) => {
+  document.getElementById('pvRenew').addEventListener('click', async (e) => {
     const btn = e.currentTarget;
     if (btn.dataset.retry) {
       btn.disabled = true;
@@ -1638,12 +1754,12 @@
       renderSubView();
       return;
     }
-    const withChat = chatQuote(renewQ[selectedBilling]);
-    goPay(btn, { plan: 'pro', billing: selectedBilling, addon: !!withChat && svChatCheck.checked });
+    const cur = renewPick(selectedBilling);
+    goPay(btn, { plan: 'pro', billing: selectedBilling, addon: !!(cur && cur.on) });
   });
-  document.getElementById('svChatBtn').addEventListener('click', (e) => goPay(e.currentTarget, { plan: null, addon: true }));
+  document.getElementById('pvChatBtn').addEventListener('click', (e) => goPay(e.currentTarget, { plan: null, addon: true }));
 
-  document.getElementById('svChangePlan').addEventListener('click', (e) => {
+  document.getElementById('pvChangePlan').addEventListener('click', (e) => {
     const open = document.body.classList.toggle('plans-open');
     e.currentTarget.textContent = open ? 'Сховати тарифи' : 'Змінити тариф';
     if (open) {
@@ -1652,6 +1768,10 @@
         document.querySelector('.toggle-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
+  });
+  document.getElementById('pvLogout').addEventListener('click', () => {
+    clearSession();
+    window.location.href = '/pay';
   });
 
   // ====================================================================
