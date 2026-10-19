@@ -1324,6 +1324,15 @@
   const PLAN_LABEL = { trial: 'Пробний період', basic: 'Старт', pro: 'Pro' };
 
   const fmtUah = (n) => Number(n).toLocaleString('uk-UA').replace(/,/g, ' ');
+
+  // Події Umami (сайт ridna.net): що натискають на сторінці оплати. Лише коди
+  // й так/ні — без пошти й сум. Немає Umami (блокувальник, локальна копія) —
+  // мовчки нічого.
+  function trackPay(name, data) {
+    try {
+      if (window.umami && typeof window.umami.track === 'function') window.umami.track(name, data);
+    } catch (e) { /* аналітика не має ламати оплату */ }
+  }
   function fmtDate(iso) {
     try {
       const d = new Date(iso);
@@ -1601,9 +1610,11 @@
       }
       // Пробний / без підписки: сума вже на кнопці — одразу в Monobank.
       if (newView) {
+        trackPay('pay_plan', { plan, billing, chat: addon, state: acct.plan || 'none' });
         goPay(btn, { plan, billing, addon });
         return;
       }
+      trackPay('pay_plan', { plan, billing, chat: addon, state: acct.plan || 'none', view: 'cards' });
 
       // Гард «одне джерело»: активна iOS-підписка → не даємо платити на вебі
       // (інакше подвійна оплата — Apple далі авто-списує). Чат на сайті —
@@ -1982,20 +1993,27 @@
       return;
     }
     const cur = renewPick(selectedBilling);
+    const upgrading = isBasic() && renewPlan === 'pro';
+    trackPay(upgrading ? 'pay_upgrade' : 'pay_renew', {
+      plan: isBasic() ? renewPlan : 'pro', billing: selectedBilling, chat: !!(cur && cur.on),
+    });
     goPay(btn, { plan: isBasic() ? renewPlan : 'pro', billing: selectedBilling, addon: !!(cur && cur.on) });
   });
   document.getElementById('pvChatBtn').addEventListener('click', (e) => {
     if (e.currentTarget.dataset.action === 'upgrade') {
+      trackPay('pay_chat_with_pro');
       pvChatCheck.checked = true;
       focusRenew('pro');
       return;
     }
+    trackPay('pay_chat_connect', { state: iapActive ? 'app_store' : 'pro', connected: !!acct.chatUntil });
     goPay(e.currentTarget, { plan: null, addon: true });
   });
 
   document.getElementById('pvChangePlan').addEventListener('click', (e) => {
     const open = document.body.classList.toggle('plans-open');
     e.currentTarget.textContent = open ? 'Сховати тарифи' : 'Змінити тариф';
+    if (open) trackPay('pay_change_plan_opened', { plan: acct.plan });
     if (open) {
       requestAnimationFrame(() => {
         setToggleBg();
@@ -2088,6 +2106,7 @@
     table.hidden = !table.hidden;
     e.currentTarget.setAttribute('aria-expanded', String(!table.hidden));
     e.currentTarget.textContent = table.hidden ? 'Порівняти все' : 'Сховати порівняння';
+    if (!table.hidden) trackPay('pay_compare_opened', { state: acct.plan || 'none' });
   });
 
   // ====================================================================

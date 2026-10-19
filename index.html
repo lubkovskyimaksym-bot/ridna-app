@@ -2316,6 +2316,8 @@
         t.hidden = !t.hidden;
         b.setAttribute('aria-expanded', String(!t.hidden));
         b.textContent = t.hidden ? 'Порівняти все' : 'Сховати порівняння';
+        // Umami: хто розгортає порівняння тарифів (лише відкриття).
+        if (!t.hidden && window.umami && typeof window.umami.track === 'function') window.umami.track('pricing_compare_opened');
       });
     })();
   </script>
