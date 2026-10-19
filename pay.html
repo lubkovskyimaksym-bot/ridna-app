@@ -593,6 +593,18 @@
     .pv-renew:hover { background: var(--purple-light); transform: translateY(-1px); }
     .pv-renew:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     .pv-fine { margin-top: 10px; text-align: center; font-size: 12px; color: var(--muted); }
+    .pv-plan-note { margin-top: 12px; font-size: 13px; line-height: 1.5; color: var(--text-soft); }
+    .pv-planswitch {
+      display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 12px;
+      border-radius: 100px; background: var(--surface); border: 1px solid var(--border);
+    }
+    .pv-planswitch button {
+      padding: 8px 20px; border: none; border-radius: 100px; cursor: pointer;
+      background: transparent; color: var(--text-soft); font: 700 13px 'Manrope', sans-serif;
+    }
+    .pv-planswitch button.active { background: var(--purple); box-shadow: 0 0 14px rgba(126,33,213,0.45); }
+    .pv-up-hint { margin: 0 0 14px; font-size: 13px; line-height: 1.45; color: var(--text-soft); }
+    .pv-up-note { margin-top: 10px; font-size: 12px; line-height: 1.45; color: var(--muted); }
 
     /* Історія платежів — переїжджає сюди окремою карткою */
     .pv .ap-history { margin-top: 0; padding: 20px 22px; border-top: 1px solid var(--border); }
@@ -811,7 +823,7 @@
     .store-btn-text { display: flex; flex-direction: column; line-height: 1; text-align: left; }
     .store-btn-text small { font-size: 10px; opacity: 0.85; margin-bottom: 4px; }
     .store-btn-text strong { font-size: 16px; font-weight: 700; }
-    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .store-btn, .ap-chat-pay, .pv-renew { color: var(--btn-text) !important; }
+    .login-btn, .price-badge, .price-cta.solid, .pm-confirm, .billing-toggle-btn.active, .store-btn, .ap-chat-pay, .pv-renew, .pv-planswitch button.active { color: var(--btn-text) !important; }
     .theme-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; cursor:pointer; flex-shrink:0; margin-left:auto; background:var(--surface-2); border:1px solid var(--border); color:var(--text); transition:background .2s,border-color .2s,transform .15s; }
     .theme-toggle:hover { border-color:var(--purple); transform:translateY(-1px); }
     .theme-toggle svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
@@ -885,10 +897,11 @@
     <div class="pv-account"><span>Акаунт <b id="pvEmail">—</b></span><button type="button" id="pvLogout">Вийти</button></div>
 
     <div class="pv-card pv-plan">
-      <div class="pv-label"><span>Тариф</span><button type="button" id="pvChangePlan">Змінити тариф</button></div>
-      <div class="pv-plan-name">Pro</div>
+      <div class="pv-label"><span id="pvPlanLabel">Тариф</span><button type="button" id="pvChangePlan">Змінити тариф</button></div>
+      <div class="pv-plan-name" id="pvPlanName">Pro</div>
       <div class="pv-plan-until" id="pvPlanUntil">—</div>
       <div class="pv-bar" id="pvBar" hidden><span id="pvBarFill"></span></div>
+      <p class="pv-plan-note" id="pvPlanNote" hidden></p>
     </div>
 
     <div class="pv-card">
@@ -910,6 +923,12 @@
 
     <div class="pv-card" id="pvRenewCard">
       <div class="pv-label"><span>Продовжити</span></div>
+      <!-- На «Старті»: продовжити Старт або перейти на Pro -->
+      <div class="pv-planswitch" id="pvPlanSwitch" role="radiogroup" aria-label="Тариф" hidden>
+        <button type="button" data-pv-plan="basic" role="radio">Старт</button>
+        <button type="button" data-pv-plan="pro" role="radio">Pro</button>
+      </div>
+      <p class="pv-up-hint" id="pvUpHint" hidden>Без лімітів на замовлення й каталог, свій сайт, каса Checkbox, автоплатежі й чат на сайті.</p>
       <div class="pv-tiles" role="radiogroup" aria-label="Період продовження">
         <button type="button" class="pv-tile" data-pv-billing="month" role="radio">
           <span class="pv-tile-name">Місяць</span>
@@ -932,6 +951,7 @@
       </label>
       <p class="pv-breakdown" id="pvBreakdown"></p>
       <p class="pm-warn" id="pvWarn"></p>
+      <p class="pv-up-note" id="pvUpNote" hidden>Pro почне діяти одразу, а невикористані дні Старту зарахуємо в ціну.</p>
       <button class="pv-renew" id="pvRenew" type="button" disabled>Рахуємо…</button>
       <p class="pv-fine">Оплата через Monobank. Без автосписань.</p>
     </div>
@@ -1395,8 +1415,10 @@
       // Чат уже увімкнений чи оплачений — галочка стоїть сама: продовжуючи
       // Pro, його легко загубити, не помітивши.
       if (addonChat) addonChat.checked = acct.chatEnabled || !!acct.chatUntil;
-      // Підключений чат за замовчуванням продовжується разом із Pro.
-      if (pvChatCheck) pvChatCheck.checked = true;
+      // Pro: підключений чат за замовчуванням продовжується разом із Pro.
+      // «Старт»: чат додаємо до переходу на Pro, якщо його вмикали.
+      if (pvChatCheck) pvChatCheck.checked = acct.plan === 'basic' ? acct.chatEnabled : true;
+      renewPlan = 'basic';
       if (!plan) {
         planEl.textContent = 'Немає активної';
         if (untilRow) untilRow.style.display = 'none';
@@ -1411,17 +1433,18 @@
       }
     } catch (e) { /* тихо */ }
     await loadIapFlag();
-    // Pro через App Store керують в App Store — їм поки старий вигляд.
-    proView = acct.plan === 'pro' && !iapActive;
-    // Пробний і без підписки — вибір тарифу з точною сумою; «Старт» поки старий.
-    newView = acctOk && !proView && !iapActive && (!acct.plan || acct.plan === 'trial');
+    // Є тариф (Pro, «Старт», Pro через App Store) — «Твоя підписка»;
+    // пробний і без підписки — вибір тарифу з точною сумою.
+    proView = acctOk && (acct.plan === 'pro' || acct.plan === 'basic');
+    newView = acctOk && !proView && (!acct.plan || acct.plan === 'trial');
     applyView();
     loadHistory();
     if (proView) {
       renewQ = null;
       chatOnlyQ = null;
+      newQ = null;
       renderSubView();
-      await loadRenewQuotes();
+      await loadSubQuotes();
       renderSubView();
     }
     if (newView) {
@@ -1565,9 +1588,9 @@
       const billing = selectedBilling;
       const addon = plan === 'pro' && !!(addonChat && addonChat.checked);
 
-      // Свій Pro продовжують у картці «Продовжити» вгорі.
-      if (proView && plan === 'pro') {
-        document.getElementById('pvRenewCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Свій тариф продовжують у картці «Продовжити» вгорі; з «Старту» на Pro — там само.
+      if (proView && !iapActive && (plan === acct.plan || isBasic())) {
+        focusRenew(plan);
         return;
       }
       // Пробний / без підписки: сума вже на кнопці — одразу в Monobank.
@@ -1665,19 +1688,25 @@
   }
 
   // ====================================================================
-  // 3a. ВЖЕ Є PRO — «Твоя підписка» замість вибору тарифу.
+  // 3a. ВЖЕ Є ТАРИФ — «Твоя підписка» замість вибору тарифу.
   //    Порівняння тарифів — для тих, хто обирає. Хто вже платить, бачить свій
-  //    тариф, доповнення й продовження окремими картками.
+  //    тариф, доповнення й продовження окремими картками:
+  //     - Pro: продовження Pro (з чатом, якщо він підключений);
+  //     - «Старт»: перемикач «Старт | Pro» — продовжити Старт або перейти на Pro
+  //       (невикористані дні Старту сервер зараховує в ціну);
+  //     - Pro через App Store: продовжують в App Store, тут — лише чат.
   //    Доповнення підключається у своїй картці, а в продовження потрапляє,
   //    коли вже підключене, — тож ніде немає двох різних цін за одне й те саме.
   //    Суми — з сервера (quote): на плитках і кнопці точна сума, вікно не
   //    потрібне — підтвердження дає сама сторінка Monobank.
   // ====================================================================
   let proView = false;
-  let renewQ = null;      // { month: { on, off }, year: { on, off } } — quote продовження з чатом / без
-  let chatOnlyQ = null;   // quote «лише чат» (підключити до кінця Pro)
+  let renewQ = null;       // Pro: { month: { on, off }, year: { on, off } } — quote продовження з чатом / без
+  let chatOnlyQ = null;    // Pro: quote «лише чат» (підключити до кінця Pro)
+  let renewPlan = 'basic'; // «Старт»: що рахує картка «Продовжити» — Старт чи перехід на Pro
   const pvChatCheck = document.getElementById('pvChatCheck');
   const MONTHS_GEN = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+  const isBasic = () => acct.plan === 'basic';
 
   // «8 листопада»; рік — лише коли не поточний.
   function fmtDay(iso) {
@@ -1686,11 +1715,15 @@
     return `${d.getDate()} ${MONTHS_GEN[d.getMonth()]}${y}`;
   }
 
-  // Підписи кнопок на картках тарифів: свій Pro продовжують угорі.
+  // Підписи кнопок на картках тарифів: свій тариф продовжують угорі,
+  // з «Старту» на Pro переходять там само.
   function ctaLabels() {
     document.querySelectorAll('[data-pay-cta]').forEach(btn => {
       const plan = btn.closest('.price-card').dataset.plan;
-      btn.textContent = proView && plan === 'pro' ? 'Твій тариф — продовжити вгорі' : `Оплатити ${plan === 'basic' ? 'Старт' : 'Pro'}`;
+      let label = `Оплатити ${plan === 'basic' ? 'Старт' : 'Pro'}`;
+      if (proView && plan === acct.plan) label = 'Твій тариф — продовжити вгорі';
+      else if (proView && isBasic() && plan === 'pro') label = 'Перейти на Pro — вгорі';
+      btn.textContent = label;
     });
   }
 
@@ -1710,45 +1743,79 @@
     document.getElementById('heroTitle').innerHTML = proView
       ? 'Твоя <span class="accent">підписка</span>'
       : 'Обери <span class="accent">тариф</span>';
-    document.getElementById('heroSub').textContent = proView
-      ? 'Без автосписань — продовжуєш, коли зручно. Безпечна оплата через Monobank.'
-      : 'Платиш місяць або рік — без автосписань, продовжуєш коли захочеш. Безпечна оплата через Monobank.';
+    // Pro через App Store списується автоматично — «без автосписань» тут неправда.
+    document.getElementById('heroSub').textContent = !proView
+      ? 'Платиш місяць або рік — без автосписань, продовжуєш коли захочеш. Безпечна оплата через Monobank.'
+      : iapActive
+        ? 'Тут — доповнення до твого Pro. Безпечна оплата через Monobank.'
+        : 'Без автосписань — продовжуєш, коли зручно. Безпечна оплата через Monobank.';
     ctaLabels();
   }
 
-  async function loadRenewQuotes() {
+  // Суми для «Твоєї підписки»: «Старт» — продовження Старту й перехід на Pro
+  // (ті самі 6 quote, що й для вибору тарифу); Pro — продовження й «лише чат».
+  async function loadSubQuotes() {
+    if (isBasic()) {
+      await loadNewQuotes();
+      return;
+    }
     const q = (billing, addon) => callFn({ plan: 'pro', billing, addon, quote: true })
       .then(({ res, data }) => (res.ok && data.quote ? data : null))
       .catch(() => null);
     // «Лише чат» питаємо, тільки коли чат не покриває Pro до кінця, — інакше
     // сервер чесно відповість 400 «вже оплачено», а купувати нічого.
     const chatGap = msOf(acct.periodEnd) - msOf(acct.chatUntil) >= DAY_MS;
+    // Pro через App Store продовжують в App Store — їм потрібен лише чат.
+    const renew = !iapActive;
     const [mOn, mOff, yOn, yOff, chat] = await Promise.all([
-      q('month', true), q('month', false), q('year', true), q('year', false),
+      renew ? q('month', true) : null, renew ? q('month', false) : null,
+      renew ? q('year', true) : null, renew ? q('year', false) : null,
       chatGap ? callFn({ plan: null, addon: true, quote: true }).then(({ data }) => data).catch(() => null) : null,
     ]);
     renewQ = { month: { on: mOn, off: mOff }, year: { on: yOn, off: yOff } };
     chatOnlyQ = chat;
   }
+  const subLoaded = () => (isBasic() ? !!newQ : !!renewQ);
 
-  // Quote з чатом, якщо чат справді додається до цього продовження.
+  // Quote з чатом, якщо чат справді додається до цього рахунку.
   function chatQuote(pair) {
     return pair && pair.on && pair.on.addon && pair.on.addon.included ? pair.on : null;
   }
 
-  // Що піде в рахунок за період: чат — лише підключений і з галочкою.
+  // Що піде в рахунок за період. Pro — чат лише підключений і з галочкою;
+  // «Старт» → Pro — чат можна додати разом із переходом.
   function renewPick(billing) {
+    if (isBasic()) {
+      if (!newQ) return null;
+      if (renewPlan === 'basic') {
+        const q = newQ.basic[billing];
+        return q ? { plan: 'basic', withChat: null, on: false, q } : null;
+      }
+      const pair = newQ.pro[billing];
+      if (!pair || !pair.off) return null;
+      const withChat = chatQuote(pair);
+      const on = !!withChat && pvChatCheck.checked;
+      return { plan: 'pro', withChat, on, q: on ? withChat : pair.off };
+    }
     const pair = renewQ && renewQ[billing];
     if (!pair || !pair.off) return null;
     const withChat = acct.chatUntil ? chatQuote(pair) : null;
     const on = !!withChat && pvChatCheck.checked;
-    return { withChat, on, q: on ? withChat : pair.off };
+    return { plan: 'pro', withChat, on, q: on ? withChat : pair.off };
   }
 
   function renderSubView() {
     if (!proView) return;
+    const basic = isBasic();
+    const iap = iapActive;
 
     // ── Тариф ──
+    document.getElementById('pvPlanName').textContent = basic ? 'Старт' : 'Pro';
+    document.getElementById('pvPlanLabel').textContent = iap ? 'Тариф · App Store' : 'Тариф';
+    document.getElementById('pvChangePlan').hidden = iap;
+    const planNote = document.getElementById('pvPlanNote');
+    planNote.hidden = !iap;
+    planNote.textContent = iap ? 'Оплачуєш через App Store — там і продовжуєш: Налаштування → Apple ID → Підписки.' : '';
     const left = Math.max(0, Math.ceil((msOf(acct.periodEnd) - Date.now()) / DAY_MS));
     document.getElementById('pvPlanUntil').innerHTML = `До <b>${fmtDay(acct.periodEnd)}</b> · ще ${left} ${plDays(left)}`;
     const span = msOf(acct.periodEnd) - msOf(acct.periodStart);
@@ -1762,34 +1829,59 @@
     // ── Доповнення: чат на сайті ──
     const connected = !!acct.chatUntil;
     const state = document.getElementById('pvChatState');
-    state.className = connected ? 'pv-module-on' : 'pv-module-price';
-    state.textContent = connected ? 'Підключено' : '299 ₴/міс';
-    document.getElementById('pvChatDesc').textContent = !connected
-      ? 'Кнопка чату на твоєму сайті й вітрині Ridna. Відповідаєш гостям із застосунку.'
-      : msOf(acct.chatUntil) >= msOf(acct.periodEnd) - DAY_MS
-        ? `До ${fmtDay(acct.chatUntil)} — разом із Pro`
-        : `До ${fmtDay(acct.chatUntil)}`;
+    const desc = document.getElementById('pvChatDesc');
     const chatBtn = document.getElementById('pvChatBtn');
-    const only = chatOnlyQ && chatOnlyQ.quote && chatOnlyQ.addon && chatOnlyQ.addon.included ? chatOnlyQ.addon : null;
-    chatBtn.hidden = !only;
-    // Сума не рветься: на вузькому екрані переноситься цілком.
-    if (only) chatBtn.innerHTML = `${connected ? 'Продовжити' : 'Підключити'} до ${fmtDay(only.until)} <span class="pv-nowrap">— ${fmtUah(only.amountUah)} ₴</span>`;
+    if (basic) {
+      // На «Старті» чату немає — пропонуємо перейти на Pro разом із ним.
+      state.className = 'pv-module-price';
+      state.textContent = '299 ₴/міс';
+      desc.textContent = 'Кнопка чату на твоєму сайті й вітрині Ridna. Працює з Pro — підключиш разом із переходом.';
+      chatBtn.dataset.action = 'upgrade';
+      chatBtn.hidden = iap;
+      chatBtn.textContent = 'Перейти на Pro з чатом';
+    } else {
+      state.className = connected ? 'pv-module-on' : 'pv-module-price';
+      state.textContent = connected ? 'Підключено' : '299 ₴/міс';
+      desc.textContent = !connected
+        ? 'Кнопка чату на твоєму сайті й вітрині Ridna. Відповідаєш гостям із застосунку.'
+        : msOf(acct.chatUntil) >= msOf(acct.periodEnd) - DAY_MS
+          ? `До ${fmtDay(acct.chatUntil)} — разом із Pro`
+          : `До ${fmtDay(acct.chatUntil)}`;
+      const only = chatOnlyQ && chatOnlyQ.quote && chatOnlyQ.addon && chatOnlyQ.addon.included ? chatOnlyQ.addon : null;
+      chatBtn.dataset.action = 'chat';
+      chatBtn.hidden = !only;
+      // Сума не рветься: на вузькому екрані переноситься цілком.
+      if (only) chatBtn.innerHTML = `${connected ? 'Продовжити' : 'Підключити'} до ${fmtDay(only.until)} <span class="pv-nowrap">— ${fmtUah(only.amountUah)} ₴</span>`;
+    }
 
-    // ── Продовжити ──
+    // ── Продовжити (через App Store — там, тут картки немає) ──
+    document.getElementById('pvRenewCard').hidden = iap;
+    if (iap) return;
+    const upgrading = basic && renewPlan === 'pro';
+    const sw = document.getElementById('pvPlanSwitch');
+    sw.hidden = !basic;
+    sw.querySelectorAll('[data-pv-plan]').forEach(b => {
+      const active = b.dataset.pvPlan === renewPlan;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+    document.getElementById('pvUpHint').hidden = !upgrading;
+    document.getElementById('pvUpNote').hidden = !upgrading;
+
     document.querySelectorAll('[data-pv-billing]').forEach(t => {
       const active = t.dataset.pvBilling === selectedBilling;
       t.classList.toggle('active', active);
       t.setAttribute('aria-checked', active ? 'true' : 'false');
       const p = renewPick(t.dataset.pvBilling);
       t.querySelector('[data-pv-sum]').textContent = p ? `${fmtUah(p.q.amountUah)} ₴` : '—';
-      // Закреслена «ціна без знижок»: помісячно за той самий строк (Pro і, якщо в рахунку, чат).
+      // Закреслена «ціна без знижок»: помісячно за той самий строк (тариф і, якщо в рахунку, чат).
       const months = t.dataset.pvBilling === 'year' ? 12 : 1;
-      const was = p ? months * (PRICES.pro.month + (p.on ? CHAT_MONTH_UAH : 0)) : 0;
+      const was = p ? months * (PRICES[p.plan].month + (p.on ? CHAT_MONTH_UAH : 0)) : 0;
       t.querySelector('[data-pv-was]').textContent = p && was > p.q.amountUah ? `${fmtUah(was)} ₴` : '';
       t.querySelector('[data-pv-until]').textContent = p ? `до ${fmtDay(p.q.newPeriodEnd)}` : '';
     });
     const renew = document.getElementById('pvRenew');
-    if (!renewQ) {
+    if (!subLoaded()) {
       renew.disabled = true;
       renew.textContent = 'Рахуємо…';
       return;
@@ -1807,26 +1899,29 @@
     document.getElementById('pvChatLine').hidden = !withChat;
     if (withChat) document.getElementById('pvChatPrice').textContent = `+${fmtUah(withChat.addon.amountUah)} ₴`;
 
-    // Розбивка: Pro (зі знижкою — закреслена стара ціна) і чат.
+    // Розбивка простим текстом: тариф, знижка, залишок Старту, чат.
     const b = q.breakdown;
+    const name = cur.plan === 'basic' ? 'Старт' : 'Pro';
     const per = selectedBilling === 'year' ? ' за рік' : '';
     let breakdown = b.discountUah > 0
-      ? `Pro ${fmtUah(b.baseUah)} ₴${per}, зі знижкою 33% — ${fmtUah(b.baseUah - b.discountUah)} ₴`
-      : `Pro ${fmtUah(b.baseUah)} ₴${per}`;
+      ? `${name} ${fmtUah(b.baseUah)} ₴${per}, зі знижкою 33% — ${fmtUah(b.baseUah - b.discountUah)} ₴`
+      : `${name} ${fmtUah(b.baseUah)} ₴${per}`;
+    if (b.creditUah > 0) breakdown += ` · залишок Старту −${fmtUah(b.creditUah)} ₴`;
     if (on) breakdown += ` · чат на сайті ${fmtUah(withChat.addon.amountUah)} ₴`;
     // Більше року чату за раз не продаємо — Pro може тривати довше.
     if (on && msOf(withChat.addon.until) < msOf(q.newPeriodEnd) - DAY_MS) {
       breakdown += `. Чат — до ${fmtDay(withChat.addon.until)}, далі докупиш окремо`;
     }
-    document.getElementById('pvBreakdown').innerHTML = breakdown;
+    // Сума й ₴ не розриваються на вузькому екрані.
+    document.getElementById('pvBreakdown').textContent = breakdown.replace(/ ₴/g, '\u00a0₴');
 
     // Чат зараз працює, а в продовженні його немає — кажемо наперед, що буде.
-    document.getElementById('pvWarn').textContent = !on && chatWorksNow()
+    document.getElementById('pvWarn').textContent = !basic && !on && chatWorksNow()
       ? `Чат на сайті працюватиме до ${fmtDay(acct.chatUntil)}, далі вимкнеться`
       : '';
 
     renew.disabled = false;
-    renew.textContent = `Продовжити — ${fmtUah(q.amountUah)} ₴`;
+    renew.textContent = `${upgrading ? 'Перейти на Pro' : 'Продовжити'} — ${fmtUah(q.amountUah)} ₴`;
   }
 
   // Рахунок → одразу Monobank. Не вийшло — повертаємо кнопку як була.
@@ -1851,9 +1946,20 @@
     btn.innerHTML = t;
   }
 
+  // Показати картку «Продовжити» (на «Старті» — з обраним тарифом).
+  function focusRenew(plan) {
+    if (isBasic() && plan) renewPlan = plan;
+    renderSubView();
+    document.getElementById('pvRenewCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   document.querySelectorAll('[data-pv-billing]').forEach(t => t.addEventListener('click', () => {
     // Через switchBilling — щоб картки тарифів за «Змінити тариф» ішли в такт.
     if (t.dataset.pvBilling !== selectedBilling) switchBilling(t.dataset.pvBilling);
+  }));
+  document.querySelectorAll('[data-pv-plan]').forEach(b => b.addEventListener('click', () => {
+    renewPlan = b.dataset.pvPlan;
+    renderSubView();
   }));
   pvChatCheck.addEventListener('change', renderSubView);
 
@@ -1862,14 +1968,21 @@
     if (btn.dataset.retry) {
       btn.disabled = true;
       btn.textContent = 'Рахуємо…';
-      await loadRenewQuotes();
+      await loadSubQuotes();
       renderSubView();
       return;
     }
     const cur = renewPick(selectedBilling);
-    goPay(btn, { plan: 'pro', billing: selectedBilling, addon: !!(cur && cur.on) });
+    goPay(btn, { plan: isBasic() ? renewPlan : 'pro', billing: selectedBilling, addon: !!(cur && cur.on) });
   });
-  document.getElementById('pvChatBtn').addEventListener('click', (e) => goPay(e.currentTarget, { plan: null, addon: true }));
+  document.getElementById('pvChatBtn').addEventListener('click', (e) => {
+    if (e.currentTarget.dataset.action === 'upgrade') {
+      pvChatCheck.checked = true;
+      focusRenew('pro');
+      return;
+    }
+    goPay(e.currentTarget, { plan: null, addon: true });
+  });
 
   document.getElementById('pvChangePlan').addEventListener('click', (e) => {
     const open = document.body.classList.toggle('plans-open');
@@ -1885,7 +1998,6 @@
     clearSession();
     window.location.href = '/pay';
   });
-
 
   // ====================================================================
   // 3b. ПРОБНИЙ / БЕЗ ПІДПИСКИ — вибір тарифу з точною сумою на кнопці.
