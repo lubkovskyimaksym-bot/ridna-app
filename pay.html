@@ -395,6 +395,7 @@
       margin-bottom: 18px;
       min-height: 18px;
     }
+    .price-was { color: var(--muted); margin-right: 4px; }
     .price-savings {
       display: inline-block;
       margin-top: 4px;
@@ -568,6 +569,8 @@
     .pv-tile.active { border-color: var(--purple); background: var(--purple-dim); box-shadow: inset 0 0 0 1px var(--purple); }
     .pv-tile-name { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--text-soft); }
     .pv-tile-name .save-badge { margin-left: 0; }
+    .pv-tile-was { font-size: 12px; color: var(--muted); }
+    .pv-tile-was:empty { display: none; }
     .pv-tile-sum { font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
     .pv-tile-until { font-size: 12px; color: var(--muted); }
     .pv-check {
@@ -910,11 +913,13 @@
       <div class="pv-tiles" role="radiogroup" aria-label="Період продовження">
         <button type="button" class="pv-tile" data-pv-billing="month" role="radio">
           <span class="pv-tile-name">Місяць</span>
+          <s class="pv-tile-was" data-pv-was></s>
           <span class="pv-tile-sum" data-pv-sum>—</span>
           <span class="pv-tile-until" data-pv-until></span>
         </button>
         <button type="button" class="pv-tile" data-pv-billing="year" role="radio">
           <span class="pv-tile-name">Рік <span class="save-badge">−20%</span></span>
+          <s class="pv-tile-was" data-pv-was></s>
           <span class="pv-tile-sum" data-pv-sum>—</span>
           <span class="pv-tile-until" data-pv-until></span>
         </button>
@@ -1178,6 +1183,7 @@
     basic: { month: 499, year_monthly_equiv: 399, year_total: 4788 },
     pro:   { month: 799, year_monthly_equiv: 639, year_total: 7668 },
   };
+  const CHAT_MONTH_UAH = 299; // чат на сайті — лише для закресленої «ціни без знижок»
 
   let selectedBilling = 'month';
   let userToken = null;
@@ -1264,7 +1270,8 @@
         const yearTotal = yearMonthly * 12;
         const savings = (monthMonthly - yearMonthly) * 12;
         const fmt = (n) => n.toLocaleString('uk-UA').replace(',', ' ');
-        el.innerHTML = `₴${fmt(yearTotal)} разово / рік`
+        // Біля річної — закреслена ціна за 12 місяців помісячно.
+        el.innerHTML = `<s class="price-was">₴${fmt(monthMonthly * 12)}</s> ₴${fmt(yearTotal)} разово / рік`
           + `<br><span class="price-savings">Економиш ₴${fmt(savings)} на рік</span>`;
       } else {
         el.innerHTML = '&nbsp;';
@@ -1775,6 +1782,10 @@
       t.setAttribute('aria-checked', active ? 'true' : 'false');
       const p = renewPick(t.dataset.pvBilling);
       t.querySelector('[data-pv-sum]').textContent = p ? `${fmtUah(p.q.amountUah)} ₴` : '—';
+      // Закреслена «ціна без знижок»: помісячно за той самий строк (Pro і, якщо в рахунку, чат).
+      const months = t.dataset.pvBilling === 'year' ? 12 : 1;
+      const was = p ? months * (PRICES.pro.month + (p.on ? CHAT_MONTH_UAH : 0)) : 0;
+      t.querySelector('[data-pv-was]').textContent = p && was > p.q.amountUah ? `${fmtUah(was)} ₴` : '';
       t.querySelector('[data-pv-until]').textContent = p ? `до ${fmtDay(p.q.newPeriodEnd)}` : '';
     });
     const renew = document.getElementById('pvRenew');
@@ -1798,9 +1809,10 @@
 
     // Розбивка: Pro (зі знижкою — закреслена стара ціна) і чат.
     const b = q.breakdown;
+    const per = selectedBilling === 'year' ? ' за рік' : '';
     let breakdown = b.discountUah > 0
-      ? `Pro <s>${fmtUah(b.baseUah)}</s> ${fmtUah(b.baseUah - b.discountUah)} ₴ — знижка 33%`
-      : `Pro ${fmtUah(b.baseUah)} ₴`;
+      ? `Pro ${fmtUah(b.baseUah)} ₴${per}, зі знижкою 33% — ${fmtUah(b.baseUah - b.discountUah)} ₴`
+      : `Pro ${fmtUah(b.baseUah)} ₴${per}`;
     if (on) breakdown += ` · чат на сайті ${fmtUah(withChat.addon.amountUah)} ₴`;
     // Більше року чату за раз не продаємо — Pro може тривати довше.
     if (on && msOf(withChat.addon.until) < msOf(q.newPeriodEnd) - DAY_MS) {
