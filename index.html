@@ -1631,6 +1631,35 @@
     .ease-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
     .ease-card .ic { width: 22px; height: 22px; color: var(--purple); margin-top: 1px; }
     .ease-card span { font-size: 14.5px; line-height: 1.45; color: var(--text-soft); }
+  
+    /* Тарифи коротко + «Порівняти все» (так само, як на /pay) */
+    .pc-plus { margin: -8px 0 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); }
+    .compare-wrap { margin: 8px 0 0; text-align: center; }
+    .compare-toggle {
+      padding: 8px 12px; background: none; border: none; cursor: pointer;
+      color: var(--text-soft); font: 600 14px 'Manrope', sans-serif;
+    }
+    .compare-toggle::after { content: ' ↓'; }
+    .compare-toggle[aria-expanded="true"]::after { content: ' ↑'; }
+    .compare-toggle:hover { color: var(--text); text-decoration: underline; }
+    .compare {
+      max-width: 720px; margin: 12px auto 0; padding: 8px 20px; overflow-x: auto; text-align: left;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+    }
+    .compare[hidden] { display: none; }
+    .compare table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .compare th {
+      padding: 12px 8px; text-align: center;
+      font: 700 12px 'Unbounded', sans-serif; letter-spacing: 1px; text-transform: uppercase; color: var(--purple-mid);
+    }
+    .compare td { padding: 11px 8px; border-top: 1px solid var(--border); text-align: center; color: var(--text-soft); }
+    .compare td:first-child { text-align: left; color: var(--text); }
+    .compare td.yes { color: var(--success); font-weight: 700; }
+    .compare td.no { color: var(--muted); }
+    @media (max-width: 420px) {
+      .compare { padding: 4px 12px; }
+      .compare table { font-size: 13px; }
+    }
   </style>
   <script>(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
   <!-- Umami — аналітика без кукі -->
@@ -2222,20 +2251,12 @@
         <span class="price-save" data-save></span>
       </div>
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
-      <div class="price-desc">Для тих, хто щойно стартує або має невеликий магазин з одним акаунтом.</div>
+      <div class="price-desc">Для тих, хто тільки починає або має невеликий магазин з одним акаунтом.</div>
       <ul class="price-list">
-        <li>100 замовлень на місяць</li>
-        <li>30 товарів у каталозі</li>
-        <li>1 Instagram акаунт</li>
-        <li>1 Нова Пошта акаунт</li>
-        <li>Чати + коментарі</li>
-        <li>Створення ТТН за один тап</li>
-        <li>Повна аналітика</li>
-        <li class="dim">LiqPay автоплатежі<span class="sr-only"> — недоступно на тарифі Старт</span></li>
-        <li class="dim">Monobank автоплатежі<span class="sr-only"> — недоступно на тарифі Старт</span></li>
-        <li class="dim">Свій сайт — магазин за посиланням<span class="sr-only"> — недоступно на тарифі Старт</span></li>
-        <li class="dim">Фіскальні чеки через касу Checkbox<span class="sr-only"> — недоступно на тарифі Старт</span></li>
-        <li class="dim">Замовлення з сайту (Хорошоп)<span class="sr-only"> — недоступно на тарифі Старт</span></li>
+        <li>200 замовлень на місяць</li>
+        <li>50 товарів у каталозі</li>
+        <li>1 акаунт Instagram і Нової Пошти</li>
+        <li>Чати, коментарі, ТТН, аналітика</li>
       </ul>
       <a href="/pay" class="price-cta outline" data-umami-event="pricing_cta" data-umami-event-plan="start">Почати з тарифу Старт</a>
     </div>
@@ -2250,23 +2271,54 @@
       </div>
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
       <div class="price-desc">Для магазинів які ростуть, мають декілька акаунтів і потребують повний набір.</div>
+      <div class="pc-plus">Усе зі Старту, а ще:</div>
       <ul class="price-list">
-        <li class="highlight">Безлімітні замовлення</li>
-        <li class="highlight">Безлімітний каталог товарів</li>
-        <li class="highlight">Кілька Instagram акаунтів</li>
-        <li class="highlight">Кілька Нова Пошта акаунтів</li>
-        <li class="highlight">LiqPay автоплатежі</li>
-        <li class="highlight">Monobank автоплатежі</li>
-        <li class="highlight">Свій сайт — магазин за посиланням</li>
-        <li class="highlight">Фіскальні чеки через касу Checkbox</li>
-        <li class="highlight">Замовлення з сайту (Хорошоп)</li>
-        <li>Чати + коментарі</li>
-        <li>Створення ТТН за один тап</li>
-        <li>Повна аналітика</li>
+        <li class="highlight">Безлімітні замовлення й каталог</li>
+        <li class="highlight">Кілька акаунтів Instagram і Нової Пошти</li>
+        <li class="highlight">Створення власного сайту-магазину</li>
+        <li class="highlight">Замовлення з сайту на Хорошопі</li>
+        <li class="highlight">Фіскальні чеки через Checkbox</li>
+        <li class="highlight">Автоплатежі Monobank і LiqPay</li>
       </ul>
       <a href="/pay" class="price-cta solid" data-umami-event="pricing_cta" data-umami-event-plan="pro">Хочу тариф Pro</a>
     </div>
   </div>
+
+  <!-- Повний перелік — таблицею, щоб картки лишались короткими (так само, як на /pay) -->
+  <div class="compare-wrap reveal">
+    <button type="button" class="compare-toggle" id="compareToggle" aria-expanded="false">Порівняти все</button>
+    <div class="compare" id="compareTable" hidden>
+      <table>
+        <thead><tr><th></th><th>Старт</th><th>Pro</th></tr></thead>
+        <tbody>
+          <tr><td>Замовлень на місяць</td><td>200</td><td>Безліміт</td></tr>
+          <tr><td>Товарів у каталозі</td><td>50</td><td>Безліміт</td></tr>
+          <tr><td>Акаунтів Instagram</td><td>1</td><td>Кілька</td></tr>
+          <tr><td>Акаунтів Нової Пошти</td><td>1</td><td>Кілька</td></tr>
+          <tr><td>Чати й коментарі</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>ТТН за один тап</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Повна аналітика</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Створення власного сайту-магазину</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Замовлення з сайту на Хорошопі</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Фіскальні чеки через Checkbox</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Автоплатежі Monobank і LiqPay</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Чат на сайті</td><td class="no">—</td><td>+299 ₴/міс</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var b = document.getElementById('compareToggle');
+      var t = document.getElementById('compareTable');
+      if (!b || !t) return;
+      b.addEventListener('click', function () {
+        t.hidden = !t.hidden;
+        b.setAttribute('aria-expanded', String(!t.hidden));
+        b.textContent = t.hidden ? 'Порівняти все' : 'Сховати порівняння';
+      });
+    })();
+  </script>
 </section>
 
 <!-- FAQ -->
