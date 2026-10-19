@@ -1521,9 +1521,12 @@
     const q = (billing, addon) => callFn({ plan: 'pro', billing, addon, quote: true })
       .then(({ res, data }) => (res.ok && data.quote ? data : null))
       .catch(() => null);
+    // «Лише чат» питаємо, тільки коли чат не покриває Pro до кінця, — інакше
+    // сервер чесно відповість 400 «вже оплачено», а купувати нічого.
+    const chatGap = msOf(acct.periodEnd) - msOf(acct.chatUntil) >= DAY_MS;
     const [mOn, mOff, yOn, yOff, chat] = await Promise.all([
       q('month', true), q('month', false), q('year', true), q('year', false),
-      callFn({ plan: null, addon: true, quote: true }).then(({ data }) => data).catch(() => null),
+      chatGap ? callFn({ plan: null, addon: true, quote: true }).then(({ data }) => data).catch(() => null) : null,
     ]);
     renewQ = { month: { on: mOn, off: mOff }, year: { on: yOn, off: yOff } };
     chatOnlyQ = chat;
