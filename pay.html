@@ -601,6 +601,59 @@
     }
 
 
+    /* ============== ПРОБНИЙ / БЕЗ ПІДПИСКИ ============== */
+    /* Статус угорі, картки тарифів коротко, точна сума на кнопці. */
+    body.new-view .account-panel { display: none !important; }
+    .nv-main { font-size: 15px; color: var(--text-soft); }
+    .nv-main b { color: var(--text); }
+    .nv-note { margin-top: 10px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+    .nv-note:empty { display: none; }
+
+    /* Картки тарифів — коротко */
+    .pc-plus { margin: -8px 0 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); }
+    .pc-now { margin: -10px 0 16px; font-size: 13px; font-weight: 700; color: var(--success); }
+    .pc-now[hidden] { display: none; }
+    .pc-warn {
+      margin: -6px 0 14px; padding: 8px 10px; border-radius: 10px;
+      font-size: 12px; line-height: 1.45; color: var(--warning);
+      background: rgba(251,191,36,0.10); border: 1px solid rgba(251,191,36,0.35);
+    }
+    .pc-warn:empty { display: none; }
+    [data-theme="light"] .pc-warn { color: #92400E; }
+    .pc-until { margin-top: 8px; text-align: center; font-size: 12px; color: var(--muted); }
+    .pc-until:empty { display: none; }
+
+    /* Порівняти все */
+    .compare-wrap { margin: -8px 0 28px; text-align: center; }
+    body.pro-view .compare-wrap { display: none; }
+    body.pro-view.plans-open .compare-wrap { display: block; }
+    .compare-toggle {
+      padding: 8px 12px; background: none; border: none; cursor: pointer;
+      color: var(--text-soft); font: 600 14px 'Manrope', sans-serif;
+    }
+    .compare-toggle::after { content: ' ↓'; }
+    .compare-toggle[aria-expanded="true"]::after { content: ' ↑'; }
+    .compare-toggle:hover { color: var(--text); text-decoration: underline; }
+    .compare {
+      max-width: 720px; margin: 12px auto 0; padding: 8px 20px; overflow-x: auto; text-align: left;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+    }
+    .compare[hidden] { display: none; }
+    .compare table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .compare th {
+      padding: 12px 8px; text-align: center;
+      font: 700 12px 'Unbounded', sans-serif; letter-spacing: 1px; text-transform: uppercase; color: var(--purple-mid);
+    }
+    .compare td { padding: 11px 8px; border-top: 1px solid var(--border); text-align: center; color: var(--text-soft); }
+    .compare td:first-child { text-align: left; color: var(--text); }
+    .compare td.yes { color: var(--success); font-weight: 700; }
+    .compare td.no { color: var(--muted); }
+    @media (max-width: 420px) {
+      .compare { padding: 4px 12px; }
+      .compare table { font-size: 13px; }
+    }
+
+
     /* ============== LEGAL ============== */
     .legal-grid {
       display: grid;
@@ -881,6 +934,18 @@
     <div id="pvHistorySlot"></div>
   </section>
 
+  <!-- ПРОБНИЙ / БЕЗ ПІДПИСКИ: акаунт і статус; тарифи — картками нижче.
+       Заповнює renderNewView(). -->
+  <section class="pv" id="newView" hidden>
+    <div class="pv-account"><span>Акаунт <b id="nvEmail">—</b></span><button type="button" id="nvLogout">Вийти</button></div>
+    <div class="pv-card">
+      <div class="pv-label"><span id="nvLabel">Пробний період</span></div>
+      <div class="nv-main" id="nvMain">—</div>
+      <div class="pv-bar" id="nvBar" hidden><span id="nvBarFill"></span></div>
+      <p class="nv-note" id="nvNote"></p>
+    </div>
+  </section>
+
   <!-- ACCOUNT / SUBSCRIPTION PANEL -->
   <div class="account-panel" id="accountPanel" style="display:none;">
     <div class="ap-head">
@@ -927,7 +992,8 @@
     </div>
   </div>
 
-  <!-- TARIFF CARDS (1:1 з головного лендоса) -->
+  <!-- TARIFF CARDS: коротко — 4 головні рядки; повний перелік — «Порівняти все».
+       data-pc-* заповнює renderNewView() (пробний / без підписки). -->
   <div class="pricing-grid">
 
     <!-- СТАРТ -->
@@ -938,22 +1004,17 @@
         <span class="price-period">/міс</span>
       </div>
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
+      <div class="pc-now" data-pc-now hidden></div>
       <div class="price-desc">Для тих, хто щойно стартує або має невеликий магазин з одним акаунтом.</div>
       <ul class="price-list">
         <li>100 замовлень на місяць</li>
         <li>30 товарів у каталозі</li>
-        <li>1 Instagram акаунт</li>
-        <li>1 Нова Пошта акаунт</li>
-        <li>Чати + коментарі</li>
-        <li>Створення ТТН за один тап</li>
-        <li>Повна аналітика</li>
-        <li class="dim">LiqPay автоплатежі</li>
-        <li class="dim">Monobank автоплатежі</li>
-        <li class="dim">Свій сайт — магазин за посиланням</li>
-        <li class="dim">Фіскальні чеки через касу Checkbox</li>
-        <li class="dim">Замовлення з сайту (Хорошоп)</li>
+        <li>1 акаунт Instagram і Нової Пошти</li>
+        <li>Чати, коментарі, ТТН, аналітика</li>
       </ul>
+      <p class="pc-warn" data-pc-warn></p>
       <button type="button" class="price-cta outline" data-pay-cta>Оплатити Старт</button>
+      <div class="pc-until" data-pc-until></div>
     </div>
 
     <!-- PRO -->
@@ -965,20 +1026,14 @@
         <span class="price-period">/міс</span>
       </div>
       <div class="price-yearly-hint" data-yearly-hint>&nbsp;</div>
+      <div class="pc-now" data-pc-now hidden></div>
       <div class="price-desc">Для магазинів які ростуть, мають декілька акаунтів і потребують повний набір.</div>
+      <div class="pc-plus">Усе зі Старту, а ще:</div>
       <ul class="price-list">
-        <li class="highlight">Безлімітні замовлення</li>
-        <li class="highlight">Безлімітний каталог товарів</li>
-        <li class="highlight">Кілька Instagram акаунтів</li>
-        <li class="highlight">Кілька Нова Пошта акаунтів</li>
-        <li class="highlight">LiqPay автоплатежі</li>
-        <li class="highlight">Monobank автоплатежі</li>
-        <li class="highlight">Свій сайт — магазин за посиланням</li>
-        <li class="highlight">Фіскальні чеки через касу Checkbox</li>
-        <li class="highlight">Замовлення з сайту (Хорошоп)</li>
-        <li>Чати + коментарі</li>
-        <li>Створення ТТН за один тап</li>
-        <li>Повна аналітика</li>
+        <li class="highlight">Безлімітні замовлення й каталог</li>
+        <li class="highlight">Кілька акаунтів Instagram і Нової Пошти</li>
+        <li class="highlight">Свій сайт і замовлення з Хорошопу</li>
+        <li class="highlight">Каса Checkbox, автоплатежі Monobank і LiqPay</li>
       </ul>
       <label class="addon-opt">
         <input type="checkbox" id="addonChat" />
@@ -988,9 +1043,38 @@
           <span class="addon-sub">Відповідай гостям свого сайту з Ridna</span>
         </span>
       </label>
+      <p class="pc-warn" data-pc-warn></p>
       <button type="button" class="price-cta solid" data-pay-cta>Оплатити Pro</button>
+      <div class="pc-until" data-pc-until></div>
     </div>
   </div>
+
+  <!-- Повний перелік — таблицею, щоб картки лишались короткими -->
+  <div class="compare-wrap">
+    <button type="button" class="compare-toggle" id="compareToggle" aria-expanded="false">Порівняти все</button>
+    <div class="compare" id="compareTable" hidden>
+      <table>
+        <thead><tr><th></th><th>Старт</th><th>Pro</th></tr></thead>
+        <tbody>
+          <tr><td>Замовлень на місяць</td><td>100</td><td>Безліміт</td></tr>
+          <tr><td>Товарів у каталозі</td><td>30</td><td>Безліміт</td></tr>
+          <tr><td>Акаунтів Instagram</td><td>1</td><td>Кілька</td></tr>
+          <tr><td>Акаунтів Нової Пошти</td><td>1</td><td>Кілька</td></tr>
+          <tr><td>Чати й коментарі</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>ТТН за один тап</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Повна аналітика</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Автоплатежі Monobank і LiqPay</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Свій сайт — магазин за посиланням</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Фіскальні чеки через касу Checkbox</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Замовлення з сайту (Хорошоп)</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Чат на сайті</td><td class="no">—</td><td>+299 ₴/міс</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Історія платежів для пробного / без підписки — окремою карткою під тарифами -->
+  <div class="pv" id="nvHistoryWrap" hidden><div id="nvHistorySlot"></div></div>
 
   <!-- ============== LEGAL ============== -->
   <div class="legal-grid">
@@ -1101,6 +1185,7 @@
   let tokenPayload = null;
   // Стан акаунта з quote (loadCurrentSub): тариф, його кінець і чат на сайті.
   let acct = { plan: null, periodEnd: null, chatUntil: null, chatEnabled: false };
+  let acctOk = false;   // quote відповів — знаємо, який тариф
 
   // ====================================================================
   // 1. AUTH GATE — парсимо JWT (без crypto-верифікації, бо це публічна
@@ -1190,6 +1275,7 @@
 
     ctaLabels();
     renderSubView();
+    renderNewView();
   }
 
   toggleBtns.forEach(btn => {
@@ -1297,6 +1383,7 @@
         chatUntil: data.activeUntil || null,
         chatEnabled: !!data.chatEnabled,
       };
+      acctOk = !!data.quote;
       renderChatRow();
       // Чат уже увімкнений чи оплачений — галочка стоїть сама: продовжуючи
       // Pro, його легко загубити, не помітивши.
@@ -1319,6 +1406,8 @@
     await loadIapFlag();
     // Pro через App Store керують в App Store — їм поки старий вигляд.
     proView = acct.plan === 'pro' && !iapActive;
+    // Пробний і без підписки — вибір тарифу з точною сумою; «Старт» поки старий.
+    newView = acctOk && !proView && !iapActive && (!acct.plan || acct.plan === 'trial');
     applyView();
     loadHistory();
     if (proView) {
@@ -1327,6 +1416,12 @@
       renderSubView();
       await loadRenewQuotes();
       renderSubView();
+    }
+    if (newView) {
+      newQ = null;
+      renderNewView();
+      await loadNewQuotes();
+      renderNewView();
     }
   }
 
@@ -1468,6 +1563,11 @@
         document.getElementById('pvRenewCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
+      // Пробний / без підписки: сума вже на кнопці — одразу в Monobank.
+      if (newView) {
+        goPay(btn, { plan, billing, addon });
+        return;
+      }
 
       // Гард «одне джерело»: активна iOS-підписка → не даємо платити на вебі
       // (інакше подвійна оплата — Apple далі авто-списує). Чат на сайті —
@@ -1589,17 +1689,17 @@
 
   function applyView() {
     document.body.classList.toggle('pro-view', proView);
+    document.body.classList.toggle('new-view', newView);
     document.getElementById('proView').hidden = !proView;
-    // Історія платежів — у «Твоїй підписці» окремою карткою, інакше — у блоці акаунта.
+    document.getElementById('newView').hidden = !newView;
+    document.getElementById('nvHistoryWrap').hidden = !newView;
+    // Історія платежів — окремою карткою в новому вигляді, інакше — у блоці акаунта.
     const hist = document.getElementById('apHistory');
-    if (proView && hist.parentElement.id !== 'pvHistorySlot') {
-      document.getElementById('pvHistorySlot').appendChild(hist);
-      hist.classList.add('pv-card');
-    } else if (!proView && hist.parentElement.id === 'pvHistorySlot') {
-      document.getElementById('accountPanel').appendChild(hist);
-      hist.classList.remove('pv-card');
-    }
+    const slot = proView ? 'pvHistorySlot' : newView ? 'nvHistorySlot' : 'accountPanel';
+    if (hist.parentElement.id !== slot) document.getElementById(slot).appendChild(hist);
+    hist.classList.toggle('pv-card', proView || newView);
     document.getElementById('pvEmail').textContent = userEmail || '—';
+    document.getElementById('nvEmail').textContent = userEmail || '—';
     document.getElementById('heroTitle').innerHTML = proView
       ? 'Твоя <span class="accent">підписка</span>'
       : 'Обери <span class="accent">тариф</span>';
@@ -1772,6 +1872,89 @@
   document.getElementById('pvLogout').addEventListener('click', () => {
     clearSession();
     window.location.href = '/pay';
+  });
+
+
+  // ====================================================================
+  // 3b. ПРОБНИЙ / БЕЗ ПІДПИСКИ — вибір тарифу з точною сумою на кнопці.
+  //    Статус угорі (пробний — скільки лишилось), картки тарифів коротко,
+  //    повний перелік — «Порівняти все». Суми — з сервера (quote), тож вікно
+  //    не потрібне: одразу Monobank. Попередження про чат — на самій картці.
+  // ====================================================================
+  let newView = false;
+  let newQ = null;   // { basic: { month, year }, pro: { month: { on, off }, year: { on, off } } }
+
+  async function loadNewQuotes() {
+    const q = (plan, billing, addon) => callFn({ plan, billing, addon, quote: true })
+      .then(({ res, data }) => (res.ok && data.quote ? data : null))
+      .catch(() => null);
+    const [bm, by, pmOn, pmOff, pyOn, pyOff] = await Promise.all([
+      q('basic', 'month', false), q('basic', 'year', false),
+      q('pro', 'month', true), q('pro', 'month', false), q('pro', 'year', true), q('pro', 'year', false),
+    ]);
+    newQ = { basic: { month: bm, year: by }, pro: { month: { on: pmOn, off: pmOff }, year: { on: pyOn, off: pyOff } } };
+  }
+
+  // Quote для картки: Pro — з чатом, якщо галочка стоїть і чат справді додається.
+  function cardQuote(plan) {
+    if (!newQ) return null;
+    if (plan === 'basic') return newQ.basic[selectedBilling];
+    const pair = newQ.pro[selectedBilling];
+    const withChat = chatQuote(pair);
+    return withChat && addonChat.checked ? withChat : (pair && pair.off);
+  }
+
+  function renderNewView() {
+    if (!newView) return;
+
+    // ── Статус ──
+    const trial = acct.plan === 'trial';
+    document.getElementById('nvLabel').textContent = trial ? 'Пробний період' : 'Підписка';
+    const left = Math.max(0, Math.ceil((msOf(acct.periodEnd) - Date.now()) / DAY_MS));
+    document.getElementById('nvMain').innerHTML = trial
+      ? `До <b>${fmtDay(acct.periodEnd)}</b> · ще ${left} ${plDays(left)}`
+      : '<b>Не активна</b> — обери тариф, і доступ відкриється одразу після оплати';
+    const span = msOf(acct.periodEnd) - msOf(acct.periodStart);
+    const bar = document.getElementById('nvBar');
+    bar.hidden = !(trial && acct.periodStart && span > 0);
+    if (!bar.hidden) {
+      const share = ((msOf(acct.periodEnd) - Date.now()) / span) * 100;
+      document.getElementById('nvBarFill').style.width = `${Math.min(100, Math.max(3, share))}%`;
+    }
+    const notes = [];
+    if (trial) notes.push('Оплатиш зараз — тариф почне діяти одразу, а пробний закінчиться.');
+    if (trial && acct.chatEnabled) notes.push('Чат на сайті працює безкоштовно до кінця пробного.');
+    document.getElementById('nvNote').textContent = notes.join(' ');
+
+    // ── Картки ──
+    const chatNow = chatWorksNow();
+    document.querySelectorAll('.price-card').forEach(card => {
+      const plan = card.dataset.plan;
+      const q = cardQuote(plan);
+      const cta = card.querySelector('[data-pay-cta]');
+      cta.textContent = q ? `Оплатити — ${fmtUah(q.amountUah)} ₴` : newQ ? `Оплатити ${plan === 'basic' ? 'Старт' : 'Pro'}` : 'Рахуємо…';
+      const nowEl = card.querySelector('[data-pc-now]');
+      nowEl.hidden = !(q && q.discount);
+      if (q && q.discount) nowEl.textContent = `Зараз −33%: ${fmtUah(q.breakdown.baseUah - q.breakdown.discountUah)} ₴`;
+      card.querySelector('[data-pc-until]').textContent = q ? `Діятиме до ${fmtDay(q.newPeriodEnd)}` : '';
+      // Чат зараз працює, а з цим тарифом / без галочки він вимкнеться.
+      let warn = '';
+      if (chatNow && plan === 'basic') warn = 'Чат на сайті працює лише з Pro — на «Старті» він вимкнеться';
+      if (chatNow && plan === 'pro' && !addonChat.checked) warn = 'Без доповнення чат на сайті вимкнеться одразу після оплати';
+      card.querySelector('[data-pc-warn]').textContent = warn;
+    });
+  }
+
+  addonChat.addEventListener('change', renderNewView);
+  document.getElementById('nvLogout').addEventListener('click', () => {
+    clearSession();
+    window.location.href = '/pay';
+  });
+  document.getElementById('compareToggle').addEventListener('click', (e) => {
+    const table = document.getElementById('compareTable');
+    table.hidden = !table.hidden;
+    e.currentTarget.setAttribute('aria-expanded', String(!table.hidden));
+    e.currentTarget.textContent = table.hidden ? 'Порівняти все' : 'Сховати порівняння';
   });
 
   // ====================================================================
