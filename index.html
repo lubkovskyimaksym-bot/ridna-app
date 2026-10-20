@@ -1634,6 +1634,9 @@
   
     /* Тарифи коротко + «Порівняти все» (так само, як на /pay) */
     .pc-plus { margin: -8px 0 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); }
+    .pc-addon { margin: 2px 0 14px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 13.5px; line-height: 1.4; color: var(--text-soft); }
+    .pc-addon b { color: var(--text); }
+    .pc-addon span { color: var(--muted); }
     .compare-wrap { margin: 8px 0 0; text-align: center; }
     .compare-toggle {
       padding: 8px 12px; background: none; border: none; cursor: pointer;
@@ -2214,6 +2217,7 @@
       <li class="ease-card"><svg class="ic"><use href="#ic-chart"/></svg><span>Бачиш, скільки реально заробила: виручка, прибуток, найкращі товари</span></li>
       <li class="ease-card"><svg class="ic"><use href="#ic-trend"/></svg><span>Бачиш, яке оголошення приносить замовлення — не вгадуєш, куди йдуть гроші на рекламу</span></li>
       <li class="ease-card"><svg class="ic"><use href="#ic-note"/></svg><span>Фіскальні чеки через касу Checkbox — на оплату й повернення, автоматично або кнопкою (Pro)</span></li>
+      <li class="ease-card"><svg class="ic"><use href="#ic-message"/></svg><span>Чат на сайті: кнопка чату на вітрині й твоєму сайті — покупець пише, ти відповідаєш із Ridna (Pro-доповнення)</span></li>
       <li class="ease-card"><svg class="ic"><use href="#ic-book"/></svg><span>Підказки й підтримка, коли щось незрозуміло</span></li>
     </ul>
   </div>
@@ -2280,6 +2284,7 @@
         <li class="highlight">Фіскальні чеки через Checkbox</li>
         <li class="highlight">Автоплатежі Monobank і LiqPay</li>
       </ul>
+      <div class="pc-addon">+ Чат на сайті — <b>299 ₴/міс</b> <span>доповнення</span></div>
       <a href="/pay" class="price-cta solid" data-umami-event="pricing_cta" data-umami-event-plan="pro">Хочу тариф Pro</a>
     </div>
   </div>
