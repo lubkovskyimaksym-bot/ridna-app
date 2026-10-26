@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Інтеграція Укрпошти з Ridna: накладні поруч із Новою Поштою</title>
+  <meta name="description" content="Накладна Укрпошти створюється з картки замовлення, а номер летить клієнтці в чат — другий перевізник поруч із Новою Поштою." />
+  <link rel="canonical" href="https://ridna.net/integrations/ukrposhta/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Інтеграція Укрпошти з Ridna: накладні поруч із Новою Поштою" />
+  <meta property="og:description" content="Накладна Укрпошти створюється з картки замовлення, а номер летить клієнтці в чат — другий перевізник поруч із Новою Поштою." />
+  <meta property="og:url" content="https://ridna.net/integrations/ukrposhta/" />
+  <meta property="og:image" content="https://ridna.net/og-image.png" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/blog/blog.css?v=5b7801f6" />
+  <style>
+    .int-main{max-width:820px;margin:0 auto}
+    .int-main-wide{max-width:1060px}
+    .int-hero{padding:18px 0 4px}
+    .int-hero h1{margin:0 0 14px}
+    .int-lead{font-size:18px;line-height:1.6;color:var(--muted);margin:0 0 18px;max-width:62ch}
+    .int-plan{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:100px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600}
+    .int-plan b{color:var(--purple)}
+    .int-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:26px 0 8px}
+    .int-card{display:block;padding:20px;border:1px solid var(--border);border-radius:16px;background:var(--surface);text-decoration:none;color:inherit;transition:border-color .2s,transform .2s}
+    .int-card:hover{border-color:var(--purple);transform:translateY(-2px)}
+    .int-card-ic{font-size:26px;line-height:1;margin-bottom:10px}
+    .int-card h2,.int-card h3{margin:0 0 6px;font-size:17px}
+    .int-card p{margin:0 0 10px;font-size:14px;line-height:1.5;color:var(--muted)}
+    .int-tag{display:inline-block;font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--border);border-radius:100px;padding:3px 10px}
+    .int-sec{margin:30px 0 0}
+    .int-sec h2{font-size:21px;margin:0 0 12px}
+    .int-need{border-left:3px solid var(--purple);padding:12px 0 12px 16px;margin:18px 0;font-size:15px;line-height:1.6}
+    .int-steps{counter-reset:s;list-style:none;padding:0;margin:0}
+    .int-steps li{counter-increment:s;position:relative;padding:0 0 12px 38px;line-height:1.6}
+    .int-steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--purple);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .int-notes li{margin-bottom:10px;line-height:1.6}
+    .int-more{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .int-more a{font-size:14px;padding:8px 14px;border:1px solid var(--border);border-radius:100px;text-decoration:none;color:inherit}
+    .int-more a:hover{border-color:var(--purple)}
+    @media(max-width:600px){.int-lead{font-size:16px}}
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Головна",
+        "item": "https://ridna.net/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Інтеграції",
+        "item": "https://ridna.net/integrations/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Укрпошта",
+        "item": "https://ridna.net/integrations/ukrposhta/"
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "uk-UA",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Чи потрібен окремий договір з Укрпоштою?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ні. Накладні Укрпошти створюються через підключення Ridna — свій ключ API чи договір не потрібні. Достатньо один раз додати дані відправника: ПІБ або ФОП, телефон і адресу."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Скільки відправників Укрпошти можна додати?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Скільки потрібно — кількість не обмежена тарифом. Потрібного відправника обираєш прямо у формі накладної."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Чи працюють Нова Пошта й Укрпошта разом?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Так. Обидва перевізники доступні одночасно: для кожного замовлення ти обираєш, ким відправляти."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="79ee62ea-0553-465a-bc94-cfca1065474e"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <a href="/" class="nav-logo">
+    <img src="/logo2.svg" alt="Ridna" class="nav-logo-img" />
+    <span class="nav-logo-text">Ridna</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Можливості</a></li>
+    <li><a href="/integrations/" class="is-current">Інтеграції</a></li>
+    <li><a href="/#pricing">Тарифи</a></li>
+    <li><a href="/blog/">Блог</a></li>
+    <li><a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="nav">База знань</a></li>
+    <li class="nav-actions">
+      <a href="/pay" class="nav-pill nav-pill-ghost" data-umami-event="login_pay" data-umami-event-place="nav">Вхід</a>
+      <a href="https://t.me/ridna_crm" target="_blank" rel="noopener" class="nav-pill" data-umami-event="contact_open" data-umami-event-place="int-nav">Звʼязатись</a>
+      <button class="theme-toggle" aria-label="Перемкнути тему" type="button"><svg class="t-light" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="t-dark" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    </li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <div class="crumb-row">
+    <nav class="crumbs" aria-label="Хлібні крихти">
+      <a href="/">Головна</a> <span>/</span> <a href="/integrations/">Інтеграції</a> <span>/</span> <span aria-current="page">Укрпошта</span>
+    </nav>
+  </div>
+
+  <div class="int-main">
+      <article class="post-body">
+        <div class="int-hero">
+          <h1>Накладні Укрпошти прямо із замовлення</h1>
+          <p class="int-lead">Другий перевізник у Ridna поруч із Новою Поштою. Накладна Укрпошти створюється з картки замовлення: дані отримувача підставляються з контакту, а номер надсилається клієнтці в чат.</p>
+          <span class="int-plan">Тариф: <b>Старт і Pro</b></span>
+        </div>
+
+        <div class="int-sec">
+          <h2>Що це дає</h2>
+          <ul>
+            <li>Накладна Укрпошти з картки замовлення — без переписування даних із чату.</li>
+            <li>Номер відправлення йде клієнтці в чат за готовим шаблоном повідомлення.</li>
+            <li><strong>ПІБ окремими полями.</strong> Укрпошта приймає накладну лише з прізвищем, імʼям і по батькові отримувача.</li>
+            <li>Кілька відправників — потрібного обираєш прямо у формі накладної.</li>
+            <li>Нова Пошта й Укрпошта працюють поруч: для кожного замовлення обираєш свого перевізника.</li>
+          </ul>
+        </div>
+
+        <div class="int-sec">
+          <h2>Як підключити</h2>
+          <div class="int-need">Лише дані відправника. Окремий ключ API чи договір з Укрпоштою <strong>не потрібні</strong> — накладні створюються через підключення Ridna.</div>
+          <ol class="int-steps">
+            <li>Меню → Укрпошта → «Додати відправника».</li>
+            <li>Заповнити дані: тип (фізособа / ФОП / компанія), ПІБ або назву, телефон, адресу, за потреби IBAN для накладеного платежу.</li>
+            <li>Зберегти — далі накладні створюються прямо із замовлень.</li>
+          </ol>
+          <p>Перший відправник стає основним сам; інших можна додати й перемикати у формі накладної.</p>
+          <p>Покрокова інструкція зі знімками екрана — у <a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="int-ukrposhta">базі знань</a>.</p>
+        </div>
+
+        <div class="int-sec">
+          <h2>Що варто знати</h2>
+          <ul class="int-notes">
+            <li><strong>ПІБ — трьома окремими полями.</strong> Укрпошта не приймає відправлення без прізвища, імені та по батькові отримувача, тож Ridna питає їх окремо.</li>
+            <li>Нова Пошта й Укрпошта не виключають одна одну — підключай обидві й обирай перевізника під кожне замовлення.</li>
+            <li>IBAN відправника потрібен лише для накладеного платежу — щоб гроші за посилку прийшли на твій рахунок.</li>
+          </ul>
+          <p>Доступно на обох тарифах. Кількість відправників не обмежена.</p>
+        </div>
+
+        <section class="faq">
+          <h2>Часті питання</h2>
+          <p class="faq-q">Чи потрібен окремий договір з Укрпоштою?</p>
+          <p class="faq-a">Ні. Накладні Укрпошти створюються через підключення Ridna — свій ключ API чи договір не потрібні. Достатньо один раз додати дані відправника: ПІБ або ФОП, телефон і адресу.</p>
+          <p class="faq-q">Скільки відправників Укрпошти можна додати?</p>
+          <p class="faq-a">Скільки потрібно — кількість не обмежена тарифом. Потрібного відправника обираєш прямо у формі накладної.</p>
+          <p class="faq-q">Чи працюють Нова Пошта й Укрпошта разом?</p>
+          <p class="faq-a">Так. Обидва перевізники доступні одночасно: для кожного замовлення ти обираєш, ким відправляти.</p>
+        </section>
+
+        
+
+        <div class="int-sec">
+          <h2>Інші інтеграції</h2>
+          <div class="int-more">
+        <a href="/integrations/instagram/">💬 Instagram</a>
+        <a href="/integrations/nova-poshta/">🚚 Нова Пошта</a>
+        <a href="/integrations/monobank/">💳 Monobank</a>
+        <a href="/integrations/liqpay/">💳 LiqPay</a>
+        <a href="/integrations/horoshop/">📥 Замовлення з сайту</a>
+        <a href="/integrations/checkbox/">🧾 Каса Checkbox</a>
+        <a href="/integrations/site-chat/">🗨️ Чат на сайті</a>
+        <a href="/integrations/facebook/">📨 Facebook Messenger</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="promo">
+        <div class="promo-badges"><span class="promo-badge">Без картки</span><span class="promo-badge">5 хв на налаштування</span></div>
+        <h3>Ridna — CRM для <span class="accent">Instagram-магазинів</span></h3>
+        <p>Завантаж Ridna і спробуй 30 днів безкоштовно — без картки.</p>
+        <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=int-ukrposhta&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="int-banner">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dsite%26utm_medium%3Dintegrations%26utm_content%3Dint-ukrposhta" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="int-banner">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+      </div>
+
+      <footer class="blog-footer">
+        <span>© 2026 Ridna · Зроблено в Україні</span>
+        <span><a href="/integrations/">Усі інтеграції</a> · <a href="/blog/">Блог</a> · <a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="int-footer">База знань</a></span>
+      </footer>
+  </div>
+</div>
+
+<a href="https://t.me/ridna_crm" target="_blank" rel="noopener" class="tg-fab" aria-label="Написати в Telegram" data-umami-event="contact_open" data-umami-event-place="int-fab">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.8 19c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.4 13.1 1.6 11.6c-1-.3-1-1 .2-1.5l19-7.3c.9-.3 1.6.2 1.1 1.5z"/></svg>
+</a>
+
+<script>
+(function(){function t(){var r=document.documentElement;var n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}}document.querySelectorAll('.theme-toggle').forEach(function(b){b.addEventListener('click',t);});})();
+</script>
+</body>
+</html>
