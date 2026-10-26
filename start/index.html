@@ -115,18 +115,56 @@
     .f-card h3 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 4px; }
     .f-card p { font-size: 14px; color: var(--text-soft); }
 
-    /* ДЛЯ КОГО */
-    .forwhom { margin: 30px 0; padding: 30px 26px; border-radius: 22px;
-      background: linear-gradient(135deg, rgba(126,33,213,0.08), rgba(157,78,234,0.05));
-      border: 1px solid var(--border); text-align: center; }
-    .forwhom h2 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(20px, 5vw, 26px); margin-bottom: 12px; }
-    .forwhom p { font-size: 16px; color: var(--text-soft); max-width: 640px; margin: 0 auto; }
+    /* заголовок секції */
+    .sec-h { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(20px, 5.2vw, 27px); text-align: center; margin-bottom: 22px; }
+
+    /* ПРАЦЮЄ З */
+    .works { margin: 40px 0 10px; }
+    .work-grid { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; max-width: 760px; margin: 0 auto; }
+    .work-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 13px;
+      padding: 10px 17px; font-weight: 700; font-size: 15px; color: var(--text);
+      box-shadow: 0 8px 20px -14px rgba(126,33,213,0.45);
+    }
+    .work-chip img { width: 22px; height: 22px; object-fit: contain; display: block; }
 
     /* ФІНАЛ */
     .final { text-align: center; padding: 20px 0 54px; }
     .final h2 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(24px, 6vw, 36px); line-height: 1.15; margin-bottom: 14px; }
     .final h2 .accent { color: var(--purple); }
     .final p { color: var(--text-soft); margin-bottom: 26px; font-size: 16px; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+      @keyframes floatA { 0%,100% { transform: translate(0,0); } 50% { transform: translate(22px,-26px); } }
+      @keyframes floatB { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-24px,18px); } }
+      @keyframes ctaGlow {
+        0%,100% { box-shadow: 0 20px 50px -20px rgba(126,33,213,0.35); }
+        50% { box-shadow: 0 24px 60px -18px rgba(126,33,213,0.6); }
+      }
+
+      .o1 { animation: floatA 18s ease-in-out infinite; }
+      .o2 { animation: floatB 22s ease-in-out infinite; }
+
+      .hero .brand   { animation: fadeUp .6s ease both; }
+      .hero h1       { animation: fadeUp .6s ease .08s both; }
+      .hero-sub      { animation: fadeUp .6s ease .16s both; }
+      .hero .stores  { animation: fadeUp .6s ease .24s both; }
+      .hero .trust   { animation: fadeUp .6s ease .34s both; }
+      .hero .store-btn:first-child { animation: fadeUp .6s ease .24s both, ctaGlow 3.4s ease-in-out 1.4s infinite; }
+
+      /* каскад карток на завантаженні */
+      .f-card { animation: fadeUp .55s ease both; }
+      .f-card:nth-child(1) { animation-delay: .05s; }
+      .f-card:nth-child(2) { animation-delay: .12s; }
+      .f-card:nth-child(3) { animation-delay: .19s; }
+      .f-card:nth-child(4) { animation-delay: .26s; }
+      .f-card:nth-child(5) { animation-delay: .33s; }
+      .f-card:nth-child(6) { animation-delay: .40s; }
+      .works { animation: fadeUp .6s ease both; }
+      .final { animation: fadeUp .6s ease both; }
+    }
 
     @media (max-width: 480px) {
       .store-btn { width: 100%; justify-content: center; }
@@ -160,6 +198,7 @@
 
     <!-- ЩО ВМІЄМО -->
     <section class="features">
+      <h2 class="sec-h">Що вміємо</h2>
       <div class="f-grid">
         <div class="f-card"><div class="f-ico">💬</div><div><h3>Усі чати разом</h3><p>Instagram Direct, коментарі, Facebook і гості сайту — в одному списку.</p></div></div>
         <div class="f-card"><div class="f-ico">🛒</div><div><h3>Замовлення з чату</h3><p>Контакт і товари підставляються самі. Статуси від «нове» до «виконано».</p></div></div>
@@ -170,10 +209,19 @@
       </div>
     </section>
 
-    <!-- ДЛЯ КОГО -->
-    <section class="forwhom">
-      <h2>Для кого Ridna</h2>
-      <p>Продаєш в Instagram, Facebook чи на власному сайті й ведеш усе сама або невеликою командою? Ridna зводить спілкування, замовлення, доставку, оплати й аналітику в один застосунок — щоб не губити замовлення й не перемикатись між десятком вкладок.</p>
+    <!-- ПРАЦЮЄ З -->
+    <section class="works">
+      <h2 class="sec-h">Працює з твоїми сервісами</h2>
+      <div class="work-grid">
+        <span class="work-chip">Instagram</span>
+        <span class="work-chip">Facebook</span>
+        <span class="work-chip">Нова Пошта</span>
+        <span class="work-chip">Укрпошта</span>
+        <span class="work-chip">Monobank</span>
+        <span class="work-chip">LiqPay</span>
+        <span class="work-chip">Checkbox</span>
+        <span class="work-chip">Хорошоп</span>
+      </div>
     </section>
 
     <!-- ФІНАЛ -->
