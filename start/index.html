@@ -84,17 +84,17 @@
     /* кнопки сторів */
     .stores { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .store-btn {
-      display: inline-flex; align-items: center; gap: 11px;
-      background: #140E28; color: #fff; text-decoration: none;
-      padding: 13px 24px; border-radius: 15px; min-width: 210px;
-      box-shadow: var(--shadow); transition: transform .15s ease, box-shadow .2s ease;
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #000; color: #fff; text-decoration: none;
+      padding: 11px 22px; border-radius: 14px;
+      border: 1px solid var(--border);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s, border-color 0.3s;
     }
-    .store-btn:hover { transform: translateY(-2px); box-shadow: 0 26px 60px -20px rgba(126,33,213,0.55); }
-    .store-btn:active { transform: translateY(0); }
-    .store-btn svg { width: 27px; height: 27px; fill: currentColor; flex: 0 0 auto; }
-    .store-btn-text { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
-    .store-btn-text small { font-size: 11px; opacity: .8; font-weight: 500; }
-    .store-btn-text strong { font-size: 17px; font-weight: 700; }
+    .store-btn:hover { transform: translateY(-2px); border-color: var(--purple); box-shadow: 0 0 32px rgba(126,33,213,0.45), 0 6px 20px rgba(126,33,213,0.2); }
+    .store-btn svg { width: 26px; height: 26px; flex-shrink: 0; fill: currentColor; }
+    .store-btn-text { display: flex; flex-direction: column; line-height: 1; text-align: left; }
+    .store-btn-text small { font-size: 10px; opacity: 0.85; margin-bottom: 4px; letter-spacing: 0.4px; font-weight: 500; }
+    .store-btn-text strong { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
 
     .trust { margin-top: 22px; font-size: 14px; color: var(--muted); font-weight: 600; }
     .trust b { color: var(--purple); }
@@ -156,7 +156,7 @@
       .hero-sub      { animation: fadeUp .6s ease .16s both; }
       .hero .stores  { animation: fadeUp .6s ease .24s both; }
       .hero .trust   { animation: fadeUp .6s ease .34s both; }
-      .hero .store-btn:first-child { animation: fadeUp .6s ease .24s both, ctaGlow 3.4s ease-in-out 1.4s infinite; }
+      .hero .store-btn:first-child { animation: fadeUp .6s ease .24s both; }
 
       /* каскад карток на завантаженні */
       .f-card { animation: fadeUp .55s ease both; }
