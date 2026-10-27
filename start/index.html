@@ -122,12 +122,15 @@
     .works { margin: 40px 0 10px; }
     .work-grid { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; max-width: 760px; margin: 0 auto; }
     .work-chip {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; gap: 9px;
       background: var(--card); border: 1px solid var(--border); border-radius: 13px;
-      padding: 10px 17px; font-weight: 700; font-size: 15px; color: var(--text);
+      padding: 9px 16px; font-weight: 700; font-size: 15px; color: var(--text);
       box-shadow: 0 8px 20px -14px rgba(126,33,213,0.45);
+      transition: transform .15s ease, box-shadow .2s ease;
     }
-    .work-chip img { width: 22px; height: 22px; object-fit: contain; display: block; }
+    .work-chip:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -16px rgba(126,33,213,0.55); }
+    .work-chip i { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 auto; }
+    .work-chip svg { width: 19px; height: 19px; flex: 0 0 auto; display: block; }
 
     /* ФІНАЛ */
     .final { text-align: center; padding: 20px 0 54px; }
@@ -213,14 +216,14 @@
     <section class="works">
       <h2 class="sec-h">Працює з твоїми сервісами</h2>
       <div class="work-grid">
-        <span class="work-chip">Instagram</span>
-        <span class="work-chip">Facebook</span>
-        <span class="work-chip">Нова Пошта</span>
-        <span class="work-chip">Укрпошта</span>
-        <span class="work-chip">Monobank</span>
-        <span class="work-chip">LiqPay</span>
-        <span class="work-chip">Checkbox</span>
-        <span class="work-chip">Хорошоп</span>
+        <span class="work-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="#E1306C" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#E1306C" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="#E1306C"/></svg>Instagram</span>
+        <span class="work-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.12 11.93v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.26h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>Facebook</span>
+        <span class="work-chip"><i style="background:#DA291C"></i>Нова Пошта</span>
+        <span class="work-chip"><i style="background:#F2C200"></i>Укрпошта</span>
+        <span class="work-chip"><i style="background:#0A0A0A"></i>Monobank</span>
+        <span class="work-chip"><i style="background:#6FA81E"></i>LiqPay</span>
+        <span class="work-chip"><i style="background:#14B88A"></i>Checkbox</span>
+        <span class="work-chip"><i style="background:#F26322"></i>Хорошоп</span>
       </div>
     </section>
 
