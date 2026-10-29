@@ -4,7 +4,12 @@
     "details": [
       {
         "appID": "T52HZF73B6.net.ridna.app",
-        "paths": ["*"]
+        "paths": [
+          "/reset-password",
+          "/reset-password/*",
+          "/delete-account",
+          "/delete-account/*"
+        ]
       }
     ]
   },
