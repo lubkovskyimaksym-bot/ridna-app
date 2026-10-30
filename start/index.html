@@ -120,7 +120,7 @@
     .trust b { color: var(--purple); }
 
     /* ФІЧІ */
-    .features { padding: 24px 0 10px; }
+    .features { margin: 54px 0 0; }
     .f-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
     .f-card {
       background: var(--card-grad); border: 1px solid var(--border);
@@ -137,9 +137,20 @@
 
     /* заголовок секції */
     .sec-h { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(20px, 5.2vw, 27px); text-align: center; margin-bottom: 22px; }
+    .sec-head { text-align: center; max-width: 560px; margin: 0 auto 26px; }
+    .sec-head .sec-h { margin-bottom: 8px; }
+    .sec-lead { color: var(--text-soft); font-size: 15px; line-height: 1.6; }
+
+    /* обгортка-панель для згрупованих блоків */
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(244,238,252,0.55));
+      border: 1px solid var(--border); border-radius: 26px;
+      box-shadow: 0 30px 60px -42px rgba(126,33,213,0.4);
+    }
+    .panel-tight { padding: 26px 22px; }
 
     /* ПРАЦЮЄ З */
-    .works { margin: 40px 0 10px; }
+    .works { margin: 54px 0 0; }
     .work-grid { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; max-width: 760px; margin: 0 auto; }
     .work-chip {
       display: inline-flex; align-items: center; gap: 9px;
@@ -152,9 +163,10 @@
     .work-chip i { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 auto; }
     .work-chip svg { width: 19px; height: 19px; flex: 0 0 auto; display: block; }
     .work-chip img { width: 21px; height: 21px; object-fit: contain; flex: 0 0 auto; display: block; }
+    .work-chip img.tile { border-radius: 5px; }
 
     /* ВІДГУКИ (формат App Store) */
-    .reviews { margin: 46px 0 14px; }
+    .reviews { margin: 54px 0 0; }
     .rev-track {
       display: flex; gap: 16px;
       overflow-x: auto; scroll-snap-type: x mandatory;
@@ -178,10 +190,17 @@
     .rev-hint { text-align: center; font-size: 13px; color: var(--muted); margin-top: 4px; }
 
     /* ФІНАЛ */
-    .final { text-align: center; padding: 20px 0 54px; }
-    .final h2 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(24px, 6vw, 36px); line-height: 1.15; margin-bottom: 14px; }
-    .final h2 .accent { color: var(--purple); }
-    .final p { color: var(--text-soft); margin-bottom: 26px; font-size: 16px; }
+    .final { margin: 56px 0 0; padding: 0 0 54px; }
+    .final-card {
+      text-align: center;
+      background: linear-gradient(135deg, #F1E7FF, #E7D6FF);
+      border: 1px solid rgba(126,33,213,0.18);
+      border-radius: 28px; padding: 48px 28px;
+      box-shadow: 0 34px 70px -40px rgba(126,33,213,0.5);
+    }
+    .final-card h2 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(24px, 6vw, 36px); line-height: 1.15; margin-bottom: 14px; }
+    .final-card h2 .accent { color: var(--purple); }
+    .final-card p { color: var(--text-soft); margin-bottom: 26px; font-size: 16px; }
 
     @media (prefers-reduced-motion: no-preference) {
       @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
@@ -285,22 +304,30 @@
 
     <!-- ПРАЦЮЄ З -->
     <section class="works">
-      <h2 class="sec-h">Працює з твоїми сервісами</h2>
-      <div class="work-grid">
-        <span class="work-chip"><img src="/logos/instagram.svg" alt="" />Instagram</span>
-        <span class="work-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.12 11.93v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.26h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>Facebook</span>
-        <span class="work-chip"><img src="/logos/novaposhta.svg" alt="" />Нова Пошта</span>
-        <span class="work-chip"><img src="/logos/ukrposhta.svg" alt="" />Укрпошта</span>
-        <span class="work-chip"><img src="/logos/monobank.svg" alt="" />Monobank</span>
-        <span class="work-chip"><img src="/logos/liqpay.svg" alt="" />LiqPay</span>
-        <span class="work-chip"><i style="background:#14B88A"></i>Checkbox</span>
-        <span class="work-chip"><i style="background:#F26322"></i>Хорошоп</span>
+      <div class="sec-head">
+        <h2 class="sec-h">Працює з твоїми сервісами</h2>
+        <p class="sec-lead">Підключається в кілька тапів — без розробника й договорів.</p>
+      </div>
+      <div class="panel panel-tight">
+        <div class="work-grid">
+          <span class="work-chip"><img src="/logos/instagram.svg" alt="" />Instagram</span>
+          <span class="work-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.12 11.93v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.26h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>Facebook</span>
+          <span class="work-chip"><img src="/logos/novaposhta.svg" alt="" />Нова Пошта</span>
+          <span class="work-chip"><img src="/logos/ukrposhta.svg" alt="" />Укрпошта</span>
+          <span class="work-chip"><img src="/logos/monobank.svg" alt="" />Monobank</span>
+          <span class="work-chip"><img src="/logos/liqpay.svg" alt="" />LiqPay</span>
+          <span class="work-chip"><img class="tile" src="/logos/checkbox.webp" alt="" />Checkbox</span>
+          <span class="work-chip"><img src="/logos/horoshop.svg" alt="" />Хорошоп</span>
+        </div>
       </div>
     </section>
 
     <!-- ЩО ВМІЄМО -->
     <section class="features">
-      <h2 class="sec-h">Що вміємо</h2>
+      <div class="sec-head">
+        <h2 class="sec-h">Що вміємо</h2>
+        <p class="sec-lead">Повний цикл продажу: від повідомлення в Direct до відправленої посилки.</p>
+      </div>
       <div class="f-grid">
         <div class="f-card"><div class="f-ico">💬</div><div><h3>Усі чати разом</h3><p>Instagram Direct, коментарі, Facebook і гості сайту — в одному списку.</p></div></div>
         <div class="f-card"><div class="f-ico">🛒</div><div><h3>Замовлення з чату</h3><p>Контакт і товари підставляються самі. Статуси від «нове» до «виконано».</p></div></div>
@@ -313,7 +340,10 @@
 
     <!-- ВІДГУКИ -->
     <section class="reviews">
-      <h2 class="sec-h">Що кажуть користувачі</h2>
+      <div class="sec-head">
+        <h2 class="sec-h">Що кажуть користувачі</h2>
+        <p class="sec-lead">Магазини, що вже перейшли на Ridna.</p>
+      </div>
       <div class="rev-track" id="revTrack">
         <article class="rev-card">
           <h3 class="rev-title">Найкраща CRM для інсташопа</h3>
@@ -351,6 +381,7 @@
 
     <!-- ФІНАЛ -->
     <section class="final">
+      <div class="final-card">
       <h2>Спробуй <span class="accent">безкоштовно</span></h2>
       <p>30 днів без обмежень. Картка не потрібна.</p>
       <div class="stores">
@@ -362,6 +393,7 @@
           <svg viewBox="0 0 512 512" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
           <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
         </a>
+      </div>
       </div>
     </section>
   </main>
