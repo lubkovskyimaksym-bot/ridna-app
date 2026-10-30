@@ -153,6 +153,28 @@
     .work-chip svg { width: 19px; height: 19px; flex: 0 0 auto; display: block; }
     .work-chip img { width: 21px; height: 21px; object-fit: contain; flex: 0 0 auto; display: block; }
 
+    /* ВІДГУКИ (формат App Store) */
+    .reviews { margin: 46px 0 14px; }
+    .rev-track {
+      display: flex; gap: 16px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      padding: 4px 20px 20px; margin: 0 -20px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .rev-track::-webkit-scrollbar { display: none; }
+    .rev-card {
+      flex: 0 0 min(340px, 84vw); scroll-snap-align: center;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 22px 22px 24px;
+      box-shadow: 0 16px 36px -22px rgba(126,33,213,0.4);
+      display: flex; flex-direction: column;
+    }
+    .rev-title { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 16.5px; line-height: 1.32; margin-bottom: 11px; color: var(--text); }
+    .rev-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; font-size: 13px; color: var(--muted); }
+    .rev-stars { color: #231433; letter-spacing: 2px; font-size: 13px; }
+    .rev-body { font-size: 14.5px; color: var(--text-soft); line-height: 1.52; }
+    .rev-hint { text-align: center; font-size: 13px; color: var(--muted); margin-top: 4px; }
+
     /* ФІНАЛ */
     .final { text-align: center; padding: 20px 0 54px; }
     .final h2 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(24px, 6vw, 36px); line-height: 1.15; margin-bottom: 14px; }
@@ -244,11 +266,15 @@
         <div class="phone">
           <div class="phone-screen">
             <div class="phone-island"></div>
-            <img class="slide on" src="screenshots/chats.webp" alt="Чати Instagram у застосунку Ridna" width="540" height="1170" />
-            <img class="slide" src="screenshots/products.webp" alt="Каталог товарів" width="540" height="1170" loading="lazy" />
-            <img class="slide" src="screenshots/ttn.webp" alt="ТТН Нової Пошти" width="540" height="1170" loading="lazy" />
-            <img class="slide" src="screenshots/oplata.webp" alt="Посилання на оплату в чаті" width="540" height="1170" loading="lazy" />
-            <img class="slide" src="screenshots/analytics.webp" alt="Аналітика продажів" width="540" height="1170" loading="lazy" />
+            <img class="slide on" src="/screenshots/start-1.webp" alt="Чати Instagram і Direct у застосунку Ridna" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-2.webp" alt="Контакти клієнтів" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-3.webp" alt="Інтернет-магазин на ridna.shop" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-4.webp" alt="Інтеграції: Instagram, пошта, оплати" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-5.webp" alt="Автоматизація: оплата, доставка, чеки" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-6.webp" alt="Замовлення за статусами" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-7.webp" alt="Дані покупця підставляються з чату" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-8.webp" alt="Заповнення контакту з повідомлення" width="924" height="2000" />
+            <img class="slide" src="/screenshots/start-9.webp" alt="Оплата прямо в Instagram" width="924" height="2000" />
           </div>
         </div>
         <div class="floater f-a"><span class="ok"></span>ТТН готова</div>
@@ -284,6 +310,44 @@
       </div>
     </section>
 
+    <!-- ВІДГУКИ -->
+    <section class="reviews">
+      <h2 class="sec-h">Що кажуть користувачі</h2>
+      <div class="rev-track" id="revTrack">
+        <article class="rev-card">
+          <h3 class="rev-title">Найкраща CRM для інсташопа</h3>
+          <div class="rev-meta"><span class="rev-stars">★★★★★</span><span>App Store · Wint Shop</span></div>
+          <p class="rev-body">Певно найзручніша, є все що треба. Найбільше задоволення те, що прислухались до моїх прохань і за пару днів додали, що я просив!</p>
+        </article>
+        <article class="rev-card">
+          <h3 class="rev-title">Чудова CRM та підтримка!</h3>
+          <div class="rev-meta"><span class="rev-stars">★★★★★</span><span>App Store · Команда LIREL</span></div>
+          <p class="rev-body">Щиро дякую команді Ridna CRM за оперативність, швидкий зворотний зв'язок та індивідуальний підхід! Окрема подяка за реалізацію потрібної інтеграції.</p>
+        </article>
+        <article class="rev-card">
+          <h3 class="rev-title">Класний і інтуїтивний інтерфейс</h3>
+          <div class="rev-meta"><span class="rev-stars">★★★★★</span><span>App Store · Валерія</span></div>
+          <p class="rev-body">Чудова CRM, класний і інтуїтивно зрозумілий інтерфейс. Підтримка реагує і вирішує всі проблеми моментально! Дуже рекомендую)</p>
+        </article>
+        <article class="rev-card">
+          <h3 class="rev-title">Запропонував інтеграцію — зробили того ж дня</h3>
+          <div class="rev-meta"><span class="rev-stars">★★★★★</span><span>Threads · dimas.malk</span></div>
+          <p class="rev-body">Шукав CRM для свого інтернет-магазину. Найбільше вразило, що команда не просто слухає клієнтів, а справді чує: запропонував ідею інтеграції — і того ж дня її реалізували!</p>
+        </article>
+        <article class="rev-card">
+          <h3 class="rev-title">Менеджери кайфують</h3>
+          <div class="rev-meta"><span class="rev-stars">★★★★★</span><span>Telegram · власниця магазину</span></div>
+          <p class="rev-body">Працюємо перший день — менеджери кайфують. Дуже зручний застосунок, усе під рукою.</p>
+        </article>
+        <article class="rev-card">
+          <h3 class="rev-title">Листування з Instagram прямо в CRM</h3>
+          <div class="rev-meta"><span class="rev-stars">★★★★★</span><span>Telegram · Артем</span></div>
+          <p class="rev-body">Ще ніде не бачив такого — усе листування з Instagram прямо в застосунку. Дякую, поки дуже зручно все влаштовано.</p>
+        </article>
+      </div>
+      <p class="rev-hint">Справжні відгуки з App Store, Threads і повідомлень користувачів</p>
+    </section>
+
     <!-- ФІНАЛ -->
     <section class="final">
       <h2>Спробуй <span class="accent">безкоштовно</span></h2>
@@ -310,7 +374,34 @@
         slides[i].classList.remove('on');
         i = (i + 1) % slides.length;
         slides[i].classList.add('on');
-      }, 2600);
+      }, 2000);
+    })();
+
+    // Карусель відгуків — м'яке авто-гортання, пауза при взаємодії
+    (function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var track = document.getElementById('revTrack');
+      if (reduce || !track) return;
+      var cards = track.querySelectorAll('.rev-card');
+      if (cards.length < 2) return;
+      var paused = false, idle;
+      function step() {
+        if (paused) return;
+        var card = cards[0];
+        var w = card.getBoundingClientRect().width + 16; // + gap
+        var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+        track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + w, behavior: 'smooth' });
+      }
+      var timer = setInterval(step, 4000);
+      function hold() {
+        paused = true;
+        clearTimeout(idle);
+        idle = setTimeout(function () { paused = false; }, 7000);
+      }
+      track.addEventListener('pointerdown', hold);
+      track.addEventListener('wheel', hold, { passive: true });
+      track.addEventListener('mouseenter', function () { paused = true; });
+      track.addEventListener('mouseleave', function () { paused = false; });
     })();
   </script>
 </body>
