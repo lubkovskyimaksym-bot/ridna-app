@@ -158,8 +158,10 @@
     .rev-track {
       display: flex; gap: 16px;
       overflow-x: auto; scroll-snap-type: x mandatory;
-      padding: 4px 20px 20px; margin: 0 -20px;
+      padding: 4px 28px 20px; margin: 0 -28px;
       -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
     }
     .rev-track::-webkit-scrollbar { display: none; }
     .rev-card {
@@ -273,7 +275,6 @@
             <img class="slide" src="/screenshots/start-5.webp" alt="Автоматизація: оплата, доставка, чеки" width="924" height="2000" />
             <img class="slide" src="/screenshots/start-6.webp" alt="Замовлення за статусами" width="924" height="2000" />
             <img class="slide" src="/screenshots/start-7.webp" alt="Дані покупця підставляються з чату" width="924" height="2000" />
-            <img class="slide" src="/screenshots/start-8.webp" alt="Заповнення контакту з повідомлення" width="924" height="2000" />
             <img class="slide" src="/screenshots/start-9.webp" alt="Оплата прямо в Instagram" width="924" height="2000" />
           </div>
         </div>
@@ -377,26 +378,44 @@
       }, 2000);
     })();
 
-    // Карусель відгуків — м'яке авто-гортання, пауза при взаємодії
+    // Карусель відгуків — безшовний цикл + авто-гортання, пауза при взаємодії
     (function () {
-      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var track = document.getElementById('revTrack');
-      if (reduce || !track) return;
-      var cards = track.querySelectorAll('.rev-card');
-      if (cards.length < 2) return;
-      var paused = false, idle;
-      function step() {
+      if (!track) return;
+      var originals = Array.prototype.slice.call(track.children);
+      if (originals.length < 2) return;
+      var GAP = 16;
+      // клонуємо набір, щоб цикл був безшовним
+      originals.forEach(function (c) { track.appendChild(c.cloneNode(true)); });
+      function step() { return originals[0].getBoundingClientRect().width + GAP; }
+      function setW() { return step() * originals.length; }
+      var animating = false;
+      // безшовне загортання при ручному гортанні
+      track.addEventListener('scroll', function () {
+        if (animating) return;
+        var w = setW();
+        if (track.scrollLeft >= w) track.scrollLeft -= w;
+        else if (track.scrollLeft < 0) track.scrollLeft += w;
+      }, { passive: true });
+
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+      var idx = 0, paused = false, idle;
+      function advance() {
         if (paused) return;
-        var card = cards[0];
-        var w = card.getBoundingClientRect().width + 16; // + gap
-        var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
-        track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + w, behavior: 'smooth' });
+        idx++;
+        animating = true;
+        track.scrollTo({ left: idx * step(), behavior: 'smooth' });
+        setTimeout(function () {
+          if (idx >= originals.length) { track.scrollLeft = 0; idx = 0; }
+          animating = false;
+        }, 650);
       }
-      var timer = setInterval(step, 4000);
+      setInterval(advance, 3500);
       function hold() {
         paused = true;
         clearTimeout(idle);
-        idle = setTimeout(function () { paused = false; }, 7000);
+        idle = setTimeout(function () { paused = false; }, 8000);
       }
       track.addEventListener('pointerdown', hold);
       track.addEventListener('wheel', hold, { passive: true });
