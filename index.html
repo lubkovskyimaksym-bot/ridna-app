@@ -880,6 +880,40 @@
     }
     .mini-desc { color: var(--text-soft); font-size: 14px; line-height: 1.6; }
 
+    /* INTEGRATIONS + OPEN API */
+    .int-logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 880px; margin: 0 auto; }
+    .int-logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 11px 18px; font-weight: 700; font-size: 15px; color: var(--text);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .int-logo:hover { transform: translateY(-2px); border-color: rgba(126,33,213,0.4); }
+    .int-logo img { width: 22px; height: 22px; object-fit: contain; display: block; flex: 0 0 auto; }
+    .int-logo img.tile { border-radius: 5px; }
+    .int-logo svg { width: 20px; height: 20px; display: block; flex: 0 0 auto; }
+
+    .api-block {
+      margin: 48px auto 0; max-width: 760px; text-align: center;
+      background: linear-gradient(135deg, rgba(126,33,213,0.09), rgba(126,33,213,0.03));
+      border: 1px solid rgba(126,33,213,0.22); border-radius: 24px; padding: 38px 30px;
+    }
+    .api-h { font-family: 'Unbounded', sans-serif; font-size: clamp(20px, 3.4vw, 26px); font-weight: 700; margin-bottom: 12px; color: var(--text); }
+    .api-h .accent { background: linear-gradient(135deg, #7E21D5, #C4B5FD); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .api-lead { color: var(--text-soft); font-size: 15px; line-height: 1.65; max-width: 600px; margin: 0 auto 22px; }
+    .api-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .api-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 8px 15px; font-weight: 700; font-size: 14px; color: var(--text);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .api-chip:hover { transform: translateY(-2px); border-color: rgba(126,33,213,0.4); }
+    .api-chip img { width: 18px; height: 18px; object-fit: contain; display: block; flex: 0 0 auto; }
+    .api-chip-more { background: rgba(126,33,213,0.1); border-color: rgba(126,33,213,0.32); color: var(--accent); }
+    .api-note { margin: 24px auto 0; max-width: 580px; color: var(--text-soft); font-size: 13.5px; line-height: 1.7; }
+    .api-note a { color: var(--accent); font-weight: 600; }
+
     /* COMPARE TABLE */
     .compare-table {
       background: var(--surface);
@@ -2080,6 +2114,41 @@
   </div>
 </section>
 
+<!-- INTEGRATIONS + OPEN API -->
+<section class="section" id="api">
+  <div class="section-header reveal">
+    <h2 class="section-h2">Під'єднано до сервісів,<br><span class="accent">якими ти вже працюєш.</span></h2>
+    <p class="section-lead">Instagram, пошта, оплати, чеки, свій сайт — готові інтеграції підключаються в кілька тапів прямо в застосунку.</p>
+  </div>
+
+  <div class="int-logos reveal d1">
+    <span class="int-logo"><img src="/logos/instagram.svg" alt="" />Instagram</span>
+    <span class="int-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.12 11.93v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.26h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>Messenger</span>
+    <span class="int-logo"><img src="/logos/novaposhta.svg" alt="" />Нова Пошта</span>
+    <span class="int-logo"><img src="/logos/ukrposhta.svg" alt="" />Укрпошта</span>
+    <span class="int-logo"><img src="/logos/monobank.svg" alt="" />Monobank</span>
+    <span class="int-logo"><img src="/logos/liqpay.svg" alt="" />LiqPay</span>
+    <span class="int-logo"><img class="tile" src="/logos/checkbox.webp" alt="" />Checkbox</span>
+    <span class="int-logo"><img src="/logos/horoshop.svg" alt="" />Хорошоп</span>
+  </div>
+
+  <div class="api-block reveal d1">
+    <h3 class="api-h">А все інше — через <span class="accent">відкрите API</span></h3>
+    <p class="api-lead">Є свій сайт, маркетплейс, облік чи чат-бот? Передавай замовлення, оплати й товари в Ridna через API — усі замовлення в одному місці, звідки б вони не прийшли. Ridna допомагає інтегруватися з:</p>
+    <div class="api-chips">
+      <span class="api-chip"><img src="/logos/rozetka.webp" alt="" />Rozetka</span>
+      <span class="api-chip"><img src="/logos/prom.webp" alt="" />Prom</span>
+      <span class="api-chip"><img src="/logos/bas.webp" alt="" />BAS / 1С</span>
+      <span class="api-chip"><img src="/logos/google-sheets.webp" alt="" />Google Sheets</span>
+      <span class="api-chip"><img src="/logos/make.webp" alt="" />Make</span>
+      <span class="api-chip"><img src="/logos/zapier.webp" alt="" />Zapier</span>
+      <span class="api-chip"><img src="/logos/apix-drive.webp" alt="" />ApiX-Drive</span>
+      <span class="api-chip api-chip-more">та будь-що інше</span>
+    </div>
+    <p class="api-note">Для магазинів на <b>Pro</b>. Документація для розробника — <a href="https://api.ridna.net" target="_blank" rel="noopener">api.ridna.net</a>. Або напиши нам — підключимо: <a href="https://t.me/ridna_crm" target="_blank" rel="noopener">@ridna_crm</a>.</p>
+  </div>
+</section>
+
 <!-- COMPARE -->
 <section class="section">
   <div class="section-header reveal">
@@ -2166,8 +2235,15 @@
     </div>
 
     <div class="compare-row">
+      <div class="compare-cell label">Відкрите API для інтеграцій</div>
+      <div class="compare-cell val-ridna"><span class="compare-tick yes">Так</span></div>
+      <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
+      <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
+    </div>
+
+    <div class="compare-row">
       <div class="compare-cell label">Маркетплейси (Rozetka, Prom, Etsy)</div>
-      <div class="compare-cell val-ridna"><span class="compare-tick partial">Плануємо</span></div>
+      <div class="compare-cell val-ridna"><span class="compare-tick partial">Через API</span></div>
       <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
       <div class="compare-cell val hide-mobile"><span class="compare-tick yes">Так</span></div>
     </div>
