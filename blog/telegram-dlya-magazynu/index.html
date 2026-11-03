@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1356844803015688');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1356844803015688&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" /><!-- DRAFT: знімається командою `node tools/blog.mjs publish <slug>` -->
+
+  <title>Telegram для магазину: як відповідати покупцям з одного місця — Блог Ridna</title>
+  <meta name="description" content="Чати Telegram поруч з Instagram Direct: що для цього потрібно, які обмеження ставить сам Telegram і чи бачать покупці бота." />
+  <link rel="canonical" href="https://ridna.net/blog/telegram-dlya-magazynu/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ridna.net/blog/telegram-dlya-magazynu/" />
+  <meta property="og:site_name" content="Ridna" />
+  <meta property="og:title" content="Telegram для магазину: як відповідати покупцям з одного місця" />
+  <meta property="og:description" content="Чати Telegram поруч з Instagram Direct: що для цього потрібно, які обмеження ставить сам Telegram і чи бачать покупці бота." />
+  <meta property="og:image" content="https://ridna.net/blog/telegram-dlya-magazynu/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta property="article:published_time" content="2026-11-03" />
+  <meta property="article:modified_time" content="2026-11-03" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Telegram для магазину: як відповідати покупцям з одного місця" />
+  <meta name="twitter:description" content="Чати Telegram поруч з Instagram Direct: що для цього потрібно, які обмеження ставить сам Telegram і чи бачать покупці бота." />
+  <meta name="twitter:image" content="https://ridna.net/blog/telegram-dlya-magazynu/og.jpg" />
+
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/logo2.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="alternate" type="application/rss+xml" title="Блог Ridna" href="/blog/feed.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/blog.css?v=5b7801f6" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Telegram для магазину: як відповідати покупцям з одного місця",
+    "description": "Чати Telegram поруч з Instagram Direct: що для цього потрібно, які обмеження ставить сам Telegram і чи бачать покупці бота.",
+    "image": "https://ridna.net/blog/telegram-dlya-magazynu/og.jpg",
+    "datePublished": "2026-11-03",
+    "dateModified": "2026-11-03",
+    "inLanguage": "uk-UA",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ridna.net/blog/telegram-dlya-magazynu/" },
+    "author": { "@type": "Organization", "name": "Ridna", "url": "https://ridna.net" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Ridna",
+      "url": "https://ridna.net",
+      "logo": { "@type": "ImageObject", "url": "https://ridna.net/logo2.svg" }
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Головна", "item": "https://ridna.net/" },
+      { "@type": "ListItem", "position": 2, "name": "Блог", "item": "https://ridna.net/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "Telegram для магазину: як відповідати покупцям з одного місця" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "uk-UA",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Чи бачать покупці, що відповідає бот?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ні. Покупці пишуть магазину на той самий нік або номер і отримують відповідь від магазину. Бот у їхньому інтерфейсі не зʼявляється — немає ні іншого імені, ні позначки про переадресацію."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Що потрібно, щоб підключити Telegram до Ridna?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Telegram Premium на акаунті, куди пишуть покупці — без нього Telegram не дозволяє підключати ботів, це вимога самої платформи, — і тариф Pro або пробний період Ridna. Підключення відбувається в чотири кроки через Налаштування → Telegram Business → Чат-боти."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Чи бачить CRM особисті чати в Telegram?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Лише ті, які ви дозволили боту під час налаштування. Чати, додані у винятки, до Ridna не доходять узагалі. Рекомендований варіант — дозволити всі особисті чати, а рідних і друзів винести у винятки."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Чому не вийшло відповісти покупцю через кілька днів?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Це обмеження Telegram, а не CRM: відповісти через бота можна протягом 24 годин після повідомлення покупця. Пізніше відповідають із самого Telegram. Таке саме правило діє для Instagram."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Umami — аналітика без кукі -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="79ee62ea-0553-465a-bc94-cfca1065474e"></script>
+  <script>(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+</head>
+<body>
+<!-- ШАПКА:START — синхронізована з лендінгом, правити в tools/post-template.html -->
+<nav class="site-nav">
+  <a href="/" class="nav-logo">
+    <img src="/logo2.svg" alt="Ridna" class="nav-logo-img" />
+    <span class="nav-logo-text">Ridna</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Можливості</a></li>
+    <li><a href="/integrations/">Інтеграції</a></li>
+    <li><a href="/#pricing">Тарифи</a></li>
+    <li><a href="/blog/" class="is-current">Блог</a></li>
+    <li><a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="nav">База знань</a></li>
+    <li class="nav-actions">
+      <a href="/pay" class="nav-pill nav-pill-ghost" data-umami-event="login_pay" data-umami-event-place="nav">Вхід</a>
+      <a href="https://t.me/ridna_crm" target="_blank" rel="noopener" class="nav-pill" data-umami-event="contact_open" data-umami-event-place="blog-nav">Звʼязатись</a>
+      <button class="theme-toggle" aria-label="Перемкнути тему" type="button"><svg class="t-light" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="t-dark" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    </li>
+  </ul>
+</nav>
+<!-- ШАПКА:END -->
+
+<div class="wrap">
+  <div class="crumb-row">
+    <nav class="crumbs" aria-label="Хлібні крихти">
+      <a href="/">Головна</a> <span>/</span> <a href="/blog/">Блог</a> <span>/</span> <span aria-current="page">Telegram для магазину: як відповідати покупцям з одного місця</span>
+    </nav>
+    <a href="/blog/" class="all-posts">Усі статті <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+
+  <div class="art-layout">
+    <aside class="side-nav">
+      <div class="side-h">На цій сторінці</div>
+      <nav id="toc" class="toc"></nav>
+    </aside>
+
+    <div class="art-main">
+      <article>
+        <h1>Telegram для магазину: як відповідати покупцям з одного місця</h1>
+        <p class="article-meta"><time datetime="2026-11-03">3 листопада 2026 р.</time> · Ridna</p>
+
+        <!-- ↓↓↓ ТЕКСТ СТАТТІ ↓↓↓ -->
+    <img class="cover" src="/blog/telegram-dlya-magazynu/cover.webp" alt="Ноутбук, блокнот і смартфон на деревʼяному столі" width="1200" height="630" fetchpriority="high" />
+
+    <div class="summary">
+      <div class="summary-h">Коротко</div>
+      <p>Покупці пишуть у Telegram магазину на той самий номер чи нік, що й зараз. Ці чати зʼявляються поруч з Instagram, і відповідати можна звідти ж — текстом, фото, відео чи карткою оплати. <strong>Бота покупці не бачать</strong>: вони пишуть магазину й отримують відповідь від магазину.</p>
+      <p>Для підключення потрібні дві речі: <strong>Telegram Premium</strong> на акаунті, куди пишуть покупці — без нього Telegram не дозволяє підключати ботів, — і тариф Pro або пробний період Ridna.</p>
+      <p>Головне обмеження ставить не Ridna, а сам Telegram: <strong>відповісти можна протягом 24 годин</strong> після повідомлення покупця, і написати новій людині першою з CRM не вийде. Те саме правило діє і для Instagram.</p>
+      <p>Замовлення, ТТН і оплата працюють так само, як для Instagram: з чату створюється замовлення, з нього — накладна Нової Пошти.</p>
+    </div>
+
+    <h2>Навіщо зводити Telegram з Instagram</h2>
+
+    <p>Магазин, який веде два месенджери, має подвійну роботу навіть тоді, коли замовлень небагато. Два місця для перевірки, два набори непрочитаних, дві історії листування — і клієнтка, яка писала і там, і там, виглядає як дві різні людини.</p>
+
+    <p>Коли чати з обох каналів лежать в одному списку, зникає не функція, а повторювана дія: не треба згадувати, де саме була та розмова про розмір.</p>
+
+    <h2>Що бачить покупець</h2>
+
+    <p>Нічого нового. Він пише магазину на той самий нік або номер, що й раніше, і отримує відповідь від магазину.</p>
+
+    <p>Технічно відповіді проходять через бота, але <strong>в інтерфейсі покупця бота немає</strong> — немає ні іншого імені, ні позначки, ні переадресації. Це важливо: клієнтка, яка бачить, що її передали боту, часто просто закриває чат.</p>
+
+    <h2>Що потрібно для підключення</h2>
+
+    <p>Дві умови, і першу варто перевірити до того, як починати:</p>
+
+    <ul>
+      <li><strong>Telegram Premium</strong> на тому акаунті, куди пишуть покупці. Це вимога самого Telegram: без Premium платформа не дозволяє підключати ботів до акаунта. Купується в самому Telegram.</li>
+      <li><strong>Тариф Pro</strong> або пробний період Ridna.</li>
+    </ul>
+
+    <p>Саме підключення — чотири кроки, і екран у застосунку показує, на якому ви зараз. Коротко: у Ridna натиснути «Підключити Telegram», у самому Telegram відкрити <strong>Налаштування → Telegram Business → Чат-боти</strong>, додати бота Ridna, обрати, які чати він бачитиме, і дозволити йому відповідати.</p>
+
+    <p>Крок із вибором чатів — найважливіший. Рекомендований варіант «Усі особисті чати», а рідних і друзів варто додати у винятки: <strong>виключені чати до Ridna не доходять узагалі</strong>.</p>
+
+    <h2>Обмеження, які ставить Telegram</h2>
+
+    <p>Їх варто знати заздалегідь, бо вони не обходяться жодною CRM:</p>
+
+    <ul>
+      <li><strong>Вікно 24 години.</strong> Відповісти через CRM можна протягом доби після повідомлення покупця. Пізніше — тільки з самого Telegram. Таке саме правило діє в Instagram.</li>
+      <li><strong>Першою написати не вийде.</strong> З CRM можна лише відповісти тому, хто написав. Але якщо ви напишете першою з телефона, чат зʼявиться в Ridna й далі піде звідти.</li>
+      <li><strong>Один бот на акаунт.</strong> Telegram дозволяє підключити лише одного — якщо у вас уже є інший, Ridna стане замість нього.</li>
+      <li><strong>Файли понад 20 МБ</strong> бот не завантажує: у чаті буде підпис «відкрий у Telegram».</li>
+    </ul>
+
+    <h2>Як це виглядає в роботі</h2>
+
+    <p>Чати Telegram стають у той самий список, що й Instagram Direct. Відповідати можна текстом, фото, кількома фото разом, відео й карткою оплати.</p>
+
+    <p>Далі все те саме, що й для Instagram: із чату створюється замовлення, з картки замовлення — <a href="/blog/stvoryty-ttn-z-telefonu/">ТТН Нової Пошти</a>, статус оплати видно поруч зі статусом доставки.</p>
+
+    <p>Кілька корисних дрібниць:</p>
+
+    <ul>
+      <li><strong>Відповіді з телефона теж зʼявляються в Ridna</strong> — розмова лишається повною, звідки б ви не писали.</li>
+      <li><strong>Прочитано синхронізується</strong>: відкрили чат у Ridna — покупець бачить дві галочки, а на телефоні чат більше не висить непрочитаним.</li>
+      <li><strong>Якщо покупець уже є в базі</strong> і в його картці вписано цей нік у полі «Telegram», чат приєднається до наявного контакту, а не створить дубль.</li>
+      <li><strong>Стара переписка не підтягується</strong> — чати зʼявляються з першим новим повідомленням.</li>
+      <li><strong>Сповіщення від Ridna про Telegram за замовчуванням вимкнені</strong>, бо Telegram на телефоні й так сповіщає. Вмикаються окремо.</li>
+    </ul>
+
+    <h2>Приватність: що саме бачить CRM</h2>
+
+    <p>Питання закономірне, бо йдеться про особистий акаунт. Відповідь конкретна: <strong>лише ті чати, які ви дозволили боту</strong> на кроці налаштування. Усе, що ви внесли у винятки, до Ridna не потрапляє взагалі.</p>
+
+    <p>Відключити можна будь-коли: провести по акаунту ліворуч і натиснути «Відключити». Щоб бот гарантовано нічого не бачив, його варто прибрати й у самому Telegram, у розділі Telegram Business. Переписка в Ridna при цьому лишається.</p>
+
+    <p>Загальніше про те, як влаштовані офіційні підключення месенджерів, — у статті <a href="/blog/bezpeka-pidklyuchennya-instagram/">чи безпечно підключати Instagram до сторонніх додатків</a>.</p>
+
+    <h2>Кому це потрібно</h2>
+
+    <p>Насамперед тим, у кого Telegram уже став другим каналом продажів: частина покупців не користується Instagram або просто звикла писати в Telegram.</p>
+
+    <p>Якщо ж туди пишуть одна-дві людини на тиждень, вимога Telegram Premium робить підключення невигідним — простіше відповідати з телефона.</p>
+
+    <p>Покрокова інструкція з усіма екранами — у <a href="https://help.ridna.net/a/telegram">базі знань</a>.</p>
+
+    <section class="faq">
+      <h2>Часті питання</h2>
+      <p class="faq-q">Чи бачать покупці, що відповідає бот?</p>
+      <p class="faq-a">Ні. Покупці пишуть магазину на той самий нік або номер і отримують відповідь від магазину. Бот у їхньому інтерфейсі не зʼявляється — немає ні іншого імені, ні позначки про переадресацію.</p>
+      <p class="faq-q">Що потрібно, щоб підключити Telegram до Ridna?</p>
+      <p class="faq-a">Telegram Premium на акаунті, куди пишуть покупці — без нього Telegram не дозволяє підключати ботів, це вимога самої платформи, — і тариф Pro або пробний період Ridna. Підключення відбувається в чотири кроки через Налаштування → Telegram Business → Чат-боти.</p>
+      <p class="faq-q">Чи бачить CRM особисті чати в Telegram?</p>
+      <p class="faq-a">Лише ті, які ви дозволили боту під час налаштування. Чати, додані у винятки, до Ridna не доходять узагалі. Рекомендований варіант — дозволити всі особисті чати, а рідних і друзів винести у винятки.</p>
+      <p class="faq-q">Чому не вийшло відповісти покупцю через кілька днів?</p>
+      <p class="faq-a">Це обмеження Telegram, а не CRM: відповісти через бота можна протягом 24 годин після повідомлення покупця. Пізніше відповідають із самого Telegram. Таке саме правило діє для Instagram.</p>
+    </section>
+        <!-- ↑↑↑ ТЕКСТ СТАТТІ ↑↑↑ -->
+
+        <section class="native">
+          <h2>Коли два месенджери — один список</h2>
+          <p>Паралельні канали коштують не грошей, а уваги: два місця для перевірки й клієнтка, яка в кожному з них виглядає як окрема людина.</p>
+          <p>У <a href="/?src=blog-telegram">Ridna</a> чати Telegram стають поруч з Instagram Direct, а замовлення, ТТН і оплата працюють для них однаково. 30 днів безкоштовно з можливостями Pro, картка не потрібна.</p>
+        </section>
+      </article>
+
+      <div class="promo">
+        <div class="promo-badges"><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Без картки</span><span class="promo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 хв на налаштування</span></div>
+        <h3>Ridna — CRM для <span class="accent">Instagram-магазинів</span></h3>
+        <p>Завантаж Ridna і спробуй 30 днів безкоштовно — без картки.</p>
+        <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-telegram-dlya-magazynu&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="article-banner" data-umami-event-slug="telegram-dlya-magazynu">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Darticle-banner%26utm_content%3Dblog-telegram-dlya-magazynu" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="article-banner" data-umami-event-slug="telegram-dlya-magazynu">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+      </div>
+
+<!-- RELATED:START -->
+<!-- RELATED:END -->
+
+      <footer class="blog-footer">
+        <span>© 2026 Ridna · Зроблено в Україні</span>
+        <span><a href="/blog/">Усі статті</a> · <a href="https://help.ridna.net" data-umami-event="outbound_kb" data-umami-event-place="post-footer">База знань</a> · <a href="/blog/feed.xml">RSS</a></span>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="dl-back" id="dlBack"></div>
+<div class="dl-pop" id="dlPop" role="dialog" aria-modal="true" aria-label="Завантажити Ridna">
+  <button class="dl-pop-x" id="dlPopX" aria-label="Закрити" type="button">×</button>
+  <h4>Спробувати Ridna</h4>
+  <p>Замовлення, Direct і ТТН Нової Пошти в одному застосунку. 30 днів безкоштовно.</p>
+  <div class="promo-stores">
+          <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk&amp;pt=129059770&amp;ct=blog-telegram-dlya-magazynu&amp;mt=8" target="_blank" rel="noopener" data-umami-event="store_ios" data-umami-event-place="popup" data-umami-event-slug="telegram-dlya-magazynu">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app&amp;referrer=utm_source%3Dblog%26utm_medium%3Dpopup%26utm_content%3Dblog-telegram-dlya-magazynu" target="_blank" rel="noopener" data-umami-event="store_android" data-umami-event-place="popup" data-umami-event-slug="telegram-dlya-magazynu">
+            <svg viewBox="0 0 512 512" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+</div>
+
+<script>
+/* перемикач теми */
+(function(){function t(){var r=document.documentElement;var n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}}document.querySelectorAll('.theme-toggle').forEach(function(b){b.addEventListener('click',t);});try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){if(!localStorage.getItem('theme'))document.documentElement.setAttribute('data-theme',e.matches?'dark':'light');});}catch(e){}})();
+
+/* зміст статті з підсвіткою поточного розділу */
+(function(){
+  var toc=document.getElementById('toc'), side=document.querySelector('.side-nav');
+  if(!toc)return;
+  var hs=[].slice.call(document.querySelectorAll('article h2'));
+  if(hs.length<2){ if(side)side.style.display='none'; return; }
+  var links=[];
+  hs.forEach(function(h,i){
+    h.id='s'+i;
+    var a=document.createElement('a');
+    a.href='#s'+i; a.textContent=h.textContent;
+    toc.appendChild(a); links.push({a:a,h:h});
+  });
+  function absTop(el){ return el.getBoundingClientRect().top + window.scrollY; }
+  function spy(){ var cur=links[0], thr=window.scrollY+150;
+    for(var i=0;i<links.length;i++){ if(absTop(links[i].h)<=thr) cur=links[i]; }
+    links.forEach(function(l){ l.a.classList.toggle('on', l===cur); }); }
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy,{passive:true});
+  spy();
+})();
+
+/* карусель схожих статей: стрілки зʼявляються лише за наявності переповнення */
+(function(){
+  var box=document.querySelector('.rel-carousel'); if(!box)return;
+  var prev=document.querySelector('.rel-nav.prev'), next=document.querySelector('.rel-nav.next');
+  function step(){ var c=box.querySelector('.rel'); return c ? c.offsetWidth+12 : 280; }
+  function sync(){
+    var over=box.scrollWidth-box.clientWidth>4;
+    if(!over){ prev.hidden=true; next.hidden=true; return; }
+    prev.hidden=box.scrollLeft<=2;
+    next.hidden=box.scrollLeft>=box.scrollWidth-box.clientWidth-2;
+  }
+  function go(dx){ box.scrollBy({left:dx,behavior:'smooth'}); setTimeout(sync,400); }
+  prev.addEventListener('click',function(){ go(-step()); });
+  next.addEventListener('click',function(){ go(step()); });
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  sync();
+})();
+
+/* поп-ап: по центру, після 10% прокрутки, один раз на відвідувача */
+(function(){
+  var pop=document.getElementById('dlPop'), back=document.getElementById('dlBack'); if(!pop)return;
+  var KEY='dlpop-dismissed';
+  try{ if(localStorage.getItem(KEY))return; }catch(e){}
+  function close(){ pop.classList.remove('show'); back.classList.remove('show'); try{localStorage.setItem(KEY,'1');}catch(e){} }
+  document.getElementById('dlPopX').addEventListener('click',close);
+  back.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  pop.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',close); });
+  var shown=false;
+  function check(){
+    if(shown)return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    if(h>0 && window.scrollY/h>=0.10){ shown=true; pop.classList.add('show'); back.classList.add('show'); window.removeEventListener('scroll',check); }
+  }
+  window.addEventListener('scroll',check,{passive:true});
+})();
+</script>
+<a class="tg-fab" href="https://t.me/ridna_crm" target="_blank" rel="noopener" aria-label="Telegram Ridna" data-umami-event="tg_subscribe"><svg viewBox="0 0 24 24" width="27" height="27" fill="#fff" aria-hidden="true"><path d="M9.8 16.6 9.6 20c.4 0 .6-.2.8-.4l1.9-1.8 3.9 2.9c.7.4 1.2.2 1.4-.7l2.6-12.2c.2-1-.4-1.4-1-1.1L3.4 12.1c-1 .4-1 1-.2 1.2l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg><span class="tg-fab-label">Ridna в Telegram</span></a>
+</body>
+</html>
