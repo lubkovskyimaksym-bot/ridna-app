@@ -8,7 +8,9 @@
           "/reset-password",
           "/reset-password/*",
           "/delete-account",
-          "/delete-account/*"
+          "/delete-account/*",
+          "/join",
+          "/join/*"
         ]
       }
     ]
