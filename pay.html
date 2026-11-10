@@ -492,6 +492,30 @@
     [data-theme="light"] .addon-price { color: var(--purple); }
     .addon-sub { font-size: 12px; color: var(--muted); line-height: 1.4; }
 
+    /* ============== КОМАНДА — місця (доповнення до Pro) ============== */
+    .seats-opt {
+      display: flex; align-items: center; gap: 12px;
+      margin: -8px 0 20px; padding: 14px 16px;
+      background: var(--glass);
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+    }
+    .seats-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+    .seats-title { font-size: 14px; font-weight: 700; color: var(--text); }
+    .seats-step {
+      display: inline-flex; align-items: center; flex-shrink: 0;
+      border: 1px solid var(--purple-mid); border-radius: 10px; overflow: hidden;
+    }
+    .seats-btn {
+      width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 0; color: var(--text); font-size: 20px; line-height: 1;
+      cursor: pointer; font-family: inherit; transition: background 0.15s;
+    }
+    .seats-btn:hover { background: var(--purple); color: #fff; }
+    .seats-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .seats-btn:disabled:hover { background: transparent; color: var(--text); }
+    .seats-count { min-width: 36px; text-align: center; font-size: 16px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+
     .ap-row-val.muted { color: var(--muted); font-weight: 500; }
     #apChatRow { gap: 12px; }
     #apChatRow .ap-row-key { white-space: nowrap; }
@@ -516,7 +540,8 @@
     body.pro-view .pricing-grid { display: none; }
     body.pro-view.plans-open .toggle-wrap { display: block; }
     body.pro-view.plans-open .pricing-grid { display: grid; }
-    body.pro-view .price-card[data-plan="pro"] .addon-opt { display: none; }
+    body.pro-view .price-card[data-plan="pro"] .addon-opt,
+    body.pro-view .price-card[data-plan="pro"] .seats-opt { display: none; }
 
     .pv { max-width: 600px; margin: 0 auto 28px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
     .pv[hidden], .pv [hidden] { display: none !important; }
@@ -1087,6 +1112,17 @@
           <span class="addon-sub">Відповідай відвідувачам свого сайту з Ridna</span>
         </span>
       </label>
+      <div class="seats-opt">
+        <div class="seats-main">
+          <span class="seats-title">Команда · <span class="addon-price" data-addon-price data-month="+199 ₴/міс за людину" data-year="+1 908 ₴/рік за людину">+199 ₴/міс за людину</span></span>
+          <span class="addon-sub">Додай менеджерів — кожен працює зі свого телефона. До 19 осіб.</span>
+        </div>
+        <div class="seats-step" role="group" aria-label="Кількість місць у команді">
+          <button type="button" class="seats-btn" data-seat="-" aria-label="Менше місць">−</button>
+          <span class="seats-count" id="seatCount" aria-live="polite">0</span>
+          <button type="button" class="seats-btn" data-seat="+" aria-label="Більше місць">+</button>
+        </div>
+      </div>
       <p class="pc-warn" data-pc-warn></p>
       <button type="button" class="price-cta solid" data-pay-cta>Оплатити Pro</button>
       <div class="pc-until" data-pc-until></div>
@@ -1394,6 +1430,28 @@
     btn.style.display = canPay ? '' : 'none';
     row.style.display = 'flex';
   }
+
+  // ── Команда (місця) — селектор к-ті на картці Pro ───────────────────
+  // Поки лише UI: точну суму рахуватиме серверний quote, коли бекенд
+  // навчиться рахувати місця (етап 3, окрема сесія). Тут — вибір к-ті.
+  const SEAT_MAX = 19;
+  let seatCount = 0;
+  const seatCountEl = document.getElementById('seatCount');
+  const seatDec = document.querySelector('[data-seat="-"]');
+  const seatInc = document.querySelector('[data-seat="+"]');
+  function renderSeatStep() {
+    if (seatCountEl) seatCountEl.textContent = seatCount;
+    if (seatDec) seatDec.disabled = seatCount <= 0;
+    if (seatInc) seatInc.disabled = seatCount >= SEAT_MAX;
+  }
+  [seatDec, seatInc].forEach((b) => {
+    if (!b) return;
+    b.addEventListener('click', () => {
+      seatCount = Math.max(0, Math.min(SEAT_MAX, seatCount + (b.dataset.seat === '+' ? 1 : -1)));
+      renderSeatStep();
+    });
+  });
+  renderSeatStep();
 
   // Виклик серверної функції (quote або create — залежно від payload).
   async function callFn(payload) {
