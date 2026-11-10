@@ -88,6 +88,13 @@
   .btn + .btn{margin-top:10px}
   .stores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
   .stores .btn + .btn{margin-top:0}
+  .store-btn{display:flex;align-items:center;justify-content:center;gap:11px;min-height:52px;padding:11px 16px;border-radius:14px;background:#000;border:1px solid var(--border);color:#fff;text-decoration:none;transition:border-color .2s,box-shadow .2s}
+  .store-btn:hover{border-color:var(--purple);box-shadow:0 0 26px rgba(126,33,213,.4)}
+  .store-btn svg{width:26px;height:26px;flex:0 0 auto;fill:currentColor}
+  .store-btn-text{display:flex;flex-direction:column;line-height:1;text-align:left}
+  .store-btn-text small{font-size:10px;opacity:.85;margin-bottom:4px;letter-spacing:.4px;font-weight:500}
+  .store-btn-text strong{font-size:15px;font-weight:700;letter-spacing:-.3px;color:#fff}
+  @media(max-width:420px){.stores{grid-template-columns:1fr}}
   .code{
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
     font-size:18px;letter-spacing:.5px;word-break:normal;overflow-wrap:anywhere;
@@ -137,8 +144,14 @@
       <h2>Ще немає Ridna</h2>
       <p>Встанови застосунок, а потім повернись сюди й натисни «Відкрити в Ridna».</p>
       <div class="stores">
-        <a class="btn btn-secondary" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk" rel="noreferrer">App Store</a>
-        <a class="btn btn-secondary" href="https://play.google.com/store/apps/details?id=net.ridna.app" rel="noreferrer">Google Play</a>
+        <a class="store-btn" href="https://apps.apple.com/ua/app/ridna-crm/id6782263520?l=uk" rel="noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          <span class="store-btn-text"><small>Завантажити в</small><strong>App Store</strong></span>
+        </a>
+        <a class="store-btn" href="https://play.google.com/store/apps/details?id=net.ridna.app" rel="noreferrer">
+          <svg viewBox="0 0 512 512" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+          <span class="store-btn-text"><small>Завантажити в</small><strong>Google Play</strong></span>
+        </a>
       </div>
     </section>
 
