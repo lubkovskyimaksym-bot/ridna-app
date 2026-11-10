@@ -512,9 +512,15 @@
       cursor: pointer; font-family: inherit; transition: background 0.15s;
     }
     .seats-btn:hover { background: var(--purple); color: #fff; }
-    .seats-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-    .seats-btn:disabled:hover { background: transparent; color: var(--text); }
     .seats-count { min-width: 36px; text-align: center; font-size: 16px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+    /* Кнопки лічильника не вимикаємо: на межі під ним кажемо, чому далі не можна. */
+    .seats-hint { font-size: 12px; line-height: 1.45; color: var(--warning); }
+    .seats-hint:empty { display: none; }
+    [data-theme="light"] .seats-hint { color: #92400E; }
+    .price-card .seats-hint { margin: -12px 0 18px; }
+    .pv .seats-hint { margin-top: 8px; }
+    /* До релізу 1.2.0 місця бачать лише ті, у кого команда вже є (TEAM_SALE_OPEN). */
+    [data-team-only][hidden] { display: none !important; }
 
     .ap-row-val.muted { color: var(--muted); font-weight: 500; }
     #apChatRow { gap: 12px; }
@@ -599,6 +605,12 @@
     .pv-module-btn:hover { background: rgba(126,33,213,0.1); border-color: var(--purple); }
     .pv-module-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .pv-nowrap { white-space: nowrap; }
+    .pv-module + .pv-module { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .pv-module-warn { margin-top: 6px; font-size: 13px; line-height: 1.45; color: var(--warning); }
+    .pv-module-warn:empty { display: none; }
+    [data-theme="light"] .pv-module-warn { color: #92400E; }
+    .pv-module-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px; margin-top: 12px; }
+    .pv-module-row .pv-module-btn { margin-top: 0; }
 
     /* Продовжити — плитки періоду з точною сумою */
     .pv-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -624,6 +636,7 @@
     .pv-check input:checked + .addon-box::after { opacity: 1; }
     .pv-check input:focus-visible + .addon-box { outline: 2px solid var(--purple-light); outline-offset: 2px; }
     .pv-check b { margin-left: auto; color: var(--text); white-space: nowrap; }
+    .pv-seats { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
     .pv-breakdown { margin-top: 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
     .pv-breakdown:empty { display: none; }
     .pv .pm-warn { margin: 12px 0 0; }
@@ -961,6 +974,31 @@
           <button class="pv-module-btn" id="pvChatBtn" type="button" hidden></button>
         </div>
       </div>
+      <!-- Команда: скільки місць оплачено й зайнято, докупити до кінця Pro.
+           Заповнює renderTeamModule(). -->
+      <div class="pv-module" id="pvTeam" hidden>
+        <div class="pv-module-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="pv-module-body">
+          <div class="pv-module-head">
+            <span class="pv-module-name">Команда</span>
+            <span id="pvTeamState"></span>
+          </div>
+          <div class="pv-module-desc" id="pvTeamDesc"></div>
+          <p class="pv-module-warn" id="pvTeamWarn"></p>
+          <div class="pv-module-row" id="pvTeamBuy" hidden>
+            <div class="seats-step" role="group" aria-label="Скільки місць докупити">
+              <button type="button" class="seats-btn" data-add-seat="-" aria-label="Менше місць">−</button>
+              <span class="seats-count" id="pvAddCount" aria-live="polite">1</span>
+              <button type="button" class="seats-btn" data-add-seat="+" aria-label="Більше місць">+</button>
+            </div>
+            <button class="pv-module-btn" id="pvTeamBtn" type="button"></button>
+          </div>
+          <p class="seats-hint" id="pvAddHint"></p>
+          <button class="pv-module-btn" id="pvTeamUp" type="button" hidden>Перейти на Pro з командою</button>
+        </div>
+      </div>
     </div>
 
     <div class="pv-card" id="pvRenewCard">
@@ -991,6 +1029,18 @@
         <span>Разом із чатом на сайті</span>
         <b id="pvChatPrice"></b>
       </label>
+      <div class="pv-seats" id="pvSeatsLine" hidden>
+        <div class="seats-main">
+          <span class="seats-title">Місця команди</span>
+          <span class="addon-sub" id="pvSeatsSub"></span>
+        </div>
+        <div class="seats-step" role="group" aria-label="Місця команди на новий період">
+          <button type="button" class="seats-btn" data-seat="-" aria-label="Менше місць">−</button>
+          <span class="seats-count" data-seat-count aria-live="polite">0</span>
+          <button type="button" class="seats-btn" data-seat="+" aria-label="Більше місць">+</button>
+        </div>
+      </div>
+      <p class="seats-hint" data-seat-hint></p>
       <p class="pv-breakdown" id="pvBreakdown"></p>
       <p class="pm-warn" id="pvWarn"></p>
       <p class="pv-up-note" id="pvUpNote" hidden>Pro почне діяти одразу, а невикористані дні Старту зарахуємо в ціну.</p>
@@ -1112,17 +1162,18 @@
           <span class="addon-sub">Відповідай відвідувачам свого сайту з Ridna</span>
         </span>
       </label>
-      <div class="seats-opt">
+      <div class="seats-opt" data-team-only hidden>
         <div class="seats-main">
-          <span class="seats-title">Команда · <span class="addon-price" data-addon-price data-month="+199 ₴/міс за людину" data-year="+1 908 ₴/рік за людину">+199 ₴/міс за людину</span></span>
-          <span class="addon-sub">Додай менеджерів — кожен працює зі свого телефона. До 19 осіб.</span>
+          <span class="seats-title">Команда · <span class="addon-price" data-addon-price data-month="+199 ₴/міс за людину" data-year="+1 910 ₴/рік за людину">+199 ₴/міс за людину</span></span>
+          <span class="addon-sub" data-seat-sub>Запроси менеджерку чи пакувальницю — кожна працює зі свого телефона. До 19 людей.</span>
         </div>
         <div class="seats-step" role="group" aria-label="Кількість місць у команді">
           <button type="button" class="seats-btn" data-seat="-" aria-label="Менше місць">−</button>
-          <span class="seats-count" id="seatCount" aria-live="polite">0</span>
+          <span class="seats-count" data-seat-count aria-live="polite">0</span>
           <button type="button" class="seats-btn" data-seat="+" aria-label="Більше місць">+</button>
         </div>
       </div>
+      <p class="seats-hint" data-seat-hint></p>
       <p class="pc-warn" data-pc-warn></p>
       <button type="button" class="price-cta solid" data-pay-cta>Оплатити Pro</button>
       <div class="pc-until" data-pc-until></div>
@@ -1148,6 +1199,7 @@
           <tr><td>Фіскальні чеки через Checkbox</td><td class="no">—</td><td class="yes">✓</td></tr>
           <tr><td>Автоплатежі Monobank і LiqPay</td><td class="no">—</td><td class="yes">✓</td></tr>
           <tr><td>Чат на сайті</td><td class="no">—</td><td>+299 ₴/міс</td></tr>
+          <tr data-team-only hidden><td>Команда</td><td class="no">—</td><td>+199 ₴/міс за людину</td></tr>
         </tbody>
       </table>
     </div>
@@ -1166,6 +1218,7 @@
         <li><strong>Старт — 499 ₴/міс</strong> або <strong>4 788 ₴/рік</strong> (економія 1 200 ₴). До 200 замовлень на місяць, 50 товарів у каталозі, 1 Instagram-акаунт.</li>
         <li><strong>Pro — 799 ₴/міс</strong> або <strong>7 668 ₴/рік</strong> (економія 1 920 ₴). Безлімітні замовлення, безлімітний каталог, кілька Instagram-акаунтів, інтеграція з Monobank.</li>
         <li><strong>Чат на сайті — 299 ₴/міс</strong> або <strong>2 868 ₴/рік</strong>, доповнення до Pro. Діє до кінця оплаченого Pro. Докуповуєш посеред періоду — платиш лише за дні, що лишились, не більше року за раз.</li>
+        <li data-team-only hidden><strong>Команда — 199 ₴/міс</strong> або <strong>1 910 ₴/рік</strong> за кожну людину, доповнення до Pro. З тарифом місця купуються на весь його період; докуповуєш посеред періоду — платиш лише за дні до кінця Pro, не більше року за раз.</li>
       </ul>
       <p>Деталі функцій — на <a href="/#features">головній сторінці</a>.</p>
     </section>
@@ -1264,9 +1317,10 @@
   let userToken = null;
   let userEmail = null;
   let tokenPayload = null;
-  // Стан акаунта з quote (loadCurrentSub): тариф, його кінець і чат на сайті.
-  let acct = { plan: null, periodEnd: null, chatUntil: null, chatEnabled: false };
+  // Стан акаунта з quote (loadCurrentSub): тариф, його кінець, чат на сайті й команда.
+  let acct = { plan: null, periodEnd: null, chatUntil: null, chatEnabled: false, team: null };
   let acctOk = false;   // quote відповів — знаємо, який тариф
+  let ownerOnly = false; // зайшла людина з команди: платить лише власниця
 
   // ====================================================================
   // 1. AUTH GATE — парсимо JWT (без crypto-верифікації, бо це публічна
@@ -1431,27 +1485,81 @@
     row.style.display = 'flex';
   }
 
-  // ── Команда (місця) — селектор к-ті на картці Pro ───────────────────
-  // Поки лише UI: точну суму рахуватиме серверний quote, коли бекенд
-  // навчиться рахувати місця (етап 3, окрема сесія). Тут — вибір к-ті.
+  // ── Команда (місця) — етап 3, рішення Макса 10.11 ───────────────────
+  // Місце — 199 ₴ за 30 днів або 1 910 ₴ за 365 днів, без ранньої знижки.
+  // Разом із Pro — на весь новий період; сума лінійна (сервер: місця × ставка
+  // billing), тож місця додаємо до розрахунку без них і не питаємо сервер на
+  // кожне «+». Ставка — з відповіді сервера (seats.unitUah), запасна — тут.
+  // Сам рахунок однаково рахує сервер, і Monobank покаже саме його суму.
+  // Мінімум — скільки людей уже в команді (менше — і в них «Доступ
+  // призупинено»), стеля — 19. Кнопки не вимикаємо: на межі кажемо чому.
+  // До релізу 1.2.0 місця бачать лише ті, у кого команда вже є або ввімкнена
+  // бета `team`: решті застосунок команду ще не показує.
+  const TEAM_SALE_OPEN = false; // день релізу 1.2.0 → true (docs/release-1.2.0.md)
   const SEAT_MAX = 19;
-  let seatCount = 0;
-  const seatCountEl = document.getElementById('seatCount');
-  const seatDec = document.querySelector('[data-seat="-"]');
-  const seatInc = document.querySelector('[data-seat="+"]');
-  function renderSeatStep() {
-    if (seatCountEl) seatCountEl.textContent = seatCount;
-    if (seatDec) seatDec.disabled = seatCount <= 0;
-    if (seatInc) seatInc.disabled = seatCount >= SEAT_MAX;
+  const SEAT_RATE = { month: 199, year: 1910 };
+  let betaTeam = false;
+  let seatCount = 0;   // місця на новий період Pro (картка Pro, «Продовжити»)
+  let addCount = 1;    // скільки докупити до кінця чинного Pro (картка «Команда»)
+  const team = () => acct.team || { used: 0, paid: 0, paidUntil: null };
+  const teamVisible = () => TEAM_SALE_OPEN || betaTeam || team().used > 0 || team().paid > 0;
+  function pl(n, one, few, many) {
+    const m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
   }
-  [seatDec, seatInc].forEach((b) => {
-    if (!b) return;
+  const plSeats = (n) => pl(n, 'місце', 'місця', 'місць');
+  const plPeople = (n) => pl(n, 'людина', 'людини', 'людей');
+  const seatUnit = (q, billing) => (q && q.seats && q.seats.unitUah) || SEAT_RATE[billing];
+  // Скільки місць іде в рахунок із тарифом: лише з Pro і лише коли лічильник видно.
+  const seatsFor = (plan) => (plan === 'pro' && teamVisible() ? seatCount : 0);
+  // Сума рахунку з місцями (q — розрахунок сервера без місць).
+  const totalWithSeats = (q, plan, billing) => q.amountUah + seatsFor(plan) * seatUnit(q, billing);
+
+  // Пояснення під лічильником — зникає саме за кілька секунд.
+  const hintTimers = new WeakMap();
+  function showHint(el, text) {
+    if (!el) return;
+    el.textContent = text;
+    clearTimeout(hintTimers.get(el));
+    if (text) hintTimers.set(el, setTimeout(() => { el.textContent = ''; }, 6000));
+  }
+
+  function renderSeats() {
+    const t = team();
+    document.querySelectorAll('[data-seat-count]').forEach((el) => { el.textContent = seatCount; });
+    document.querySelectorAll('[data-seat-sub]').forEach((el) => {
+      el.textContent = t.used > 0
+        ? `У команді ${t.used} ${plPeople(t.used)} — місце потрібне кожній. Максимум — 19.`
+        : 'Запроси менеджерку чи пакувальницю — кожна працює зі свого телефона. До 19 людей.';
+    });
+    const show = teamVisible();
+    document.querySelectorAll('[data-team-only]').forEach((el) => { el.hidden = !show; });
+  }
+
+  // Місця на новий період: від «скільки людей у команді» до 19.
+  document.querySelectorAll('[data-seat]').forEach((b) => {
     b.addEventListener('click', () => {
-      seatCount = Math.max(0, Math.min(SEAT_MAX, seatCount + (b.dataset.seat === '+' ? 1 : -1)));
-      renderSeatStep();
+      const t = team();
+      const up = b.dataset.seat === '+';
+      let hint = '';
+      if (up && seatCount >= SEAT_MAX) {
+        hint = 'Максимум — 19 місць. Потрібно більше — напиши нам у Telegram @ridna_crm';
+      } else if (!up && seatCount <= Math.min(SEAT_MAX, t.used)) {
+        hint = t.used > 0
+          ? `Менше не вийде: у команді ${t.used} ${plPeople(t.used)}. Щоб зменшити, відключи когось у застосунку: Меню → Акаунт → Команда`
+          : '0 — без команди, працюєш сама';
+      } else {
+        seatCount += up ? 1 : -1;
+      }
+      showHint(b.closest('.price-card, .pv-card').querySelector('[data-seat-hint]'), hint);
+      renderSeats();
+      renderSubView();
+      renderNewView();
     });
   });
-  renderSeatStep();
+  renderSeats();
 
   // Виклик серверної функції (quote або create — залежно від payload).
   async function callFn(payload) {
@@ -1485,6 +1593,21 @@
     } catch (e) { /* тихо */ }
   }
 
+  // Бета «Команда»: до релізу 1.2.0 продаж місць бачать лише з нею (або з командою).
+  async function loadTeamFlag() {
+    if (!userToken || !tokenPayload || !tokenPayload.sub) return;
+    try {
+      const res = await fetch(
+        `${SUPABASE_REST}/profiles?select=beta_features&id=eq.${encodeURIComponent(tokenPayload.sub)}`,
+        { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${userToken}` } },
+      );
+      if (!res.ok) return;
+      const rows = await res.json();
+      const list = Array.isArray(rows) && rows[0] ? rows[0].beta_features : null;
+      betaTeam = Array.isArray(list) && list.includes('team');
+    } catch (e) { /* тихо */ }
+  }
+
   // Поточна підписка у user-context (Зараз: Pro · активна до …)
   async function loadCurrentSub() {
     const planEl = document.getElementById('apPlan');
@@ -1492,15 +1615,24 @@
     const untilEl = document.getElementById('apUntil');
     if (!planEl) return;
     try {
-      const { data } = await callFn({ plan: 'pro', billing: 'month', quote: true });
+      const { res, data } = await callFn({ plan: 'pro', billing: 'month', quote: true });
+      // Людина з команди: сервер відмовляє їй у будь-якому розрахунку — платить власниця.
+      ownerOnly = res.status === 403 && data.error === 'owner_only';
       const plan = data.currentPlan; // приходить навіть на 409 (downgrade)
       acct = {
         plan: plan || null,
         periodEnd: data.currentPeriodEnd || null,
         chatUntil: data.activeUntil || null,
         chatEnabled: !!data.chatEnabled,
+        // Команда: скільки людей і скільки місць діє зараз (етап 3).
+        team: data.team || null,
       };
       acctOk = !!data.quote;
+      // Місць на новий період — скільки оплачено зараз, але не менше, ніж людей.
+      const t = team();
+      seatCount = Math.min(SEAT_MAX, Math.max(t.paid, t.used));
+      // Докупити — стільки, скільки бракує (або одне), у межах стелі.
+      addCount = Math.max(1, Math.min(t.used - t.paid, SEAT_MAX - t.paid));
       renderChatRow();
       // Чат уже увімкнений чи оплачений — галочка стоїть сама: продовжуючи
       // Pro, його легко загубити, не помітивши.
@@ -1510,7 +1642,7 @@
       if (pvChatCheck) pvChatCheck.checked = acct.plan === 'basic' ? acct.chatEnabled : true;
       renewPlan = 'basic';
       if (!plan) {
-        planEl.textContent = 'Немає активної';
+        planEl.textContent = ownerOnly ? 'Оплачує власниця магазину' : 'Немає активної';
         if (untilRow) untilRow.style.display = 'none';
       } else {
         planEl.textContent = PLAN_LABEL[plan] || plan;
@@ -1522,7 +1654,8 @@
         }
       }
     } catch (e) { /* тихо */ }
-    await loadIapFlag();
+    await Promise.all([loadIapFlag(), loadTeamFlag()]);
+    renderSeats();
     // Є тариф (Pro, «Старт», Pro через App Store) — «Твоя підписка»;
     // пробний і без підписки — вибір тарифу з точною сумою.
     proView = acctOk && (acct.plan === 'pro' || acct.plan === 'basic');
@@ -1532,6 +1665,7 @@
     if (proView) {
       renewQ = null;
       chatOnlyQ = null;
+      seatsOnlyQ = null;
       newQ = null;
       renderSubView();
       await loadSubQuotes();
@@ -1554,7 +1688,7 @@
     if (!wrap || !list || !userToken) return;
     try {
       const res = await fetch(
-        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,kind,amount,currency,status,created_at&status=in.(success,reversed)&order=created_at.desc&limit=12`,
+        `${SUPABASE_REST}/subscription_invoices?select=plan,billing,kind,amount,currency,status,created_at,seats&status=in.(success,reversed)&order=created_at.desc&limit=12`,
         { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${userToken}` } },
       );
       if (!res.ok) return;
@@ -1569,10 +1703,14 @@
         pending:    { t: 'в обробці',     c: 'pend' },
       };
       const items = rows.map((r) => {
-        // kind: plan — тариф; plan_addon — тариф + чат на сайті; addon — лише чат.
+        // kind: plan — тариф; plan_addon — тариф + чат на сайті; addon — лише чат;
+        // seats — лише місця команди. Місця, куплені з тарифом, — у тому ж рядку.
+        const seatsTxt = r.seats > 0 ? `${r.seats} ${plSeats(r.seats)}` : '';
         const main = r.kind === 'addon'
           ? 'Чат на сайті'
-          : `${PLAN_LABEL[r.plan] || r.plan} · ${r.billing === 'year' ? 'рік' : 'місяць'}${r.kind === 'plan_addon' ? ' + чат' : ''}`;
+          : r.kind === 'seats'
+            ? `Команда · ${seatsTxt}`
+            : `${PLAN_LABEL[r.plan] || r.plan} · ${r.billing === 'year' ? 'рік' : 'місяць'}${r.kind === 'plan_addon' ? ' + чат' : ''}${seatsTxt ? ` + ${seatsTxt}` : ''}`;
         const amt = r.currency === 'USD'
           ? `$${((r.amount || 0) / 100).toFixed(2)}`
           : `${fmtUah((r.amount || 0) / 100)} ₴`;
@@ -1644,6 +1782,10 @@
       if (chat) {
         rows.push(`<div class="pm-row"><span>Чат на сайті · ${chat.days} ${plDays(chat.days)}, до ${fmtDate(chat.until)}</span><span>${fmtUah(chat.amountUah)} ₴</span></div>`);
       }
+      // Місця команди — у цьому розрахунку їх уже порахував сервер.
+      if (q.seats && q.seats.count > 0) {
+        rows.push(`<div class="pm-row"><span>Місця команди · ${q.seats.count} × ${fmtUah(q.seats.unitUah)} ₴</span><span>${fmtUah(q.seats.amountUah)} ₴</span></div>`);
+      }
 
       note = `Підписка діятиме до ${fmtDate(q.newPeriodEnd)}`;
       if (q.action === 'upgrade') note = `Pro з сьогодні до ${fmtDate(q.newPeriodEnd)}`;
@@ -1659,6 +1801,12 @@
         if (p.plan === 'basic') warn = 'Чат на сайті працює лише з Pro — на «Старті» він вимкнеться';
         else if (q.action === 'trial') warn = 'Чат на сайті вимкнеться одразу після оплати — без доповнення він не працює';
         else if (acct.chatUntil) warn = `Чат на сайті працюватиме до ${fmtDate(acct.chatUntil)}, далі вимкнеться`;
+      }
+      // Команда на «Старті» не працює — кажемо, скільки людей лишаться без доступу.
+      const tm = team();
+      if (p.plan === 'basic' && tm.used > 0) {
+        const when = q.action === 'downgrade' ? `з ${fmtDate(q.startsAt)}` : 'одразу після оплати';
+        warn = [warn, `Команда працює лише з Pro — ${tm.used} ${plPeople(tm.used)} без доступу ${when}`].filter(Boolean).join('. ');
       }
     }
 
@@ -1677,6 +1825,7 @@
       const plan = card.dataset.plan;
       const billing = selectedBilling;
       const addon = plan === 'pro' && !!(addonChat && addonChat.checked);
+      const seats = seatsFor(plan);
 
       // Свій тариф продовжують у картці «Продовжити» вгорі; з «Старту» на Pro — там само.
       if (proView && !iapActive && (plan === acct.plan || isBasic())) {
@@ -1685,11 +1834,11 @@
       }
       // Пробний / без підписки: сума вже на кнопці — одразу в Monobank.
       if (newView) {
-        trackPay('pay_plan', { plan, billing, chat: addon, state: acct.plan || 'none' });
-        goPay(btn, { plan, billing, addon });
+        trackPay('pay_plan', { plan, billing, chat: addon, seats, state: acct.plan || 'none' });
+        goPay(btn, { plan, billing, addon, seats });
         return;
       }
-      trackPay('pay_plan', { plan, billing, chat: addon, state: acct.plan || 'none', view: 'cards' });
+      trackPay('pay_plan', { plan, billing, chat: addon, seats, state: acct.plan || 'none', view: 'cards' });
 
       // Гард «одне джерело»: активна iOS-підписка → не даємо платити на вебі
       // (інакше подвійна оплата — Apple далі авто-списує). Чат на сайті —
@@ -1705,15 +1854,13 @@
       btn.textContent = 'Рахуємо…';
 
       try {
-        const { res, data } = await callFn({ plan, billing, addon, quote: true });
-        if (res.status === 401) {
-          alert('Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.');
-        } else if (res.status === 409 && data.error === 'downgrade_not_available') {
+        const { res, data } = await callFn({ plan, billing, addon, seats, quote: true });
+        if (res.status === 409 && data.error === 'downgrade_not_available') {
           alert(data.message || 'Зміна на нижчий тариф буде доступна найближчим часом. Напиши нам у Telegram @ridna_crm.');
         } else if (!res.ok || !data.quote) {
-          alert('Не вдалось порахувати ціну. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+          alert(payErrorText(res, data, 'Не вдалось порахувати ціну. Спробуй ще раз або напиши нам у Telegram @ridna_crm'));
         } else {
-          openPayModal({ plan, billing, addon }, data);
+          openPayModal({ plan, billing, addon, seats }, data);
         }
       } catch (e) {
         console.error(e);
@@ -1732,10 +1879,14 @@
     const t = c.textContent;
     c.textContent = 'Готуємо оплату…';
     try {
-      const { res, data } = await callFn({ plan: pendingPay.plan, billing: pendingPay.billing, addon: pendingPay.addon });
+      const { res, data } = await callFn({
+        plan: pendingPay.plan, billing: pendingPay.billing, addon: pendingPay.addon, seats: pendingPay.seats || 0,
+      });
       if (!res.ok || !data.pageUrl) {
-        alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+        alert(payErrorText(res, data, 'Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm'));
         c.disabled = false; c.textContent = t;
+        // Команда виросла — сума у вікні вже не та: закриваємо, порахуємо заново.
+        if (data.error === 'seats_below_team') closePayModal();
         return;
       }
       window.location.href = data.pageUrl; // на Monobank
@@ -1795,6 +1946,7 @@
   let proView = false;
   let renewQ = null;       // Pro: { month: { on, off }, year: { on, off } } — quote продовження з чатом / без
   let chatOnlyQ = null;    // Pro: quote «лише чат» (підключити до кінця Pro)
+  let seatsOnlyQ = null;   // Pro: quote «докупити 1 місце» до кінця Pro — ставка за місце
   let renewPlan = 'basic'; // «Старт»: що рахує картка «Продовжити» — Старт чи перехід на Pro
   const pvChatCheck = document.getElementById('pvChatCheck');
   const MONTHS_GEN = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
@@ -1859,13 +2011,20 @@
     const chatGap = msOf(acct.periodEnd) - msOf(acct.chatUntil) >= DAY_MS;
     // Pro через App Store продовжують в App Store — їм потрібен лише чат.
     const renew = !iapActive;
-    const [mOn, mOff, yOn, yOff, chat] = await Promise.all([
+    // «Докупити місця»: ставку за одне місце до кінця Pro дає сервер, на K місць
+    // сума лінійна. На стелі (19 уже оплачено) докуповувати нічого.
+    const seatsGap = acct.plan === 'pro' && teamVisible() && team().paid < SEAT_MAX;
+    const [mOn, mOff, yOn, yOff, chat, seatsAdd] = await Promise.all([
       renew ? q('month', true) : null, renew ? q('month', false) : null,
       renew ? q('year', true) : null, renew ? q('year', false) : null,
       chatGap ? callFn({ plan: null, addon: true, quote: true }).then(({ data }) => data).catch(() => null) : null,
+      seatsGap
+        ? callFn({ plan: null, addSeats: 1, quote: true }).then(({ res, data }) => (res.ok && data.quote ? data : null)).catch(() => null)
+        : null,
     ]);
     renewQ = { month: { on: mOn, off: mOff }, year: { on: yOn, off: yOff } };
     chatOnlyQ = chat;
+    seatsOnlyQ = seatsAdd;
   }
   const subLoaded = () => (isBasic() ? !!newQ : !!renewQ);
 
@@ -1894,6 +2053,52 @@
     const withChat = acct.chatUntil ? chatQuote(pair) : null;
     const on = !!withChat && pvChatCheck.checked;
     return { plan: 'pro', withChat, on, q: on ? withChat : pair.off };
+  }
+
+  // Картка «Команда» в «Доповненнях»: скільки місць оплачено й зайнято,
+  // докупити до кінця Pro. На «Старті» — перехід на Pro з командою.
+  function renderTeamModule(basic) {
+    const box = document.getElementById('pvTeam');
+    box.hidden = !teamVisible();
+    if (box.hidden) return;
+    const t = team();
+    const lack = t.used - t.paid;
+    const state = document.getElementById('pvTeamState');
+    const desc = document.getElementById('pvTeamDesc');
+    const warn = document.getElementById('pvTeamWarn');
+    const buy = document.getElementById('pvTeamBuy');
+    const up = document.getElementById('pvTeamUp');
+    const pitch = 'Менеджерка чи пакувальниця працює зі свого телефона, а що кому можна — вирішуєш ти.';
+    if (basic) {
+      state.className = 'pv-module-price';
+      state.textContent = '199 ₴/міс за людину';
+      desc.textContent = `${pitch} Працює тільки з тарифом Pro.`;
+      warn.textContent = t.used > 0
+        ? `Без Pro команда без доступу — зараз у ній ${t.used} ${plPeople(t.used)}`
+        : '';
+      buy.hidden = true;
+      up.hidden = iapActive;
+      return;
+    }
+    up.hidden = true;
+    state.className = t.paid > 0 && lack <= 0 ? 'pv-module-on' : 'pv-module-price';
+    state.textContent = t.paid > 0 || t.used > 0 ? `Зайнято ${t.used} з ${t.paid}` : '199 ₴/міс за людину';
+    desc.textContent = t.paid > 0 && t.paidUntil
+      ? `${t.paid} ${plSeats(t.paid)} до ${fmtDay(t.paidUntil)}`
+        + (msOf(t.paidUntil) >= msOf(acct.periodEnd) - DAY_MS ? ' — разом із Pro' : '')
+        + (t.paid >= SEAT_MAX ? '. Це максимум' : '')
+      : pitch;
+    warn.textContent = lack > 0
+      ? `Місць менше, ніж людей, — зараз команда без доступу. Докупи ще ${lack}, і доступ повернеться одразу`
+      : '';
+    // Докупити — від сьогодні до кінця Pro; ставку за місце рахує сервер.
+    const s = seatsOnlyQ && seatsOnlyQ.seats ? seatsOnlyQ.seats : null;
+    buy.hidden = !s;
+    if (s) {
+      document.getElementById('pvAddCount').textContent = addCount;
+      document.getElementById('pvTeamBtn').innerHTML =
+        `Докупити до ${fmtDay(s.until)} <span class="pv-nowrap">— ${fmtUah(addCount * s.unitUah)} ₴</span>`;
+    }
   }
 
   function renderSubView() {
@@ -1949,6 +2154,9 @@
       if (only) chatBtn.innerHTML = `${connected ? 'Продовжити' : 'Підключити'} до ${fmtDay(only.until)} <span class="pv-nowrap">— ${fmtUah(only.amountUah)} ₴</span>`;
     }
 
+    // ── Доповнення: команда ──
+    renderTeamModule(basic);
+
     // ── Продовжити (через App Store — там, тут картки немає) ──
     document.getElementById('pvRenewCard').hidden = iap;
     if (iap) return;
@@ -1968,11 +2176,12 @@
       t.classList.toggle('active', active);
       t.setAttribute('aria-checked', active ? 'true' : 'false');
       const p = renewPick(t.dataset.pvBilling);
-      t.querySelector('[data-pv-sum]').textContent = p ? `${fmtUah(p.q.amountUah)} ₴` : '—';
-      // Закреслена «ціна без знижок»: помісячно за той самий строк (тариф і, якщо в рахунку, чат).
+      const sum = p ? totalWithSeats(p.q, p.plan, t.dataset.pvBilling) : 0;
+      t.querySelector('[data-pv-sum]').textContent = p ? `${fmtUah(sum)} ₴` : '—';
+      // Закреслена «ціна без знижок»: помісячно за той самий строк (тариф і, якщо в рахунку, чат і місця).
       const months = t.dataset.pvBilling === 'year' ? 12 : 1;
-      const was = p ? months * (PRICES[p.plan].month + (p.on ? CHAT_MONTH_UAH : 0)) : 0;
-      t.querySelector('[data-pv-was]').textContent = p && was > p.q.amountUah ? `${fmtUah(was)} ₴` : '';
+      const was = p ? months * (PRICES[p.plan].month + (p.on ? CHAT_MONTH_UAH : 0) + seatsFor(p.plan) * SEAT_RATE.month) : 0;
+      t.querySelector('[data-pv-was]').textContent = p && was > sum ? `${fmtUah(was)} ₴` : '';
       t.querySelector('[data-pv-until]').textContent = p ? `до ${fmtDay(p.q.newPeriodEnd)}` : '';
     });
     const renew = document.getElementById('pvRenew');
@@ -1994,6 +2203,15 @@
     document.getElementById('pvChatLine').hidden = !withChat;
     if (withChat) document.getElementById('pvChatPrice').textContent = `+${fmtUah(withChat.addon.amountUah)} ₴`;
 
+    // Місця команди на новий період Pro (продовження Pro чи перехід зі «Старту»).
+    const tm = team();
+    const seats = seatsFor(cur.plan);
+    const unit = seatUnit(q, selectedBilling);
+    document.getElementById('pvSeatsLine').hidden = !(cur.plan === 'pro' && teamVisible());
+    document.getElementById('pvSeatsSub').textContent = tm.used > 0
+      ? `У команді ${tm.used} ${plPeople(tm.used)} · ${fmtUah(unit)}\u00a0₴ за місце`
+      : `На весь новий період · ${fmtUah(unit)}\u00a0₴ за місце`;
+
     // Розбивка простим текстом: тариф, знижка, залишок Старту, чат.
     const b = q.breakdown;
     const name = cur.plan === 'basic' ? 'Старт' : 'Pro';
@@ -2003,6 +2221,7 @@
       : `${name} ${fmtUah(b.baseUah)} ₴${per}`;
     if (b.creditUah > 0) breakdown += ` · залишок Старту −${fmtUah(b.creditUah)} ₴`;
     if (on) breakdown += ` · чат на сайті ${fmtUah(withChat.addon.amountUah)} ₴`;
+    if (seats > 0) breakdown += ` · ${seats} ${plSeats(seats)} команди ${fmtUah(seats * unit)} ₴`;
     // Більше року чату за раз не продаємо — Pro може тривати довше.
     if (on && msOf(withChat.addon.until) < msOf(q.newPeriodEnd) - DAY_MS) {
       breakdown += `. Чат — до ${fmtDay(withChat.addon.until)}, далі докупиш окремо`;
@@ -2010,13 +2229,19 @@
     // Сума й ₴ не розриваються на вузькому екрані.
     document.getElementById('pvBreakdown').textContent = breakdown.replace(/ ₴/g, '\u00a0₴');
 
+    const warns = [];
     // Чат зараз працює, а в продовженні його немає — кажемо наперед, що буде.
-    document.getElementById('pvWarn').textContent = !basic && !on && chatWorksNow()
-      ? `Чат на сайті працюватиме до ${fmtDay(acct.chatUntil)}, далі вимкнеться`
-      : '';
+    if (!basic && !on && chatWorksNow()) warns.push(`Чат на сайті працюватиме до ${fmtDay(acct.chatUntil)}, далі вимкнеться`);
+    // Продовження Pro почнеться з кінця чинного — нестачу місць зараз воно не лікує.
+    if (!basic && tm.used > tm.paid && seats > 0) {
+      warns.push(`Місця з продовженням почнуть діяти з ${fmtDay(q.startsAt)}. Щоб команда працювала вже зараз — докупи місця вище`);
+    }
+    // На «Старті» команда не працює.
+    if (cur.plan === 'basic' && tm.used > 0) warns.push(`Команда працює лише з Pro — ${tm.used} ${plPeople(tm.used)} без доступу`);
+    document.getElementById('pvWarn').textContent = warns.join('. ');
 
     renew.disabled = false;
-    renew.textContent = `${upgrading ? 'Перейти на Pro' : 'Продовжити'} — ${fmtUah(q.amountUah)} ₴`;
+    renew.textContent = `${upgrading ? 'Перейти на Pro' : 'Продовжити'} — ${fmtUah(totalWithSeats(q, cur.plan, selectedBilling))} ₴`;
   }
 
   // Рахунок → одразу Monobank. Не вийшло — повертаємо кнопку як була.
@@ -2030,15 +2255,32 @@
         window.location.href = data.pageUrl;
         return;
       }
-      alert(res.status === 401
-        ? 'Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.'
-        : 'Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
+      alert(payErrorText(res, data, 'Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm'));
     } catch (e) {
       console.error(e);
       alert('Не вдалось підготувати оплату. Спробуй ще раз або напиши нам у Telegram @ridna_crm');
     }
     btn.disabled = false;
     btn.innerHTML = t;
+    // Відмова могла оновити команду (seats_below_team) — перемальовуємо суми.
+    renderSubView();
+    renderNewView();
+  }
+
+  // Відмова сервера — зрозумілою мовою. Команда виросла, поки сторінка була
+  // відкрита, — підставляємо нову кількість місць, щоб людина побачила суму.
+  function payErrorText(res, data, fallback) {
+    if (res.status === 401) return 'Сесія застаріла. Відкрий сторінку оплати з додатку Ridna ще раз.';
+    if (data.error === 'owner_only') return 'Підписку й місця команди оплачує власниця магазину — зайди на цю сторінку з її акаунта';
+    if (data.team) acct.team = data.team;
+    if (data.error === 'seats_below_team' && data.team) {
+      seatCount = Math.min(SEAT_MAX, Math.max(seatCount, data.team.used));
+      renderSeats();
+      return `У команді вже ${data.team.used} ${plPeople(data.team.used)} — місць потрібно не менше. Ми підставили ${seatCount}: перевір суму й натисни ще раз`;
+    }
+    if (data.error === 'seats_max') return 'Разом з оплаченими виходить більше 19 місць — це максимум. Зменш кількість';
+    if (data.error === 'seats_require_pro') return 'Місця команди — лише з чинним тарифом Pro';
+    return fallback;
   }
 
   // Показати картку «Продовжити» (на «Старті» — з обраним тарифом).
@@ -2069,10 +2311,12 @@
     }
     const cur = renewPick(selectedBilling);
     const upgrading = isBasic() && renewPlan === 'pro';
+    const plan = isBasic() ? renewPlan : 'pro';
+    const seats = seatsFor(plan);
     trackPay(upgrading ? 'pay_upgrade' : 'pay_renew', {
-      plan: isBasic() ? renewPlan : 'pro', billing: selectedBilling, chat: !!(cur && cur.on),
+      plan, billing: selectedBilling, chat: !!(cur && cur.on), seats,
     });
-    goPay(btn, { plan: isBasic() ? renewPlan : 'pro', billing: selectedBilling, addon: !!(cur && cur.on) });
+    goPay(btn, { plan, billing: selectedBilling, addon: !!(cur && cur.on), seats });
   });
   document.getElementById('pvChatBtn').addEventListener('click', (e) => {
     if (e.currentTarget.dataset.action === 'upgrade') {
@@ -2083,6 +2327,35 @@
     }
     trackPay('pay_chat_connect', { state: iapActive ? 'app_store' : 'pro', connected: !!acct.chatUntil });
     goPay(e.currentTarget, { plan: null, addon: true });
+  });
+
+  // Скільки місць докупити: від одного до стелі разом з оплаченими.
+  document.querySelectorAll('[data-add-seat]').forEach((b) => b.addEventListener('click', () => {
+    const t = team();
+    const max = Math.max(1, SEAT_MAX - t.paid);
+    const up = b.dataset.addSeat === '+';
+    let hint = '';
+    if (up && addCount >= max) {
+      hint = t.paid > 0 ? `Разом з оплаченими це ${SEAT_MAX} — більше місць у команді не буває` : 'Максимум — 19 місць';
+    } else if (!up && addCount <= 1) {
+      hint = 'Докупити можна від одного місця';
+    } else {
+      addCount += up ? 1 : -1;
+    }
+    showHint(document.getElementById('pvAddHint'), hint);
+    renderSubView();
+  }));
+  document.getElementById('pvTeamBtn').addEventListener('click', (e) => {
+    const t = team();
+    trackPay('pay_seats_add', { seats: addCount, lack: Math.max(0, t.used - t.paid), state: iapActive ? 'app_store' : 'pro' });
+    goPay(e.currentTarget, { plan: null, addSeats: addCount });
+  });
+  // «Старт»: перейти на Pro разом із місцями — щонайменше одне або скільки людей.
+  document.getElementById('pvTeamUp').addEventListener('click', () => {
+    trackPay('pay_team_with_pro');
+    seatCount = Math.min(SEAT_MAX, Math.max(seatCount, team().used, 1));
+    renderSeats();
+    focusRenew('pro');
   });
 
   document.getElementById('pvChangePlan').addEventListener('click', (e) => {
@@ -2158,7 +2431,9 @@
       const plan = card.dataset.plan;
       const q = cardQuote(plan);
       const cta = card.querySelector('[data-pay-cta]');
-      cta.textContent = q ? `Оплатити — ${fmtUah(q.amountUah)} ₴` : newQ ? `Оплатити ${plan === 'basic' ? 'Старт' : 'Pro'}` : 'Рахуємо…';
+      cta.textContent = q
+        ? `Оплатити — ${fmtUah(totalWithSeats(q, plan, selectedBilling))} ₴`
+        : newQ ? `Оплатити ${plan === 'basic' ? 'Старт' : 'Pro'}` : 'Рахуємо…';
       const nowEl = card.querySelector('[data-pc-now]');
       nowEl.hidden = !(q && q.discount);
       if (q && q.discount) nowEl.textContent = `Зараз −33%: ${fmtUah(q.breakdown.baseUah - q.breakdown.discountUah)} ₴`;
@@ -2167,6 +2442,11 @@
       let warn = '';
       if (chatNow && plan === 'basic') warn = 'Чат на сайті працює лише з Pro — на «Старті» він вимкнеться';
       if (chatNow && plan === 'pro' && !addonChat.checked) warn = 'Без доповнення чат на сайті вимкнеться одразу після оплати';
+      // Люди з команди на «Старті» лишаться без доступу.
+      const tm = team();
+      if (plan === 'basic' && tm.used > 0) {
+        warn = [warn, `Команда працює лише з Pro — ${tm.used} ${plPeople(tm.used)} без доступу одразу після оплати`].filter(Boolean).join('. ');
+      }
       card.querySelector('[data-pc-warn]').textContent = warn;
     });
   }
